@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/logotype"
-        tools:srcCompat="@drawable/logotype" />
+        app:srcCompat="@drawable/img_logotype"
+        tools:srcCompat="@drawable/img_logotype" />
 
 </FrameLayout>
