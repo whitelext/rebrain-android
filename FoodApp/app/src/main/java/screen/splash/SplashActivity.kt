@@ -1,7 +1,6 @@
 package screen.splash
 
 import android.content.Context
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.example.foodapp.MainActivity
@@ -21,16 +20,14 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        MainActivity().start(this,500)
+        navigateToActivityWithDelay(this,500)
     }
 
-    private fun navigateToActivityWithDelay(intent : Intent,delayTime : Long) = launch {
+    private fun navigateToActivityWithDelay(context:Context,delayTime : Long) = launch {
         delay(delayTime)
-        startActivity(intent)
+        MainActivity.start(context)
     }
 
-    private fun MainActivity.start(context: Context, delayTime : Long) {
-        navigateToActivityWithDelay( Intent(context,this::class.java),delayTime)
-    }
+
 }
 
