@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     }
     companion object{
         fun start(context: Context){
-            startActivity(context,Intent(context,this::class.java.declaringClass),null)
+            startActivity(context,Intent(context,MainActivity::class.java),null)
         }
     }
 }
