@@ -3,6 +3,7 @@ package utils
 import android.content.Context
 import android.preference.PreferenceManager
 
+const val sharedPrefKey = "isIntroNeeded" // Key for work with Shared Preferences
 /**
  * Helper class to work with SharedPreferences
  *
@@ -14,7 +15,7 @@ class SharedPreferencesHelper(context : Context) {
     private val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
 
     var isIntroNeeded: Boolean
-        get() = sharedPref.getBoolean("isIntroNeeded",true)
-        set(value) = sharedPref.edit().putBoolean("isIntroNeeded", value).apply()
+        get() = sharedPref.getBoolean(sharedPrefKey,true)
+        set(value) = sharedPref.edit().putBoolean(sharedPrefKey, value).apply()
 
 }

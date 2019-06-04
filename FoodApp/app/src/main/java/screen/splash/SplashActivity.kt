@@ -31,8 +31,7 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
         if(helper.isIntroNeeded){
             IntroActivity.start(context)
             helper.isIntroNeeded=false
-        }
-        else{
+        } else{
             MainActivity.start(context)
         }
     }
