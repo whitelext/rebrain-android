@@ -6,6 +6,8 @@ import android.os.Bundle
 import com.example.foodapp.MainActivity
 import com.example.foodapp.R
 import kotlinx.coroutines.*
+import screen.intro.IntroActivity
+import utils.SharedPreferencesHelper
 import kotlin.coroutines.CoroutineContext
 
 
@@ -25,7 +27,13 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
 
     private fun navigateToActivityWithDelay(context:Context,delayTime : Long) = launch {
         delay(delayTime)
-        MainActivity.start(context)
+        val helper = SharedPreferencesHelper(this@SplashActivity)
+        if(helper.isIntroNeeded){
+            IntroActivity.start(context)
+            helper.isIntroNeeded=false
+        } else{
+            MainActivity.start(context)
+        }
     }
 
 
