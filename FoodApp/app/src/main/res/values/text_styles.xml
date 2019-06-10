@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Стили текста-->
+    <style name="Text" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="LightText">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="LightText.16sp">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Text.22sp">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="Text.22sp.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="LightText.16sp.Normal">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Text.22sp.Bold.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="LightText.16sp.Normal.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+</resources>
