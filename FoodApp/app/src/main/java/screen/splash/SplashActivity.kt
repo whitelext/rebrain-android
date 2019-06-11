@@ -10,7 +10,6 @@ import screen.intro.IntroActivity
 import utils.SharedPreferencesHelper
 import kotlin.coroutines.CoroutineContext
 
-
 /**
  * The Splash which is displayed before the launch of MainActivity
  */
