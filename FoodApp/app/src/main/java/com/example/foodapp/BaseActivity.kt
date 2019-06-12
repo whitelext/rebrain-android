@@ -2,6 +2,7 @@ package com.example.foodapp
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import timber.log.Timber
 
 /**
@@ -42,5 +43,15 @@ open class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Timber.tag("lifecycle").i("onDestroy was called from $localClassName")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        Timber.tag("lifecycle").i("onSaveInstanceState was called from $localClassName")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Timber.tag("lifecycle").i("onRestoreInstanceState was called from $localClassName")
     }
 }
