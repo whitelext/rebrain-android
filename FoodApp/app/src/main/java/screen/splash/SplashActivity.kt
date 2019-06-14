@@ -3,17 +3,19 @@ package screen.splash
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.foodapp.BaseActivity
 import com.example.foodapp.MainActivity
 import com.example.foodapp.R
 import kotlinx.coroutines.*
 import screen.intro.IntroActivity
+import timber.log.Timber
 import utils.SharedPreferencesHelper
 import kotlin.coroutines.CoroutineContext
 
 /**
  * The Splash which is displayed before the launch of MainActivity
  */
-class SplashActivity : AppCompatActivity(), CoroutineScope {
+class SplashActivity : BaseActivity(), CoroutineScope {
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
@@ -34,7 +36,6 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
             MainActivity.start(context)
         }
     }
-
 
 }
 
