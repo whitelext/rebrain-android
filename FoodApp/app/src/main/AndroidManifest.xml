@@ -13,7 +13,8 @@
         <activity android:name=".BaseActivity"></activity>
         <activity
             android:name="screen.intro.IntroActivity"
-            android:theme="@style/IntroTheme">
+            android:theme="@style/IntroTheme"
+            android:taskAffinity="screen.intro">
         </activity>
         <activity
             android:name="screen.splash.SplashActivity"
@@ -23,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name="screen.main.MainActivity" />
     </application>
 
 </manifest>
