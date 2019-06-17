@@ -15,9 +15,7 @@ import screen.main.carousel.adapter.CarouselStatePageAdapter
  * For now it shows list of jpg images in a ViewPager
  */
 class MainActivity : BaseActivity() {
-    // You can also use CarouselPageAdapter
-    private val pageAdapter = CarouselStatePageAdapter(supportFragmentManager)
-    private val viewPager = view_pager_main
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +33,9 @@ class MainActivity : BaseActivity() {
             R.drawable.img_carousel_9,
             R.drawable.img_carousel_10
         )
-        pageAdapter.addPictures(pictures)
+        // You can also use CarouselPageAdapter
+        val pageAdapter = CarouselStatePageAdapter(supportFragmentManager,pictures)
+        val viewPager = view_pager_main
         viewPager.adapter = pageAdapter
     }
     companion object{

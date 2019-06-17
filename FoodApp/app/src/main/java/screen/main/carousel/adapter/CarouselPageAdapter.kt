@@ -8,18 +8,12 @@ import screen.main.carousel.CarouselFragment
 /**
  * Adapter for ViewPager
  */
-class CarouselPageAdapter(fragmentManager : FragmentManager) : FragmentPagerAdapter(fragmentManager){
-    private val pictures = mutableListOf<Int>()
-
+class CarouselPageAdapter(fragmentManager : FragmentManager,private val pictures:List<Int>) : FragmentPagerAdapter(fragmentManager){
     override fun getItem(i: Int): Fragment {
         return CarouselFragment.newInstance(pictures[i])
     }
 
     override fun getCount(): Int {
         return pictures.size
-    }
-
-    fun addPictures(list: List<Int>) {
-        pictures.addAll(list)
     }
 }
