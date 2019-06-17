@@ -9,7 +9,7 @@ import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_carousel.view.*
 import timber.log.Timber
 
-private const val IMG_NUM = "num1"
+private const val IMG_KEY = "num"
 
 /**
  *  [Fragment] that shows image for ViewPager
@@ -21,7 +21,7 @@ class CarouselFragment : Fragment() {
     ): View? {
         Timber.tag("lifecycleFragment").i("onCreateView was called from $this")
        return  inflater.inflate(R.layout.fragment_carousel, container, false).apply {
-           arguments?.getInt(IMG_NUM)?.let { this.carousel_imageView.setImageResource(it) }
+           arguments?.getInt(IMG_KEY)?.let { this.carousel_imageView.setImageResource(it) }
        }
     }
 
@@ -29,7 +29,7 @@ class CarouselFragment : Fragment() {
         fun newInstance(imgId : Int) =
            CarouselFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(IMG_NUM, imgId)
+                    putInt(IMG_KEY, imgId)
                 }
             }
     }
