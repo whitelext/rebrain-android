@@ -2,14 +2,12 @@ package screen.intro
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat.startActivity
-import com.example.foodapp.BaseActivity
+import androidx.core.content.ContextCompat.startActivity
+import utils.BaseActivity
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.activity_intro.*
 import screen.main.MainActivity
-import timber.log.Timber
 
 /*
 ** Activity that shows new users what our app can do

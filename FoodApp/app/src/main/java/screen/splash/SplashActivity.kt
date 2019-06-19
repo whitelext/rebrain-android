@@ -2,7 +2,7 @@ package screen.splash
 
 import android.content.Context
 import android.os.Bundle
-import com.example.foodapp.BaseActivity
+import utils.BaseActivity
 import screen.main.MainActivity
 import com.example.foodapp.R
 import kotlinx.coroutines.*
