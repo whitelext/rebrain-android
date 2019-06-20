@@ -2,12 +2,9 @@ package screen.main
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
-
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_main.*
 import screen.main.carousel.adapter.CarouselStatePageAdapter
@@ -49,7 +46,6 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view_pager_main_fragment.adapter = pageAdapter
-
     }
 
     companion object {
