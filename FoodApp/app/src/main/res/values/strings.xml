@@ -3,6 +3,6 @@
     <string name="intro_description">В этом приложении можно собрать продуктовую корзину по самым низким ценам</string>
     <string name="intro">Cервис для покупки еды</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- String variables -->
+    <string name="favouriteTab">FavouriteTab</string>
 </resources>
