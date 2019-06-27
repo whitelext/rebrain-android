@@ -2,7 +2,6 @@
     <declare-styleable name="CustomBottombarButton">
         <attr name="text" format="string" />
         <attr name="image" format="reference" />
-        <attr name="textAppearance" format ="integer"/>
     </declare-styleable>
 
 
