@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/custom_bottom_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <screen.main.view.CustomBottombarButton
+        android:id="@+id/custom_bottom_bar_main_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        app:image="@drawable/img_main_bottom"
+        app:text="@string/bottom_main_text" />
+
+    <screen.main.view.CustomBottombarButton
+        android:id="@+id/custom_bottom_bar_favorite_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        app:image="@drawable/img_favourites_bottom"
+        app:text="@string/bottom_favourite" />
+
+</LinearLayout> 

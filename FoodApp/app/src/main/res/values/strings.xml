@@ -2,7 +2,10 @@
     <string name="app_name">FoodApp</string>
     <string name="intro_description">В этом приложении можно собрать продуктовую корзину по самым низким ценам</string>
     <string name="intro">Cервис для покупки еды</string>
+    <string name="bottom_main_text">Главный</string>
+    <string name="bottom_favourite">Избранное</string>
 
     <!-- String variables -->
     <string name="favouriteTab">FavouriteTab</string>
+
 </resources>
