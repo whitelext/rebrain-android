@@ -67,7 +67,6 @@ class CustomBottomBar @JvmOverloads constructor(context: Context, attrs: Attribu
         val fragmentTransaction = (context as FragmentActivity).supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.container, fragment).commit()
     }
-
 }
 
 
