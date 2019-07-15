@@ -13,30 +13,51 @@ import com.example.foodapp.R
  */
 class CustomBottombarButton @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-): LinearLayout(context, attrs, defStyleAttr){
+    attrs: AttributeSet? = null
+): LinearLayout(context, attrs){
 
     private var title:String? = null
-    private var image:Drawable?= null
+    private var checkedImage:Drawable?= null
+    private var uncheckedImage:Drawable?= null
+    private var isChecked = false
 
     init {
         inflate(context, R.layout.layout_custom_bottom_button, this)
         custom_button_linear_layout.orientation = VERTICAL
         applyAttrs(attrs).recycle()
-
     }
-    enum class Buttons()
-    private fun applyAttrs( attrs: AttributeSet?): TypedArray {
+
+    private fun applyAttrs(attrs: AttributeSet?): TypedArray {
         val attributes = context.obtainStyledAttributes(attrs,R.styleable.CustomBottombarButton)
-        image = attributes.getDrawable(R.styleable.CustomBottombarButton_image)
-        title = attributes.getString(R.styleable.CustomBottombarButton_text)
+        checkedImage = attributes.getDrawable(R.styleable.CustomBottombarButton_image_checked)
+        uncheckedImage = attributes.getDrawable(R.styleable.CustomBottombarButton_image_unchecked)
+        title= attributes.getString(R.styleable.CustomBottombarButton_text)
+        isChecked=attributes.getBoolean(R.styleable.CustomBottombarButton_isChecked,false)
         return attributes
+    }
+
+    fun changeState(){
+        if (isChecked){
+            custom_button_image.setImageDrawable(checkedImage)
+            custom_button_text.setTextAppearance(context, R.style.Text_12sp_Green)
+        }
+        else{
+            custom_button_image.setImageDrawable(uncheckedImage)
+            custom_button_text.setTextAppearance(context,R.style.Text_12sp_Gray)
+        }
     }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
         custom_button_text.text = title
-        custom_button_image.setImageDrawable(image)
+        changeState()
+    }
+
+    fun setCheck(state : Boolean){
+        isChecked = state
+    }
+
+    fun isChecked():Boolean{
+        return isChecked
     }
 }

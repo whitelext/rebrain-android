@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        app:image="@drawable/img_main_bottom"
+        app:image_checked="@drawable/img_main_bottom"
+        app:image_unchecked="@drawable/img_main_unchecked"
         app:text="@string/bottom_main_text" />
 
     <screen.main.view.CustomBottombarButton
@@ -20,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        app:image="@drawable/img_favourites_bottom"
+        app:image_checked="@drawable/img_favorite_checked"
+        app:image_unchecked="@drawable/img_favourites_bottom"
         app:text="@string/bottom_favourite" />
 
 </LinearLayout> 

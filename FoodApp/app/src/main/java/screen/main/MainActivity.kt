@@ -12,6 +12,7 @@ import com.example.foodapp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_custom_bottom_bar.*
 import kotlinx.android.synthetic.main.layout_custom_bottom_bar.view.*
+import screen.main.view.CustomBottomBar
 
 /**
  *The Main Screen of application
@@ -24,17 +25,25 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         showFragment(MainFragment.newInstance())
+
+        main_activity_custom_bottom_bar.setOnTabClickListener(CustomBottomBar.TabType.MAIN){
+            showFragment(MainFragment.newInstance())
+        }
+
+        main_activity_custom_bottom_bar.setOnTabClickListener(CustomBottomBar.TabType.FAVORITES){
+            showFragment(FavouriteFragment.newInstance())
+        }
     }
 
     private fun showFragment(fragment: Fragment) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.container, fragment).commit()
+
     }
 
     companion object{
         fun start(context: Context){
             startActivity(context,Intent(context, MainActivity::class.java),null)
         }
-
     }
 }
