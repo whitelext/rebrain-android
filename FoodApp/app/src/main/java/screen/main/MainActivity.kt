@@ -3,9 +3,16 @@ package screen.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.Fragment
 import utils.BaseActivity
 import com.example.foodapp.R
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_custom_bottom_bar.*
+import kotlinx.android.synthetic.main.layout_custom_bottom_bar.view.*
+import screen.main.view.CustomBottomBar
 
 /**
  *The Main Screen of application
@@ -17,13 +24,21 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         showFragment(MainFragment.newInstance())
+
+        main_activity_custom_bottom_bar.setOnTabClickListener(CustomBottomBar.TabType.MAIN){
+            showFragment(MainFragment.newInstance())
+        }
+
+        main_activity_custom_bottom_bar.setOnTabClickListener(CustomBottomBar.TabType.FAVORITES){
+            showFragment(FavouriteFragment.newInstance())
+        }
     }
 
-    private fun showFragment(fragment: MainFragment) {
+    private fun showFragment(fragment: Fragment) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.main_activity, fragment).commit()
+        fragmentTransaction.replace(R.id.container, fragment).commit()
+
     }
 
     companion object{

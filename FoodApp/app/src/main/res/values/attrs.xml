@@ -1,0 +1,13 @@
+<resources>
+    <declare-styleable name="CustomBottombarButton">
+        <attr name="text" format="string" />
+        <attr name="image_checked" format="reference" />
+        <attr name="image_unchecked" format="reference" />
+        <attr name="isChecked" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ButtonCheckedState">
+        <attr name="state_button_checked" format="boolean"/>
+    </declare-styleable>
+
+</resources>
