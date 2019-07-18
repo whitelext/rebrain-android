@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.carousel.adapter.CarouselStatePageAdapter
 import utils.BaseFragment
 
@@ -45,6 +47,12 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view_pager_main_fragment.adapter = pageAdapter
+        initToolbar()
+    }
+
+    private fun initToolbar(){
+        custom_toolbar.title = getString(R.string.app_name)
+        (activity as AppCompatActivity).setSupportActionBar(custom_toolbar)
     }
 
     companion object {
