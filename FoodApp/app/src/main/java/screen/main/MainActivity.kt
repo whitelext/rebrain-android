@@ -46,15 +46,17 @@ class MainActivity : BaseActivity() {
 
     private fun showFragment(fragmentType: TabType) {
         val fragments = supportFragmentManager.fragments
-        for (fragment:Fragment in fragments){
-            supportFragmentManager.beginTransaction().detach(fragment).commit()
+        fragments.apply {
+            if(isNotEmpty())
+                forEach {
+                    supportFragmentManager.beginTransaction().detach(it).commit()
+                }
         }
         val fragment = FragmentTypeMap[fragmentType]
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         if (supportFragmentManager.findFragmentById(fragment!!.id) == null){
             fragmentTransaction.add(R.id.container,fragment)
-        }
-        else{
+        } else{
             fragmentTransaction.attach(fragment)
         }
         fragmentTransaction.commit()
