@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_custom_bottom_bar.*
 import kotlinx.android.synthetic.main.layout_custom_bottom_bar.view.*
 import screen.main.view.CustomBottomBar
+import screen.main.view.CustomBottomBar.TabType
+import utils.BaseFragment
 
 /**
  *The Main Screen of application
@@ -21,24 +23,43 @@ import screen.main.view.CustomBottomBar
  */
 class MainActivity : BaseActivity() {
 
+    private val FragmentTypeMap by lazy{
+        hashMapOf<TabType, BaseFragment>(
+            TabType.MAIN to MainFragment.newInstance(),
+            TabType.FAVORITES to FavouriteFragment.newInstance()
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        showFragment(MainFragment.newInstance())
+        showFragment(TabType.MAIN)
 
-        main_activity_custom_bottom_bar.setOnTabClickListener(CustomBottomBar.TabType.MAIN){
-            showFragment(MainFragment.newInstance())
+        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN){
+            showFragment(it)
         }
 
-        main_activity_custom_bottom_bar.setOnTabClickListener(CustomBottomBar.TabType.FAVORITES){
-            showFragment(FavouriteFragment.newInstance())
+        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES){
+            showFragment(it)
         }
     }
 
-    private fun showFragment(fragment: Fragment) {
+    private fun showFragment(fragmentType: TabType) {
+        val fragments = supportFragmentManager.fragments
+        fragments.apply {
+            if(isNotEmpty())
+                forEach {
+                    supportFragmentManager.beginTransaction().detach(it).commit()
+                }
+        }
+        val fragment = FragmentTypeMap[fragmentType]
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, fragment).commit()
-
+        if (supportFragmentManager.findFragmentById(fragment!!.id) == null){
+            fragmentTransaction.add(R.id.container,fragment)
+        } else{
+            fragmentTransaction.attach(fragment)
+        }
+        fragmentTransaction.commit()
     }
 
     companion object{
