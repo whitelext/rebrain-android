@@ -5,11 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
+import domain.Product
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.carousel.adapter.CarouselStatePageAdapter
+import screen.main.rview.FoodListAdapter
 import utils.BaseFragment
+import utils.Generator
 
 /**
  * [BaseFragment] subclass to show carousel
@@ -18,12 +24,14 @@ import utils.BaseFragment
 class MainFragment : BaseFragment() {
 
     private lateinit var pageAdapter: CarouselStatePageAdapter
+    private lateinit var foodListAdapter: FoodListAdapter
+    private lateinit var lm: RecyclerView.LayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+       initRv(inflater.inflate(R.layout.fragment_main, container, false))
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
@@ -46,14 +54,24 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view_pager_main_fragment.adapter = pageAdapter
-        initToolbar()
+        //view_pager_main_fragment.adapter = pageAdapter
+      //  initToolbar()
+        foodListAdapter.setProductList(Generator.getProducts().toMutableList())
+
     }
 
-    private fun initToolbar(){
-        custom_toolbar.title = getString(R.string.app_name)
-        (activity as AppCompatActivity).setSupportActionBar(custom_toolbar)
+    private fun initRv(rootView: View) {
+        lm = LinearLayoutManager(context)
+        foodListAdapter = FoodListAdapter()
+        rootView.recyclerView.apply {
+            layoutManager = lm
+            adapter = foodListAdapter
+        }
     }
+//    private fun initToolbar(){
+//        custom_toolbar.title = getString(R.string.app_name)
+//        (activity as AppCompatActivity).setSupportActionBar(custom_toolbar)
+//    }
 
     companion object {
         fun newInstance() :MainFragment{
