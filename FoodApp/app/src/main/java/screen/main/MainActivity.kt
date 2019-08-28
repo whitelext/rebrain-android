@@ -12,7 +12,6 @@ import com.example.foodapp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_custom_bottom_bar.*
 import kotlinx.android.synthetic.main.layout_custom_bottom_bar.view.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar
 import screen.main.view.CustomBottomBar.TabType
 import utils.BaseFragment
@@ -43,7 +42,6 @@ class MainActivity : BaseActivity() {
         main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES){
             showFragment(it)
         }
-        initToolbar()
     }
 
     private fun showFragment(fragmentType: TabType) {
@@ -62,11 +60,6 @@ class MainActivity : BaseActivity() {
             fragmentTransaction.attach(fragment)
         }
         fragmentTransaction.commit()
-    }
-
-    private fun initToolbar(){
-        custom_toolbar.title = getString(R.string.app_name)
-        setSupportActionBar(custom_toolbar)
     }
 
     companion object{
