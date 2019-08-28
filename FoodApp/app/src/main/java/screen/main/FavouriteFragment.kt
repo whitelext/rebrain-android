@@ -23,7 +23,7 @@ class FavouriteFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance() :FavouriteFragment{
+        fun newInstance(): FavouriteFragment {
             return FavouriteFragment()
         }
     }

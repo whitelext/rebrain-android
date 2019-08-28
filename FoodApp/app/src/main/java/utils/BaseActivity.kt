@@ -45,7 +45,7 @@ open class BaseActivity : AppCompatActivity() {
         Timber.tag("lifecycle").i("onDestroy was called from $localClassName")
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Timber.tag("lifecycle").i("onSaveInstanceState was called from $localClassName")
     }

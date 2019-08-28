@@ -9,16 +9,26 @@ import com.example.foodapp.R
 import domain.Product
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class FoodListAdapter : RecyclerView.Adapter<FoodListAdapter.Holder>()  {
+/**
+ *  An Adapter for [RecyclerView] that shows list of products
+ *
+ */
+class FoodListAdapter : RecyclerView.Adapter<FoodListAdapter.Holder>() {
 
-    var productList : MutableList<Product> = mutableListOf()
+    var productList: MutableList<Product> = mutableListOf()
         private set
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(LayoutInflater.from(parent.context).inflate(R.layout.list_item,parent,false))
+        return Holder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.list_item,
+                parent,
+                false
+            )
+        )
     }
 
-    fun setProductList(list: MutableList<Product>){
+    fun setProductList(list: MutableList<Product>) {
         productList = list
         notifyDataSetChanged()
     }

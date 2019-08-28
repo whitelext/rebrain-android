@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <style name="RegularText.13sp" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">13sp</item>
-        <item name="android:letterSpacing">0.01</item>>
-    </style>
-</resources>

@@ -11,10 +11,10 @@
 
     <style name="RegularText.15sp.Green" parent="TextAppearance.AppCompat">
         <item name="android:textSize">15sp</item>
-        <item name="android:color">@color/soft_green</item>
+        <item name="android:textColor">@color/soft_green</item>
     </style>
 
-    <style name="RegularText.15sp.Green.Bold" parent="TextAppearance.AppCompat">
+    <style name="RegularText.15sp.Green.Bold" >
         <item name="android:textStyle">bold</item>
     </style>
 

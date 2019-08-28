@@ -24,7 +24,7 @@ import utils.BaseFragment
  */
 class MainActivity : BaseActivity() {
 
-    private val FragmentTypeMap by lazy{
+    private val FragmentTypeMap by lazy {
         hashMapOf<TabType, BaseFragment>(
             TabType.MAIN to MainFragment.newInstance(),
             TabType.FAVORITES to FavouriteFragment.newInstance()
@@ -36,11 +36,11 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         showFragment(TabType.MAIN)
 
-        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN){
+        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN) {
             showFragment(it)
         }
 
-        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES){
+        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES) {
             showFragment(it)
         }
         initToolbar()
@@ -49,29 +49,29 @@ class MainActivity : BaseActivity() {
     private fun showFragment(fragmentType: TabType) {
         val fragments = supportFragmentManager.fragments
         fragments.apply {
-            if(isNotEmpty())
+            if (isNotEmpty())
                 forEach {
                     supportFragmentManager.beginTransaction().detach(it).commit()
                 }
         }
         val fragment = FragmentTypeMap[fragmentType]
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        if (supportFragmentManager.findFragmentById(fragment!!.id) == null){
-            fragmentTransaction.add(R.id.container,fragment)
-        } else{
+        if (supportFragmentManager.findFragmentById(fragment!!.id) == null) {
+            fragmentTransaction.add(R.id.container, fragment)
+        } else {
             fragmentTransaction.attach(fragment)
         }
         fragmentTransaction.commit()
     }
 
-    private fun initToolbar(){
+    private fun initToolbar() {
         custom_toolbar.title = getString(R.string.app_name)
         setSupportActionBar(custom_toolbar)
     }
 
-    companion object{
-        fun start(context: Context){
-            startActivity(context,Intent(context, MainActivity::class.java),null)
+    companion object {
+        fun start(context: Context) {
+            startActivity(context, Intent(context, MainActivity::class.java), null)
         }
     }
 }
