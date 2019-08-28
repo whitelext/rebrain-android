@@ -38,7 +38,6 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
-
     }
 
     private fun initRv(rootView: View) {
