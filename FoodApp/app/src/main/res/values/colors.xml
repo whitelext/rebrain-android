@@ -6,5 +6,6 @@
     <color name="colorIntroBackground">#5bd056</color>
     <color name="colorIntroText">#ffffff</color>
     <color name="colourBackground">#ffffff</color>
+    <color name="colorToolbar">#67c674</color>
 
 </resources>

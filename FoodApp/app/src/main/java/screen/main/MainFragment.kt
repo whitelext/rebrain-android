@@ -55,7 +55,6 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //view_pager_main_fragment.adapter = pageAdapter
-      //  initToolbar()
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
 
     }
@@ -68,10 +67,6 @@ class MainFragment : BaseFragment() {
             adapter = foodListAdapter
         }
     }
-//    private fun initToolbar(){
-//        custom_toolbar.title = getString(R.string.app_name)
-//        (activity as AppCompatActivity).setSupportActionBar(custom_toolbar)
-//    }
 
     companion object {
         fun newInstance() :MainFragment{
