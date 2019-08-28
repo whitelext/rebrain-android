@@ -47,12 +47,6 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view_pager_main_fragment.adapter = pageAdapter
-        initToolbar()
-    }
-
-    private fun initToolbar(){
-        custom_toolbar.title = getString(R.string.app_name)
-        (activity as AppCompatActivity).setSupportActionBar(custom_toolbar)
     }
 
     companion object {
