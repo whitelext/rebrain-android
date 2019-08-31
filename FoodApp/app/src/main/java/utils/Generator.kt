@@ -7,7 +7,7 @@ import domain.Product
  */
 object Generator {
     fun getProducts(): List<Product> {
-        return (0..19).map {
+        return (1..20).map {
             Product(it, "Product № $it")
         }.shuffled()
     }

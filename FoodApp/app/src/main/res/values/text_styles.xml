@@ -5,6 +5,19 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
+    <style name="RegularText.13sp" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="RegularText.15sp.Green" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/soft_green</item>
+    </style>
+
+    <style name="RegularText.15sp.Green.Bold" >
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="LightText">
         <item name="android:fontFamily">sans-serif-light</item>
     </style>

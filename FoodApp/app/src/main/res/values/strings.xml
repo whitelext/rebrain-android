@@ -7,5 +7,6 @@
 
     <!-- String variables -->
     <string name="favouriteTab">FavouriteTab</string>
+    <string name="russian_currency">руб.</string>
 
 </resources>
