@@ -42,8 +42,8 @@ class FoodListAdapter : RecyclerView.Adapter<FoodListAdapter.Holder>() {
     }
 
     class Holder(v: View) : RecyclerView.ViewHolder(v) {
-        var productNameView: TextView = v.card_main_element_text
-        var productPriceView: TextView = v.card_main_element_price
+        val productNameView: TextView = v.card_main_element_text
+        val productPriceView: TextView = v.card_main_element_price
         fun bind(data: Product) {
             productNameView.text = data.name
             productPriceView.text = "${data.id}"
