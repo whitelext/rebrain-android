@@ -5,8 +5,10 @@ package domain
  *
  * @property id is an ID for our Product
  * @property name is a name for our Product
+ * @property imageId is a image resource for our Product
  */
 class Product(
     val id : Int,
-    val name : String
+    val name : String,
+    val imageId : Int
 )
