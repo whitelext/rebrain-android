@@ -1,6 +1,7 @@
 package screen.main
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
+        initSwipeToRefresh()
     }
 
     private fun initRv(rootView: View) {
@@ -46,6 +48,14 @@ class MainFragment : BaseFragment() {
         rootView.recyclerView.apply {
             layoutManager = lm
             adapter = foodListAdapter
+        }
+    }
+    private fun initSwipeToRefresh() {
+        swiperefresh.setProgressViewOffset(false,150,250)
+        swiperefresh.setColorSchemeResources(R.color.colorToolbar)
+        swiperefresh.setOnRefreshListener {
+            foodListAdapter.setProductList(Generator.getProducts().toMutableList())
+            swiperefresh.isRefreshing = false
         }
     }
 
