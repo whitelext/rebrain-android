@@ -1,0 +1,60 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="164dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/card_main_element_image"
+            android:layout_width="110dp"
+            android:layout_height="82dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toTopOf="@id/card_main_element_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/img_list_1" />
+
+        <TextView
+            android:id="@+id/card_main_element_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_marginBottom="17dp"
+            android:gravity="start"
+            android:textAppearance="@style/RegularText.13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/card_main_element_price"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Салат из морских водорослей с ореховым соусом" />
+
+        <TextView
+            android:id="@+id/card_main_element_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:paddingBottom="27dp"
+            android:textAppearance="@style/RegularText.15sp.Green.Bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            tools:text="100" />
+
+        <TextView
+            android:id="@+id/card_main_element_rub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:paddingBottom="27dp"
+            android:text="@string/russian_currency"
+            android:textAppearance="@style/RegularText.15sp.Green"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/card_main_element_price"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -1,20 +1,15 @@
 package screen.main
 
 import android.os.Bundle
-import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.view.*
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
-import domain.Product
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
-import screen.main.carousel.adapter.CarouselStatePageAdapter
 import screen.main.rview.FoodListAdapter
+import screen.main.rview.MarginItemDecoration
 import utils.BaseFragment
 import utils.Generator
 
@@ -26,14 +21,22 @@ class MainFragment : BaseFragment() {
 
     private lateinit var foodListAdapter: FoodListAdapter
     private lateinit var lm: RecyclerView.LayoutManager
+    private lateinit var rv: View
+    val decor = MarginItemDecoration(11)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-       initRv(rootView)
-        return rootView
+        rv = inflater.inflate(R.layout.fragment_main, container, false)
+        foodListAdapter = FoodListAdapter()
+        initRv(rv)
+        return rv
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,16 +45,40 @@ class MainFragment : BaseFragment() {
         initSwipeToRefresh()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_changerv, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (foodListAdapter.isGrid) {
+            item?.setIcon(R.drawable.ic_menu_grid)
+            foodListAdapter.isGrid = false
+            initRv(rv)
+            rv.recyclerView.removeItemDecoration(decor)
+        } else {
+            item?.setIcon(R.drawable.ic_menu_linear)
+            foodListAdapter.isGrid = true
+            initRv(rv)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun initRv(rootView: View) {
-        lm = LinearLayoutManager(context)
-        foodListAdapter = FoodListAdapter()
+        if (foodListAdapter.isGrid) {
+            lm = GridLayoutManager(context, 2)
+            rootView.recyclerView.addItemDecoration(decor)
+        } else {
+            lm = LinearLayoutManager(context)
+        }
         rootView.recyclerView.apply {
             layoutManager = lm
             adapter = foodListAdapter
         }
     }
+
     private fun initSwipeToRefresh() {
-        swiperefresh.setProgressViewOffset(false,150,250)
+        swiperefresh.setProgressViewOffset(false, 150, 250)
         swiperefresh.setColorSchemeResources(R.color.colorToolbar)
         swiperefresh.setOnRefreshListener {
             foodListAdapter.setProductList(Generator.getProducts().toMutableList())
@@ -60,7 +87,7 @@ class MainFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance() :MainFragment{
+        fun newInstance(): MainFragment {
             return MainFragment()
         }
     }
