@@ -35,7 +35,8 @@ class MainFragment : BaseFragment() {
     ): View? {
         rootView = inflater.inflate(R.layout.fragment_main, container, false)
         foodListAdapter = FoodListAdapter()
-        initRv(rootView)
+        lm = LinearLayoutManager(context)
+        initRv(rootView,lm)
         return rootView
     }
 
@@ -54,23 +55,20 @@ class MainFragment : BaseFragment() {
         if (foodListAdapter.isGrid) {
             item?.setIcon(R.drawable.ic_menu_grid)
             foodListAdapter.isGrid = false
-            initRv(rootView)
+            lm = LinearLayoutManager(context)
+            initRv(rootView,lm)
             recyclerView.removeItemDecoration(decor)
         } else {
             item?.setIcon(R.drawable.ic_menu_linear)
             foodListAdapter.isGrid = true
-            initRv(rootView)
+            recyclerView.addItemDecoration(decor)
+            lm = GridLayoutManager(context, 2)
+            initRv(rootView,lm)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initRv(rootView: View) {
-        if (foodListAdapter.isGrid) {
-            lm = GridLayoutManager(context, 2)
-            rootView.recyclerView.addItemDecoration(decor)
-        } else {
-            lm = LinearLayoutManager(context)
-        }
+    private fun initRv(rootView: View,lm:RecyclerView.LayoutManager) {
         rootView.recyclerView.apply {
             layoutManager = lm
             adapter = foodListAdapter
