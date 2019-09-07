@@ -21,8 +21,8 @@ class MainFragment : BaseFragment() {
 
     private lateinit var foodListAdapter: FoodListAdapter
     private lateinit var lm: RecyclerView.LayoutManager
-    private lateinit var rv: View
-    val decor = MarginItemDecoration(11)
+    private lateinit var rootView: View
+    private val decor = MarginItemDecoration(11)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -33,10 +33,10 @@ class MainFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rv = inflater.inflate(R.layout.fragment_main, container, false)
+        rootView = inflater.inflate(R.layout.fragment_main, container, false)
         foodListAdapter = FoodListAdapter()
-        initRv(rv)
-        return rv
+        initRv(rootView)
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,12 +54,12 @@ class MainFragment : BaseFragment() {
         if (foodListAdapter.isGrid) {
             item?.setIcon(R.drawable.ic_menu_grid)
             foodListAdapter.isGrid = false
-            initRv(rv)
-            rv.recyclerView.removeItemDecoration(decor)
+            initRv(rootView)
+            recyclerView.removeItemDecoration(decor)
         } else {
             item?.setIcon(R.drawable.ic_menu_linear)
             foodListAdapter.isGrid = true
-            initRv(rv)
+            initRv(rootView)
         }
         return super.onOptionsItemSelected(item)
     }

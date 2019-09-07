@@ -25,9 +25,10 @@ class FoodListAdapter : RecyclerView.Adapter<FoodListAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(
             LayoutInflater.from(parent.context).inflate(
-                if (isGrid) {
+                if (isGrid)
                     R.layout.list_item_grid
-                } else R.layout.list_item,
+                 else
+                    R.layout.list_item,
                 parent,
                 false
             )
