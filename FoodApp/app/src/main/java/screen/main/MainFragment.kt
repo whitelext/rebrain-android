@@ -20,8 +20,8 @@ import utils.Generator
 class MainFragment : BaseFragment() {
 
     private lateinit var foodListAdapter: FoodListAdapter
-    private lateinit var lm: RecyclerView.LayoutManager
     private lateinit var rootView: View
+    private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,6 @@ class MainFragment : BaseFragment() {
     ): View? {
         rootView = inflater.inflate(R.layout.fragment_main, container, false)
         foodListAdapter = FoodListAdapter()
-        lm = LinearLayoutManager(context)
         initRv(rootView,lm)
         return rootView
     }
