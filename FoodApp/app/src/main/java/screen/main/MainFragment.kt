@@ -21,6 +21,7 @@ class MainFragment : BaseFragment() {
 
     private lateinit var foodListAdapter: FoodListAdapter
     private lateinit var rootView: View
+    private lateinit var recyclerView: RecyclerView
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
 
@@ -34,13 +35,15 @@ class MainFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         rootView = inflater.inflate(R.layout.fragment_main, container, false)
+        recyclerView = rootView.recyclerView_main
         foodListAdapter = FoodListAdapter()
-        initRv(rootView,lm)
+        initRv(lm)
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
         initSwipeToRefresh()
     }
@@ -55,20 +58,20 @@ class MainFragment : BaseFragment() {
             item?.setIcon(R.drawable.ic_menu_grid)
             foodListAdapter.isGrid = false
             lm = LinearLayoutManager(context)
-            initRv(rootView,lm)
+            initRv(lm)
             recyclerView.removeItemDecoration(decor)
         } else {
             item?.setIcon(R.drawable.ic_menu_linear)
             foodListAdapter.isGrid = true
             recyclerView.addItemDecoration(decor)
             lm = GridLayoutManager(context, 2)
-            initRv(rootView,lm)
+            initRv(lm)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initRv(rootView: View,lm:RecyclerView.LayoutManager) {
-        rootView.recyclerView.apply {
+    private fun initRv(lm:RecyclerView.LayoutManager) {
+       with(recyclerView) {
             layoutManager = lm
             adapter = foodListAdapter
         }
