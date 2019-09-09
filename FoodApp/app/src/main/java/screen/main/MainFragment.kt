@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import utils.BaseFragment
@@ -20,8 +19,6 @@ import utils.Generator
 class MainFragment : BaseFragment() {
 
     private lateinit var foodListAdapter: FoodListAdapter
-    private lateinit var rootView: View
-    private lateinit var recyclerView: RecyclerView
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
 
@@ -34,16 +31,13 @@ class MainFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootView = inflater.inflate(R.layout.fragment_main, container, false)
-        recyclerView = rootView.recyclerView_main
-        foodListAdapter = FoodListAdapter()
-        initRv(lm)
-        return rootView
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        foodListAdapter = FoodListAdapter()
+        initRv(lm)
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
         initSwipeToRefresh()
     }
@@ -59,11 +53,11 @@ class MainFragment : BaseFragment() {
             foodListAdapter.isGrid = false
             lm = LinearLayoutManager(context)
             initRv(lm)
-            recyclerView.removeItemDecoration(decor)
+            recyclerView_main.removeItemDecoration(decor)
         } else {
             item?.setIcon(R.drawable.ic_menu_linear)
             foodListAdapter.isGrid = true
-            recyclerView.addItemDecoration(decor)
+            recyclerView_main.addItemDecoration(decor)
             lm = GridLayoutManager(context, 2)
             initRv(lm)
         }
@@ -71,7 +65,7 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initRv(lm:RecyclerView.LayoutManager) {
-       with(recyclerView) {
+       with(recyclerView_main) {
             layoutManager = lm
             adapter = foodListAdapter
         }
