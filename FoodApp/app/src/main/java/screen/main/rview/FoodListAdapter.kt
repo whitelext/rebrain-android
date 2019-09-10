@@ -20,10 +20,15 @@ class FoodListAdapter : RecyclerView.Adapter<FoodListAdapter.Holder>() {
     var productList: MutableList<Product> = mutableListOf()
         private set
 
+    var isGrid = false
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.list_item,
+                if (isGrid)
+                    R.layout.list_item_grid
+                 else
+                    R.layout.list_item,
                 parent,
                 false
             )

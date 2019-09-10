@@ -3,17 +3,11 @@ package screen.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
-import androidx.fragment.app.Fragment
 import utils.BaseActivity
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.layout_custom_bottom_bar.*
-import kotlinx.android.synthetic.main.layout_custom_bottom_bar.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
-import screen.main.view.CustomBottomBar
 import screen.main.view.CustomBottomBar.TabType
 import utils.BaseFragment
 
