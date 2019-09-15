@@ -37,6 +37,7 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         foodListAdapter = FoodListAdapter()
+        lm = LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
         initSwipeToRefresh()

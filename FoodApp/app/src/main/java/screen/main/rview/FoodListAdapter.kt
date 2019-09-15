@@ -78,7 +78,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 (holder as CarouselHolder).bind()
             }
             else ->{
-                (holder as ProductHolder).bind(productList[position])
+                (holder as ProductHolder).bind(productList[position-1])
             }
         }
     }
