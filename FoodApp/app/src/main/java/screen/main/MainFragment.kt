@@ -18,7 +18,7 @@ import utils.Generator
  */
 class MainFragment : BaseFragment() {
 
-    private lateinit var foodListAdapter: FoodListAdapter
+    private val foodListAdapter = FoodListAdapter()
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
 
@@ -36,8 +36,9 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        foodListAdapter = FoodListAdapter()
-        lm = LinearLayoutManager(context)
+        lm = if(foodListAdapter.isGrid)
+            GridLayoutManager(context,2)
+        else LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
         initSwipeToRefresh()
@@ -45,6 +46,11 @@ class MainFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_changerv, menu)
+        menu?.getItem(0)?.setIcon(
+            if (!foodListAdapter.isGrid)
+                R.drawable.ic_menu_grid
+            else R.drawable.ic_menu_linear
+        )
         super.onCreateOptionsMenu(menu, inflater)
     }
 
