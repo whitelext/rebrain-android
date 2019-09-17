@@ -8,6 +8,17 @@
         android:layout_width="164dp"
         android:layout_height="wrap_content">
 
+        <ImageButton
+            android:id="@+id/card_main_element_buy_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/img_basket"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_main_element_text" />
+
         <ImageView
             android:id="@+id/card_main_element_image"
             android:layout_width="110dp"
@@ -18,19 +29,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/img_list_1" />
-
-        <TextView
-            android:id="@+id/card_main_element_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
-            android:layout_marginBottom="17dp"
-            android:gravity="start"
-            android:textAppearance="@style/RegularText.13sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/card_main_element_price"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Салат из морских водорослей с ореховым соусом" />
 
         <TextView
             android:id="@+id/card_main_element_price"
@@ -55,6 +53,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/card_main_element_price"
             app:layout_constraintTop_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/card_main_element_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_marginBottom="17dp"
+            android:gravity="start"
+            android:textAppearance="@style/RegularText.13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/card_main_element_price"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Салат из морских водорослей с ореховым соусом" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
