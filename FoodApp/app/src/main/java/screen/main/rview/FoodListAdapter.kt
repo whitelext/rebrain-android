@@ -24,9 +24,9 @@ import screen.main.carousel.adapter.CarouselStatePageAdapter
  *  An Adapter for [RecyclerView] that shows list of products
  *
  */
-class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    enum class MainTabRvType{
+    enum class MainTabRvType {
         VIEWPAGER, PRODUCT
     }
 
@@ -38,7 +38,7 @@ class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val buyButtonListener = { context: Context, id: String -> context.toast(id) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if(viewType == MainTabRvType.VIEWPAGER.ordinal){
+        if (viewType == MainTabRvType.VIEWPAGER.ordinal) {
             val layoutRv = R.layout.carousel_item
             return CarouselHolder(
                 LayoutInflater.from(parent.context).inflate(
@@ -72,7 +72,7 @@ class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(position==0)
+        return if (position == 0)
             MainTabRvType.VIEWPAGER.ordinal
         else MainTabRvType.PRODUCT.ordinal
     }
@@ -82,8 +82,8 @@ class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             MainTabRvType.VIEWPAGER.ordinal -> {
                 (holder as CarouselHolder).bind()
             }
-            else ->{
-                (holder as ProductHolder).bind(productList[position-1])
+            else -> {
+                (holder as ProductHolder).bind(productList[position - 1])
             }
         }
     }
@@ -92,14 +92,14 @@ class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val productNameView: TextView = v.card_main_element_text
         private val productPriceView: TextView = v.card_main_element_price
         private val productImageView: ImageView = v.card_main_element_image
-        private val buyImageButton : ImageButton = v.card_main_element_buy_button
+        private val buyImageButton: ImageButton = v.card_main_element_buy_button
 
         fun bind(data: Product) {
             productNameView.text = data.name
             productPriceView.text = "${data.id}"
             Glide.with(productImageView.context).load(data.imageId).into(productImageView)
-            buyImageButton.setOnClickListener{
-                buyButtonListener.invoke(it.context,"${data.id}")
+            buyImageButton.setOnClickListener {
+                buyButtonListener.invoke(it.context, "${data.id}")
             }
         }
     }
@@ -121,9 +121,9 @@ class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             R.drawable.img_carousel_10
         )
 
-        fun bind(){
-            viewPager.adapter = CarouselStatePageAdapter(fm,pictures)
-            tabLayout.setupWithViewPager(viewPager,true)
+        fun bind() {
+            viewPager.adapter = CarouselStatePageAdapter(fm, pictures)
+            tabLayout.setupWithViewPager(viewPager, true)
         }
     }
 }

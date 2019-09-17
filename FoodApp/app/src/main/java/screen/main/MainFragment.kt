@@ -36,8 +36,8 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lm = if(foodListAdapter.isGrid)
-            GridLayoutManager(context,2)
+        lm = if (foodListAdapter.isGrid)
+            GridLayoutManager(context, 2)
         else LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
@@ -71,8 +71,8 @@ class MainFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initRv(lm:RecyclerView.LayoutManager) {
-       with(recyclerView_main) {
+    private fun initRv(lm: RecyclerView.LayoutManager) {
+        with(recyclerView_main) {
             layoutManager = lm
             adapter = foodListAdapter
         }
