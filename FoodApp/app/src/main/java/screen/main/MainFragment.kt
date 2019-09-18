@@ -37,7 +37,7 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
          if (foodListAdapter.isGrid)
-             checkGrid()
+             setGrid()
         else
             LinearLayoutManager(context)
         initRv(lm)
@@ -66,7 +66,7 @@ class MainFragment : BaseFragment() {
             item?.setIcon(R.drawable.ic_menu_linear)
             foodListAdapter.isGrid = true
             recyclerView_main.addItemDecoration(decor)
-            checkGrid()
+            setGrid()
             initRv(lm)
         }
         return super.onOptionsItemSelected(item)
@@ -88,7 +88,7 @@ class MainFragment : BaseFragment() {
         }
     }
 
-    private fun checkGrid() {
+    private fun setGrid() {
         lm = GridLayoutManager(context, 2)
         (lm as GridLayoutManager).spanSizeLookup = (object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
