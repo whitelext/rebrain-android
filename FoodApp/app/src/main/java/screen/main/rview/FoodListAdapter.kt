@@ -35,7 +35,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var isGrid = false
 
-    private val buyButtonListener = { context: Context, id: String -> context.toast(id) }
+     var buyButtonListener = { context: Context, id: String -> context.toast(id) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == MainTabRvType.VIEWPAGER.ordinal) {
@@ -76,7 +76,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             MainTabRvType.VIEWPAGER.ordinal
         else MainTabRvType.PRODUCT.ordinal
     }
-
+    
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
             MainTabRvType.VIEWPAGER.ordinal -> {
@@ -99,7 +99,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             productPriceView.text = "${data.id}"
             Glide.with(productImageView.context).load(data.imageId).into(productImageView)
             buyImageButton.setOnClickListener {
-                buyButtonListener.invoke(it.context, "${data.id}")
+                buyButtonListener(it.context, "${data.id}")
             }
         }
     }
