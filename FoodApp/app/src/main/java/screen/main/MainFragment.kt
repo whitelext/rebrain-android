@@ -1,5 +1,6 @@
 package screen.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.GridLayoutManager
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.jetbrains.anko.toast
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import utils.BaseFragment
@@ -36,10 +38,11 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-         if (foodListAdapter.isGrid)
-             setGrid()
+        foodListAdapter.buyButtonListener = { context: Context, id: String -> context.toast(id) }
+        if (foodListAdapter.isGrid)
+            setGrid()
         else
-            LinearLayoutManager(context)
+            lm = LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
         initSwipeToRefresh()
