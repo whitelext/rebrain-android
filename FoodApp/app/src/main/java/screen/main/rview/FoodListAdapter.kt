@@ -1,10 +1,13 @@
 package screen.main.rview
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +18,7 @@ import com.google.android.material.tabs.TabLayout
 import domain.Product
 import kotlinx.android.synthetic.main.carousel_item.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
+import org.jetbrains.anko.toast
 import screen.main.carousel.adapter.CarouselStatePageAdapter
 
 /**
@@ -23,7 +27,7 @@ import screen.main.carousel.adapter.CarouselStatePageAdapter
  */
 class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    enum class MainTabRvType{
+    enum class MainTabRvType {
         VIEWPAGER, PRODUCT
     }
 
@@ -32,8 +36,10 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var isGrid = false
 
+    lateinit var buyButtonListener: (context: Context, id: String) -> Toast
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if(viewType == MainTabRvType.VIEWPAGER.ordinal){
+        if (viewType == MainTabRvType.VIEWPAGER.ordinal) {
             val layoutRv = R.layout.carousel_item
             return CarouselHolder(
                 LayoutInflater.from(parent.context).inflate(
@@ -67,7 +73,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(position==0)
+        return if (position == 0)
             MainTabRvType.VIEWPAGER.ordinal
         else MainTabRvType.PRODUCT.ordinal
     }
@@ -77,25 +83,29 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             MainTabRvType.VIEWPAGER.ordinal -> {
                 (holder as CarouselHolder).bind()
             }
-            else ->{
-                (holder as ProductHolder).bind(productList[position-1])
+            else -> {
+                (holder as ProductHolder).bind(productList[position - 1])
             }
         }
     }
 
-    class ProductHolder(v: View) : RecyclerView.ViewHolder(v) {
+    inner class ProductHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val productNameView: TextView = v.card_main_element_text
         private val productPriceView: TextView = v.card_main_element_price
         private val productImageView: ImageView = v.card_main_element_image
+        private val buyImageButton: ImageButton = v.card_main_element_buy_button
 
         fun bind(data: Product) {
             productNameView.text = data.name
             productPriceView.text = "${data.id}"
             Glide.with(productImageView.context).load(data.imageId).into(productImageView)
+            buyImageButton.setOnClickListener {
+                buyButtonListener(it.context, "${data.id}")
+            }
         }
     }
 
-    class CarouselHolder(v: View) : RecyclerView.ViewHolder(v) {
+    inner class CarouselHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val viewPager: ViewPager = v.carousel_element_tab_pager
         private val tabLayout: TabLayout = v.carousel_element_tab_layout
         private val fm: FragmentManager = (v.context as FragmentActivity).supportFragmentManager
@@ -112,9 +122,9 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             R.drawable.img_carousel_10
         )
 
-        fun bind(){
-            viewPager.adapter = CarouselStatePageAdapter(fm,pictures)
-            tabLayout.setupWithViewPager(viewPager,true)
+        fun bind() {
+            viewPager.adapter = CarouselStatePageAdapter(fm, pictures)
+            tabLayout.setupWithViewPager(viewPager, true)
         }
     }
 }

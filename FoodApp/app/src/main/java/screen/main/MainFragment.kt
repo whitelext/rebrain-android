@@ -1,5 +1,6 @@
 package screen.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.GridLayoutManager
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.jetbrains.anko.toast
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import utils.BaseFragment
@@ -36,9 +38,11 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lm = if(foodListAdapter.isGrid)
-            GridLayoutManager(context,2)
-        else LinearLayoutManager(context)
+        foodListAdapter.buyButtonListener = { context: Context, id: String -> context.toast(id) }
+        if (foodListAdapter.isGrid)
+            setGrid()
+        else
+            lm = LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(Generator.getProducts().toMutableList())
         initSwipeToRefresh()
@@ -65,14 +69,14 @@ class MainFragment : BaseFragment() {
             item?.setIcon(R.drawable.ic_menu_linear)
             foodListAdapter.isGrid = true
             recyclerView_main.addItemDecoration(decor)
-            lm = GridLayoutManager(context, 2)
+            setGrid()
             initRv(lm)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initRv(lm:RecyclerView.LayoutManager) {
-       with(recyclerView_main) {
+    private fun initRv(lm: RecyclerView.LayoutManager) {
+        with(recyclerView_main) {
             layoutManager = lm
             adapter = foodListAdapter
         }
@@ -85,6 +89,17 @@ class MainFragment : BaseFragment() {
             foodListAdapter.setProductList(Generator.getProducts().toMutableList())
             swiperefresh.isRefreshing = false
         }
+    }
+
+    private fun setGrid() {
+        lm = GridLayoutManager(context, 2)
+        (lm as GridLayoutManager).spanSizeLookup = (object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (foodListAdapter.getItemViewType(position) == FoodListAdapter.MainTabRvType.VIEWPAGER.ordinal)
+                    2
+                else 1
+            }
+        })
     }
 
     companion object {
