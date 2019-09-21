@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar.TabType
 import utils.BaseFragment
+import utils.ExitDialogFragment
 
 /**
  *The Main Screen of application
@@ -61,6 +62,14 @@ class MainActivity : BaseActivity() {
     private fun initToolbar() {
         custom_toolbar.title = getString(R.string.app_name)
         setSupportActionBar(custom_toolbar)
+    }
+
+    override fun onBackPressed() {
+        safeExit()
+    }
+
+    private fun safeExit(){
+        ExitDialogFragment().show(supportFragmentManager,"exit")
     }
 
     companion object {
