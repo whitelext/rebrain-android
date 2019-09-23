@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.custom_exit_dialog.view.*
-/*
-    Class for working with Exit Dialogue for MainActivity
+/**
+ * Class for working with Exit Dialogue for MainActivity
  */
 class ExitDialogFragment : DialogFragment(){
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
