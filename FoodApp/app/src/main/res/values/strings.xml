@@ -4,7 +4,11 @@
     <string name="intro">Cервис для покупки еды</string>
     <string name="bottom_main_text">Главный</string>
     <string name="bottom_favourite">Избранное</string>
-   
+    <string name="exit_dialog_title_text">Выход</string>
+    <string name="exit_dialog_message_text">Вы хотите выйти из приложения?</string>
+    <string name="exit_dialog_negative_button_text">ОТМЕНА</string>
+    <string name="exit_dialog_positive_button_text">ДА</string>
+
     <!-- String variables -->
     <string name="favouriteTab">FavouriteTab</string>
     <string name="russian_currency">руб.</string>
