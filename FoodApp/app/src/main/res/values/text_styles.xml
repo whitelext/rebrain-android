@@ -9,6 +9,10 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <style name="RegularText.15sp" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">15sp</item>
+    </style>
+
     <style name="RegularText.15sp.Green" parent="TextAppearance.AppCompat">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/soft_green</item>
@@ -48,6 +52,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Text.22sp.Bold.Black">
+        <item name="android:textColor">@color/black</item>
+
+    </style>
+
+    <style name="Text.18sp">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Text.18sp.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="LightText.16sp.Normal">
         <item name="android:textStyle">normal</item>
     </style>
