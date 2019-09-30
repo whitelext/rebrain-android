@@ -3,11 +3,13 @@ package screen.intro
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
 import utils.BaseActivity
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.activity_intro.*
 import screen.main.MainActivity
+import utils.Logger
 
 /*
 ** Activity that shows new users what our app can do
@@ -16,10 +18,11 @@ import screen.main.MainActivity
 *
 * User will be navigated to Main Screen after taping any part of screen
  */
-class IntroActivity : BaseActivity() {
+class IntroActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycle.addObserver(Logger("IntroActivity"))
         setContentView(R.layout.activity_intro)
 
         intro_screen.setOnClickListener {

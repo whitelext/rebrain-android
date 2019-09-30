@@ -9,13 +9,15 @@ import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_carousel.view.*
 import timber.log.Timber
 import utils.BaseFragment
+import utils.Logger
 
 private const val IMG_KEY = "num"
 
 /**
  *  [Fragment] that shows image for ViewPager
  */
-class CarouselFragment : BaseFragment() {
+class CarouselFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

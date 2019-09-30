@@ -3,7 +3,10 @@ package screen.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import utils.BaseActivity
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -11,16 +14,17 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar.TabType
 import utils.BaseFragment
 import utils.ExitDialogFragment
+import utils.Logger
 
 /**
  *The Main Screen of application
  *
  * For now it shows [MainFragment] with list of jpg images in a ViewPager
  */
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity(){
 
     private val FragmentTypeMap by lazy {
-        hashMapOf<TabType, BaseFragment>(
+        hashMapOf<TabType, Fragment>(
             TabType.MAIN to MainFragment.newInstance(),
             TabType.FAVORITES to FavouriteFragment.newInstance()
         )
@@ -28,6 +32,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycle.addObserver(Logger("MainActivity"))
         setContentView(R.layout.activity_main)
         showFragment(TabType.MAIN)
 

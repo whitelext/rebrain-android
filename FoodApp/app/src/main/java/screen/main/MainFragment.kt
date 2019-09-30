@@ -3,6 +3,7 @@ package screen.main
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,18 +14,20 @@ import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import utils.BaseFragment
 import utils.Generator
+import utils.Logger
 
 /**
  * [BaseFragment] subclass to show carousel
  *
  */
-class MainFragment : BaseFragment() {
+class MainFragment : Fragment() {
 
     private val foodListAdapter = FoodListAdapter()
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        lifecycle.addObserver(Logger("MainFragment"))
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
     }
