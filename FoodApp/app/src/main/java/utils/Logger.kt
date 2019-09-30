@@ -5,6 +5,10 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import timber.log.Timber
 
+/**
+ * Class for lifecycle logging
+ *
+ */
 class Logger(private val className : String ) : LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
