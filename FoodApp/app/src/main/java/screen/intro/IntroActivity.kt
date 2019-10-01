@@ -18,11 +18,10 @@ import utils.Logger
 *
 * User will be navigated to Main Screen after taping any part of screen
  */
-class IntroActivity : AppCompatActivity() {
+class IntroActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(Logger("IntroActivity"))
         setContentView(R.layout.activity_intro)
 
         intro_screen.setOnClickListener {

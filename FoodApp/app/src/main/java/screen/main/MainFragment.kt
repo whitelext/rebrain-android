@@ -20,14 +20,13 @@ import utils.Logger
  * [BaseFragment] subclass to show carousel
  *
  */
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment() {
 
     private val foodListAdapter = FoodListAdapter()
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        lifecycle.addObserver(Logger("MainFragment"))
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
     }

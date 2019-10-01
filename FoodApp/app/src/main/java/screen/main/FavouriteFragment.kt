@@ -14,12 +14,7 @@ import utils.Logger
  * A [Fragment] subclass for showing favourite food
  *
  */
-class FavouriteFragment : Fragment(){
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        lifecycle.addObserver(Logger("FavoriteFragment"))
-        super.onCreate(savedInstanceState)
-    }
+class FavouriteFragment : BaseFragment(){
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

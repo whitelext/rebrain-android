@@ -16,7 +16,7 @@ private const val IMG_KEY = "num"
 /**
  *  [Fragment] that shows image for ViewPager
  */
-class CarouselFragment : Fragment() {
+class CarouselFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

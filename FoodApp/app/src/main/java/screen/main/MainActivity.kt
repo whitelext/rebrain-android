@@ -21,7 +21,7 @@ import utils.Logger
  *
  * For now it shows [MainFragment] with list of jpg images in a ViewPager
  */
-class MainActivity : AppCompatActivity(){
+class MainActivity : BaseActivity(){
 
     private val FragmentTypeMap by lazy {
         hashMapOf<TabType, Fragment>(
@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(Logger("MainActivity"))
         setContentView(R.layout.activity_main)
         showFragment(TabType.MAIN)
 
