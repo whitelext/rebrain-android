@@ -3,13 +3,11 @@ package screen.intro
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
-import utils.BaseActivity
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.activity_intro.*
 import screen.main.MainActivity
-import utils.Logger
+import utils.BaseActivity
 
 /*
 ** Activity that shows new users what our app can do

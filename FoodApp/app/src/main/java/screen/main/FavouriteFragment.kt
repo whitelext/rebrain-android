@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.foodapp.R
 import utils.BaseFragment
-import utils.Logger
 
 /**
  * A [Fragment] subclass for showing favourite food

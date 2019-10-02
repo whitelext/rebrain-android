@@ -2,13 +2,11 @@ package screen.splash
 
 import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import utils.BaseActivity
-import screen.main.MainActivity
 import com.example.foodapp.R
 import kotlinx.coroutines.*
 import screen.intro.IntroActivity
-import utils.Logger
+import screen.main.MainActivity
+import utils.BaseActivity
 import utils.SharedPreferencesHelper
 import kotlin.coroutines.CoroutineContext
 

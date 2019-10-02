@@ -1,15 +1,12 @@
 package screen.main.carousel
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_carousel.view.*
-import timber.log.Timber
 import utils.BaseFragment
-import utils.Logger
 
 private const val IMG_KEY = "num"
 
