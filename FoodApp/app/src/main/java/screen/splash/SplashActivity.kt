@@ -2,18 +2,18 @@ package screen.splash
 
 import android.content.Context
 import android.os.Bundle
-import utils.BaseActivity
-import screen.main.MainActivity
 import com.example.foodapp.R
 import kotlinx.coroutines.*
 import screen.intro.IntroActivity
+import screen.main.MainActivity
+import utils.BaseActivity
 import utils.SharedPreferencesHelper
 import kotlin.coroutines.CoroutineContext
 
 /**
  * The Splash which is displayed before the launch of MainActivity
  */
-class SplashActivity : BaseActivity(), CoroutineScope {
+class SplashActivity : BaseActivity(),CoroutineScope {
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job

@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
-import utils.BaseActivity
+import androidx.fragment.app.Fragment
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar.TabType
-import utils.BaseFragment
+import utils.BaseActivity
 import utils.ExitDialogFragment
 
 /**
@@ -17,10 +17,10 @@ import utils.ExitDialogFragment
  *
  * For now it shows [MainFragment] with list of jpg images in a ViewPager
  */
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(){
 
     private val FragmentTypeMap by lazy {
-        hashMapOf<TabType, BaseFragment>(
+        hashMapOf<TabType, Fragment>(
             TabType.MAIN to MainFragment.newInstance(),
             TabType.FAVORITES to FavouriteFragment.newInstance()
         )

@@ -13,7 +13,7 @@ import utils.BaseFragment
  * A [Fragment] subclass for showing favourite food
  *
  */
-class FavouriteFragment : BaseFragment() {
+class FavouriteFragment : BaseFragment(){
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

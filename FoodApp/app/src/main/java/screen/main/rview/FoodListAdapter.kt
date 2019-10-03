@@ -18,7 +18,6 @@ import com.google.android.material.tabs.TabLayout
 import domain.Product
 import kotlinx.android.synthetic.main.carousel_item.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
-import org.jetbrains.anko.toast
 import screen.main.carousel.adapter.CarouselStatePageAdapter
 
 /**
