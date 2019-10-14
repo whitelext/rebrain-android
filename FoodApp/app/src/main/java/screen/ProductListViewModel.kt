@@ -1,6 +1,7 @@
 package screen
 
 import androidx.lifecycle.ViewModel
+import domain.Product
 import utils.Generator
 
 /**
@@ -9,7 +10,11 @@ import utils.Generator
 class ProductListViewModel :ViewModel(){
     val productList = Generator.getProducts().toMutableList()
 
-    fun shuffleList(){
-        productList.shuffle()
+    /**
+     * Shuffles [productList]
+     * @return shuffled [productList]
+     */
+    fun shuffleProductList() : MutableList<Product>{
+       return productList.shuffled().toMutableList()
     }
 }

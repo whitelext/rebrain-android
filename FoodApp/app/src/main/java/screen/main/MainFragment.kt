@@ -90,7 +90,7 @@ class MainFragment : BaseFragment() {
         swiperefresh.setProgressViewOffset(false, 150, 250)
         swiperefresh.setColorSchemeResources(R.color.colorToolbar)
         swiperefresh.setOnRefreshListener {
-            foodListAdapter.setProductList(viewModel.productList.shuffled().toMutableList())
+            foodListAdapter.setProductList(viewModel.shuffleProductList())
             swiperefresh.isRefreshing = false
         }
     }
