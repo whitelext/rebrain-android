@@ -4,7 +4,7 @@ import domain.Product
 import utils.Generator
 
 /**
- * Data sources
+ * A class that manage data that gets sent to the ViewModel
  */
 object ProductsRepository {
     /**
