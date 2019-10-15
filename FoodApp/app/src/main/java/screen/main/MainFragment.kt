@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
+import repository.ProductsRepository
 import screen.ProductListViewModel
 import screen.ProductListViewModelFactory
 import screen.main.rview.FoodListAdapter
@@ -41,14 +42,15 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, ProductListViewModelFactory()).get(ProductListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ProductListViewModelFactory(ProductsRepository))
+            .get(ProductListViewModel::class.java)
         foodListAdapter.buyButtonListener = { context: Context, id: String -> context.toast(id) }
         if (foodListAdapter.isGrid)
             setGrid()
         else
             lm = LinearLayoutManager(context)
         initRv(lm)
-        foodListAdapter.setProductList(viewModel.productList)
+        foodListAdapter.setProductList(viewModel.shuffleProductList())
         initSwipeToRefresh()
     }
 

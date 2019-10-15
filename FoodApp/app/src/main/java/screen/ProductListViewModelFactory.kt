@@ -2,12 +2,14 @@ package screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import repository.ProductsRepository
 
 /**
  * Factory for [ProductListViewModel]
  */
-class ProductListViewModelFactory : ViewModelProvider.Factory {
+class ProductListViewModelFactory(private val repository: ProductsRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ProductListViewModel() as T
+        return ProductListViewModel(repository) as T
     }
 }
