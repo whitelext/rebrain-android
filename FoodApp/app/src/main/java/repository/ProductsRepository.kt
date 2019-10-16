@@ -4,13 +4,13 @@ import domain.Product
 import utils.Generator
 
 /**
- * A class that manage data that gets sent to the ViewModel
+ * A class that manage data from data sources
  */
-object ProductsRepository {
+class ProductsRepository(private val foodGenerator :Generator) {
     /**
      * @return [List] of [Product]
      */
     fun getProductList(): List<Product> {
-        return Generator.getProducts()
+        return foodGenerator.getProducts()
     }
 }

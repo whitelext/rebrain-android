@@ -30,7 +30,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         VIEWPAGER, PRODUCT
     }
 
-    var productList: MutableList<Product> = mutableListOf()
+    var productList: List<Product> = listOf()
         private set
 
     var isGrid = false
@@ -62,7 +62,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    fun setProductList(list: MutableList<Product>) {
+    fun setProductList(list: List<Product>) {
         productList = list
         notifyDataSetChanged()
     }

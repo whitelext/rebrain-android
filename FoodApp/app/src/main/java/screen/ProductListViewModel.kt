@@ -13,7 +13,7 @@ class ProductListViewModel(private val repository: ProductsRepository) : ViewMod
      * Shuffles productList
      * @return shuffled [MutableList] of [Product]
      */
-    fun shuffleProductList(): MutableList<Product> {
-        return repository.getProductList().shuffled().toMutableList()
+    fun shuffleProductList(): List<Product> {
+        return repository.getProductList().shuffled()
     }
 }

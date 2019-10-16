@@ -16,6 +16,7 @@ import screen.ProductListViewModelFactory
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import utils.BaseFragment
+import utils.Generator
 
 /**
  * [BaseFragment] subclass to show carousel
@@ -42,7 +43,7 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, ProductListViewModelFactory(ProductsRepository))
+        viewModel = ViewModelProviders.of(this, ProductListViewModelFactory(ProductsRepository(Generator)))
             .get(ProductListViewModel::class.java)
         foodListAdapter.buyButtonListener = { context: Context, id: String -> context.toast(id) }
         if (foodListAdapter.isGrid)
