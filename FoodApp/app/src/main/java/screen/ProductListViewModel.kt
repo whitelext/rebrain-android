@@ -11,7 +11,7 @@ import utils.Generator
 class ProductListViewModel(private val repository: ProductsRepository) : ViewModel() {
     /**
      * Shuffles productList
-     * @return shuffled [MutableList] of [Product]
+     * @return shuffled [List] of [Product]
      */
     fun shuffleProductList(): List<Product> {
         return repository.getProductList().shuffled()

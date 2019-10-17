@@ -6,7 +6,7 @@ import utils.Generator
 /**
  * A class that manage data from data sources
  */
-class ProductsRepository(private val foodGenerator :Generator) {
+class ProductsRepository(private val foodGenerator: Generator) {
     /**
      * @return [List] of [Product]
      */
