@@ -1,4 +1,4 @@
-package screen
+package screen.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

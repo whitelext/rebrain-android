@@ -11,10 +11,10 @@ import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
 import repository.ProductsRepository
-import screen.ProductListViewModel
-import screen.ProductListViewModelFactory
+import screen.main.viewmodel.ProductListViewModelFactory
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
+import screen.main.viewmodel.ProductListViewModel
 import utils.BaseFragment
 import utils.Generator
 
@@ -43,7 +43,10 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, ProductListViewModelFactory(ProductsRepository(Generator)))
+        viewModel = ViewModelProviders.of(
+            this,
+            ProductListViewModelFactory(ProductsRepository(Generator))
+        )
             .get(ProductListViewModel::class.java)
         foodListAdapter.buyButtonListener = { context: Context, id: String -> context.toast(id) }
         if (foodListAdapter.isGrid)

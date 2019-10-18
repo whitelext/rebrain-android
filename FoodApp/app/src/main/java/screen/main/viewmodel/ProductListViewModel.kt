@@ -1,9 +1,8 @@
-package screen
+package screen.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import domain.Product
 import repository.ProductsRepository
-import utils.Generator
 
 /**
  * [ViewModel] for MainFragment
