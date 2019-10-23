@@ -1,5 +1,7 @@
 package screen.main.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import domain.Product
 import repository.ProductsRepository
@@ -8,11 +10,15 @@ import repository.ProductsRepository
  * [ViewModel] for MainFragment
  */
 class ProductListViewModel(private val repository: ProductsRepository) : ViewModel() {
-    /**
-     * Shuffles productList
-     * @return shuffled [List] of [Product]
-     */
-    fun shuffleProductList(): List<Product> {
-        return repository.getProductList().shuffled()
+    private val productList = MutableLiveData<List<Product>>()
+    private val isListGrid = MutableLiveData<Boolean>()
+
+    init {
+        productList.value = repository.getProductList()
+        isListGrid.value = false
     }
+
+    fun getProductList(): LiveData<List<Product>> = productList
+
+    fun isListGrid(): LiveData<Boolean> = isListGrid
 }
