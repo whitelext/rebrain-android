@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
-import domain.Product
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
 import repository.ProductsRepository
@@ -30,7 +29,6 @@ class MainFragment : BaseFragment() {
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
     private lateinit var viewModel: ProductListViewModel
-    private lateinit var productList :List<Product>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -53,7 +51,7 @@ class MainFragment : BaseFragment() {
         else
             lm = LinearLayoutManager(context)
         initRv(lm)
-        foodListAdapter.setProductList(productList?:listOf())
+        foodListAdapter.setProductList(viewModel.getProductList())
         initSwipeToRefresh()
     }
 
@@ -95,7 +93,7 @@ class MainFragment : BaseFragment() {
         swiperefresh.setProgressViewOffset(false, 150, 250)
         swiperefresh.setColorSchemeResources(R.color.colorToolbar)
         swiperefresh.setOnRefreshListener {
-            foodListAdapter.setProductList(productList?.shuffled() ?: listOf())
+            foodListAdapter.setProductList(viewModel.shuffleProductList())
             swiperefresh.isRefreshing = false
         }
     }
@@ -111,15 +109,14 @@ class MainFragment : BaseFragment() {
         })
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         viewModel = ViewModelProviders.of(
             this,
             ProductListViewModelFactory(ProductsRepository(Generator))
         )
             .get(ProductListViewModel::class.java)
-        productList = viewModel.getProductList().value ?: listOf()
-        viewModel.getProductList().observe(this, Observer { productList = it })
-        viewModel.isListGrid().observe(this, Observer { foodListAdapter.isGrid = it })
+        viewModel.productList.observe(this, Observer { foodListAdapter.setProductList(it) })
+        viewModel.isListGrid.observe(this, Observer { foodListAdapter.isGrid = it })
     }
 
     companion object {

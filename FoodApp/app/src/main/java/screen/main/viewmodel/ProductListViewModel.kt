@@ -10,15 +10,34 @@ import repository.ProductsRepository
  * [ViewModel] for MainFragment
  */
 class ProductListViewModel(private val repository: ProductsRepository) : ViewModel() {
-    private val productList = MutableLiveData<List<Product>>()
-    private val isListGrid = MutableLiveData<Boolean>()
+    private val _productList = MutableLiveData<List<Product>>()
+    val productList: LiveData<List<Product>>
+        get() = _productList
+
+    private val _isListGrid = MutableLiveData<Boolean>()
+    val isListGrid: LiveData<Boolean>
+        get() = _isListGrid
 
     init {
-        productList.value = repository.getProductList()
-        isListGrid.value = false
+        _productList.value = repository.getProductList()
+        _isListGrid.value = false
     }
 
-    fun getProductList(): LiveData<List<Product>> = productList
+    /**
+     * @return [List] of [Product] or empty list
+     */
+    fun getProductList(): List<Product> {
+        productList.value?.let {
+            return it
+        }
+        return listOf()
+    }
 
-    fun isListGrid(): LiveData<Boolean> = isListGrid
+    /**
+     * Shuffles productList
+     * @return shuffled [List] of [Product]
+     */
+    fun shuffleProductList(): List<Product> {
+        return repository.getProductList().shuffled()
+    }
 }
