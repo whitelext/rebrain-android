@@ -26,12 +26,7 @@ class ProductListViewModel(private val repository: ProductsRepository) : ViewMod
     /**
      * @return [List] of [Product] or empty list
      */
-    fun getProductList(): List<Product> {
-        productList.value?.let {
-            return it
-        }
-        return listOf()
-    }
+    fun getProductList(): List<Product> = _productList.value ?: listOf()
 
     /**
      * Shuffles productList
