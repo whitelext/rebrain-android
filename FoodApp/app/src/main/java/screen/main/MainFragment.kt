@@ -3,6 +3,7 @@ package screen.main
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,18 +44,14 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(
-            this,
-            ProductListViewModelFactory(ProductsRepository(Generator))
-        )
-            .get(ProductListViewModel::class.java)
+        initViewModel()
         foodListAdapter.buyButtonListener = { context: Context, id: String -> context.toast(id) }
         if (foodListAdapter.isGrid)
             setGrid()
         else
             lm = LinearLayoutManager(context)
         initRv(lm)
-        foodListAdapter.setProductList(viewModel.shuffleProductList())
+        foodListAdapter.setProductList(viewModel.getProductList())
         initSwipeToRefresh()
     }
 
@@ -110,6 +107,16 @@ class MainFragment : BaseFragment() {
                 else 1
             }
         })
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(
+            this,
+            ProductListViewModelFactory(ProductsRepository(Generator))
+        )
+            .get(ProductListViewModel::class.java)
+        viewModel.productList.observe(this, Observer { foodListAdapter.setProductList(it) })
+        viewModel.isListGrid.observe(this, Observer { foodListAdapter.isGrid = it })
     }
 
     companion object {
