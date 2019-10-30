@@ -4,12 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import domain.Product
-import repository.ProductsRepository
+import interactor.repositories.ProductModeRepository
+import interactor.repositories.ProductsRepository
 
 /**
  * [ViewModel] for MainFragment
  */
-class ProductListViewModel(private val repository: ProductsRepository) : ViewModel() {
+class ProductListViewModel(
+    private val productsRepository: ProductsRepository,
+    private val productModeRepository: ProductModeRepository
+) : ViewModel() {
     private val _productList = MutableLiveData<List<Product>>()
     val productList: LiveData<List<Product>>
         get() = _productList
@@ -19,8 +23,8 @@ class ProductListViewModel(private val repository: ProductsRepository) : ViewMod
         get() = _isListGrid
 
     init {
-        _productList.value = repository.getProductList()
-        _isListGrid.value = false
+        _productList.value = productsRepository.getProductList()
+        _isListGrid.value = productModeRepository.isModeGrid()
     }
 
     /**
@@ -29,10 +33,23 @@ class ProductListViewModel(private val repository: ProductsRepository) : ViewMod
     fun getProductList(): List<Product> = _productList.value ?: listOf()
 
     /**
+     * @return true if display mode is Grid
+     */
+    fun isModeGrid(): Boolean = _isListGrid.value ?: false
+
+    /**
      * Shuffles productList
      * @return shuffled [List] of [Product]
      */
     fun shuffleProductList(): List<Product> {
-        return repository.getProductList().shuffled()
+        return productsRepository.getProductList().shuffled()
+    }
+
+    /**
+     * If Mode is Grid make it Linear. And vice versa
+     *
+     */
+    fun switchDisplayMode() {
+        productModeRepository.switchProductMode()
     }
 }
