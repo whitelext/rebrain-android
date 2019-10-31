@@ -121,7 +121,7 @@ class MainFragment : BaseFragment() {
         )
             .get(ProductListViewModel::class.java)
         viewModel.productList.observe(this, Observer { foodListAdapter.setProductList(it) })
-        viewModel.isListGrid.observe(this, Observer { foodListAdapter.isGrid = it })
+        //viewModel.isListGrid.observe(this, Observer { foodListAdapter.isGrid = it })
     }
 
     companion object {
