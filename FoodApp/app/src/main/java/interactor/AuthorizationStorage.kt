@@ -19,6 +19,6 @@ class AuthorizationStorage(private val prefs: SharedPreferencesHelper) : Storage
      * Saving value of authorization flag in shared preferences
      *
      */
-    override fun saveElement(value:Boolean) = prefs.putBoolean(authorizationKey, value)
+    override fun saveElement(value: Boolean) = prefs.putBoolean(authorizationKey, value)
 
 }
