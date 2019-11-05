@@ -1,6 +1,5 @@
 package interactor.repositories
 
-import interactor.IntroFlagStorage
 import utils.Storage
 
 /**
