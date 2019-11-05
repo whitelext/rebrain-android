@@ -1,4 +1,4 @@
-package repository
+package interactor.repositories
 
 import domain.Product
 import utils.Generator

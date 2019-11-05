@@ -9,15 +9,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
+import interactor.ProductModeStorage
+import interactor.repositories.ProductModeRepository
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
-import repository.ProductsRepository
+import interactor.repositories.ProductsRepository
 import screen.main.viewmodel.ProductListViewModelFactory
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import screen.main.viewmodel.ProductListViewModel
 import utils.BaseFragment
 import utils.Generator
+import utils.SharedPreferencesHelper
 
 /**
  * [BaseFragment] subclass to show carousel
@@ -112,11 +115,12 @@ class MainFragment : BaseFragment() {
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(
             this,
-            ProductListViewModelFactory(ProductsRepository(Generator))
+            ProductListViewModelFactory(ProductsRepository(Generator), ProductModeRepository(
+                ProductModeStorage(SharedPreferencesHelper(context!!))
+            ))
         )
             .get(ProductListViewModel::class.java)
         viewModel.productList.observe(this, Observer { foodListAdapter.setProductList(it) })
-        viewModel.isListGrid.observe(this, Observer { foodListAdapter.isGrid = it })
     }
 
     companion object {
