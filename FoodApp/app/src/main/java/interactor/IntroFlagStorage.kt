@@ -1,24 +1,24 @@
 package interactor
 
 import utils.SharedPreferencesHelper
+import utils.Storage
 
 const val introSharedPrefKey = "isIntroNeeded" // Key for Intro to work with Shared Preferences
 
 /**
  * Storage for working with intro flag
  */
-class IntroFlagStorage(private val prefs: SharedPreferencesHelper) {
+class IntroFlagStorage(private val prefs: SharedPreferencesHelper) : Storage {
     /**
      * Returns true if intro was showed
      *
      */
-    fun isIntroShowed() = prefs.getBoolean(introSharedPrefKey)
+    override fun getElement() = prefs.getBoolean(introSharedPrefKey)
 
     /**
-     * Change value of [isIntroShowed] to true
+     * Saving value of intro flag in shared preferences
      *
      */
-    fun showIntro() {
-        prefs.putBoolean(introSharedPrefKey, true)
-    }
+    override fun saveElement(value:Boolean) = prefs.putBoolean(introSharedPrefKey, value)
+
 }

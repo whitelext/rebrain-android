@@ -1,20 +1,20 @@
 package interactor.repositories
 
-import interactor.IntroFlagStorage
+import utils.Storage
 
 /**
  * Storage for working with intro flag
  */
-class IntroFlagRepository(private val introStatus: IntroFlagStorage) {
+class IntroFlagRepository(private val introStatus: Storage) {
     /**
      * Returns true if intro was showed
      *
      */
-    fun isIntroShowed() = introStatus.isIntroShowed()
+    fun isIntroShowed() = introStatus.getElement()
 
     /**
      * Change value of [isIntroShowed] to true
      *
      */
-    fun showIntro() = introStatus.showIntro()
+    fun showIntro() = introStatus.saveElement(true)
 }

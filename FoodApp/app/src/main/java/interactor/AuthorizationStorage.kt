@@ -1,22 +1,24 @@
 package interactor
 
 import utils.SharedPreferencesHelper
+import utils.Storage
 
 const val authorizationKey = "isAuthorized" // Key for Authorization flag
+
 /**
  * Storage for working with authorization flag
  */
-class AuthorizationStorage(private val prefs: SharedPreferencesHelper) {
+class AuthorizationStorage(private val prefs: SharedPreferencesHelper) : Storage {
     /**
      * Returns true if User is authorized
      *
      */
-    fun isUserAuthorized() = prefs.getBoolean(authorizationKey)
+    override fun getElement() = prefs.getBoolean(authorizationKey)
+
     /**
-     * If [isUserAuthorized] make it false. And vice versa
+     * Saving value of authorization flag in shared preferences
      *
      */
-    fun changeAuthorizationStatus() {
-        prefs.putBoolean(authorizationKey,!isUserAuthorized())
-    }
+    override fun saveElement(value: Boolean) = prefs.putBoolean(authorizationKey, value)
+
 }
