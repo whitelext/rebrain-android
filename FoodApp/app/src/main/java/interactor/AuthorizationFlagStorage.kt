@@ -8,7 +8,7 @@ const val authorizationKey = "isAuthorized" // Key for Authorization flag
 /**
  * Storage for working with authorization flag
  */
-class AuthorizationStorage(private val prefs: SharedPreferencesHelper) : Storage {
+class AuthorizationFlagStorage(private val prefs: SharedPreferencesHelper) : Storage {
     /**
      * Returns true if User is authorized
      *
