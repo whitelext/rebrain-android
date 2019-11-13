@@ -11,7 +11,7 @@ import javax.inject.Inject
 /**
  * [ViewModel] for MainFragment
  */
-class ProductListViewModel @Inject constructor(
+class ProductListViewModel (
     private val productsRepository: ProductsRepository,
     private val productModeRepository: ProductModeRepository
 ) : ViewModel() {
