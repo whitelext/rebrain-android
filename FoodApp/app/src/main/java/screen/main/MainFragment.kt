@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
-import di.*
+import di.AppModule
+import di.DaggerAppComponent
+import di.ProductModule
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
 import screen.main.rview.FoodListAdapter
@@ -34,11 +36,6 @@ class MainFragment : BaseFragment() {
         setHasOptionsMenu(true)
         val component =
             DaggerAppComponent.builder().appModule(AppModule(this.activity!!.application))
-                .sharedPreferencesModule(SharedPreferencesModule())
-                .authorizationFlagModule(AuthorizationFlagModule())
-                .introFlagModule(IntroFlagModule())
-                .sharedPreferencesModule(SharedPreferencesModule())
-                .productModeModule(ProductModeModule())
                 .productModule(ProductModule(this, Generator))
                 .build()
         component.inject(this)
