@@ -4,23 +4,19 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
-import interactor.ProductModeStorage
-import interactor.repositories.ProductModeRepository
+import di.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
-import interactor.repositories.ProductsRepository
-import screen.main.viewmodel.ProductListViewModelFactory
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import screen.main.viewmodel.ProductListViewModel
 import utils.BaseFragment
 import utils.Generator
-import utils.SharedPreferencesHelper
+import javax.inject.Inject
 
 /**
  * [BaseFragment] subclass to show carousel
@@ -31,10 +27,21 @@ class MainFragment : BaseFragment() {
     private val foodListAdapter = FoodListAdapter()
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
-    private lateinit var viewModel: ProductListViewModel
+    @Inject
+    lateinit var viewModel: ProductListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
+        val component =
+            DaggerAppComponent.builder().appModule(AppModule(this.activity!!.application))
+                .sharedPreferencesModule(SharedPreferencesModule())
+                .authorizationFlagModule(AuthorizationFlagModule())
+                .introFlagModule(IntroFlagModule())
+                .sharedPreferencesModule(SharedPreferencesModule())
+                .productModeModule(ProductModeModule())
+                .productModule(ProductModule(this, Generator))
+                .build()
+        component.inject(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -113,13 +120,6 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(
-            this,
-            ProductListViewModelFactory(ProductsRepository(Generator), ProductModeRepository(
-                ProductModeStorage(SharedPreferencesHelper(context!!))
-            ))
-        )
-            .get(ProductListViewModel::class.java)
         viewModel.productList.observe(this, Observer { foodListAdapter.setProductList(it) })
     }
 

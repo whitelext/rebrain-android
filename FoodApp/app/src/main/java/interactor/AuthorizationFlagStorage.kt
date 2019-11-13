@@ -2,13 +2,14 @@ package interactor
 
 import utils.SharedPreferencesHelper
 import utils.Storage
+import javax.inject.Inject
 
 const val authorizationKey = "isAuthorized" // Key for Authorization flag
 
 /**
  * Storage for working with authorization flag
  */
-class AuthorizationFlagStorage(private val prefs: SharedPreferencesHelper) : Storage {
+class AuthorizationFlagStorage @Inject constructor(private val prefs: SharedPreferencesHelper) : Storage {
     /**
      * Returns true if User is authorized
      *

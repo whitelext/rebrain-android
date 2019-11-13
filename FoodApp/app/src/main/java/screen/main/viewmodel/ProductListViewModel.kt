@@ -6,11 +6,12 @@ import androidx.lifecycle.ViewModel
 import domain.Product
 import interactor.repositories.ProductModeRepository
 import interactor.repositories.ProductsRepository
+import javax.inject.Inject
 
 /**
  * [ViewModel] for MainFragment
  */
-class ProductListViewModel(
+class ProductListViewModel @Inject constructor(
     private val productsRepository: ProductsRepository,
     private val productModeRepository: ProductModeRepository
 ) : ViewModel() {

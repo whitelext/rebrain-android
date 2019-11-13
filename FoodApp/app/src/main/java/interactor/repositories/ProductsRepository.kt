@@ -2,11 +2,12 @@ package interactor.repositories
 
 import domain.Product
 import utils.Generator
+import javax.inject.Inject
 
 /**
  * A class that manage data from data sources
  */
-class ProductsRepository(private val foodGenerator: Generator) {
+class ProductsRepository@Inject constructor(private val foodGenerator: Generator) {
     /**
      * @return [List] of [Product]
      */

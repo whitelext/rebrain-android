@@ -2,13 +2,14 @@ package interactor
 
 import utils.SharedPreferencesHelper
 import utils.Storage
+import javax.inject.Inject
 
 const val introSharedPrefKey = "isIntroNeeded" // Key for Intro to work with Shared Preferences
 
 /**
  * Storage for working with intro flag
  */
-class IntroFlagStorage(private val prefs: SharedPreferencesHelper) : Storage {
+class IntroFlagStorage @Inject constructor(private val prefs: SharedPreferencesHelper) : Storage {
     /**
      * Returns true if intro was showed
      *
