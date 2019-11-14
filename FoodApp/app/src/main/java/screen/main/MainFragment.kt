@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
 import di.AppModule
-import di.DaggerAppComponent
+import di.DaggerMainFragmentComponent
 import di.ProductModule
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
@@ -35,7 +35,7 @@ class MainFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         val component =
-            DaggerAppComponent.builder().appModule(AppModule(this.activity!!.application))
+            DaggerMainFragmentComponent.builder().appModule(AppModule(this.activity!!.application))
                 .productModule(ProductModule(this, Generator))
                 .build()
         component.inject(this)
