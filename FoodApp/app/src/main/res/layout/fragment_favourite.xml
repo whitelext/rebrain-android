@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="screen.main.FavouriteFragment"
-    android:paddingTop="?actionBarSize">
+    android:paddingTop="80dp">
 
     <TextView
         android:layout_width="match_parent"

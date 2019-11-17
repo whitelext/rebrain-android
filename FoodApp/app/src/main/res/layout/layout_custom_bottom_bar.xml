@@ -3,7 +3,8 @@
     android:id="@+id/custom_bottom_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:elevation="10dp">
 
     <screen.main.view.CustomBottombarButton
         android:id="@+id/custom_bottom_bar_main_button"
