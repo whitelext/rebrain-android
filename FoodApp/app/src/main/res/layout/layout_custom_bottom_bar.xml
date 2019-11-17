@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:elevation="8dp">
+    android:elevation="8dp"
+    android:background="@color/white">
 
     <screen.main.view.CustomBottombarButton
         android:id="@+id/custom_bottom_bar_main_button"
