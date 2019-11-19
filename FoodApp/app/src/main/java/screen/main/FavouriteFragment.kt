@@ -15,6 +15,10 @@ import utils.BaseFragment
  */
 class FavouriteFragment : BaseFragment(){
 
+    override fun getFragmentTag(): String {
+        return "FavoriteFragment"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

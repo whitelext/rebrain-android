@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_carousel.view.*
 import utils.BaseFragment
+import java.io.File
 
 private const val IMG_KEY = "num"
 
@@ -14,6 +15,9 @@ private const val IMG_KEY = "num"
  *  [Fragment] that shows image for ViewPager
  */
 class CarouselFragment : BaseFragment() {
+    override fun getFragmentTag(): String {
+        return "CarouselFragment"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

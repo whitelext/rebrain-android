@@ -3,6 +3,7 @@ package screen.main
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +14,11 @@ import di.DaggerMainFragmentComponent
 import di.ProductModule
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
+import screen.main.carousel.adapter.CarouselStatePageAdapter
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import screen.main.viewmodel.ProductListViewModel
+import utils.BaseActivity
 import utils.BaseFragment
 import utils.Generator
 import javax.inject.Inject
@@ -31,6 +34,10 @@ class MainFragment : BaseFragment() {
     private val decor = MarginItemDecoration(11)
     @Inject
     lateinit var viewModel: ProductListViewModel
+
+    override fun getFragmentTag(): String {
+        return "MainFragment"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -49,17 +56,22 @@ class MainFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-        foodListAdapter.buyButtonListener = { context: Context, id: String -> context.toast(id) }
-        if (foodListAdapter.isGrid)
+
+        foodListAdapter.buyButtonListener =
+            { context: Context, id: String -> context.toast(id) }
+        if (foodListAdapter.isGrid) {
             setGrid()
-        else
+            recyclerView_main.addItemDecoration(decor)
+        } else
             lm = LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(viewModel.getProductList())
         initSwipeToRefresh()
+        foodListAdapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -117,7 +129,9 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initViewModel() {
-        viewModel.productList.observe(this, Observer { foodListAdapter.setProductList(it) })
+        viewModel.productList.observe(
+            this,
+            Observer { foodListAdapter.setProductList(it) })
     }
 
     companion object {

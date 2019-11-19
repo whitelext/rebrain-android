@@ -24,7 +24,7 @@ import screen.main.carousel.adapter.CarouselStatePageAdapter
  *  An Adapter for [RecyclerView] that shows list of products
  *
  */
-class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class MainTabRvType {
         VIEWPAGER, PRODUCT
@@ -120,9 +120,10 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             R.drawable.img_carousel_9,
             R.drawable.img_carousel_10
         )
+        private val carouselStatePageAdapter = CarouselStatePageAdapter(fm, pictures)
 
         fun bind() {
-            viewPager.adapter = CarouselStatePageAdapter(fm, pictures)
+            viewPager.adapter = carouselStatePageAdapter
             tabLayout.setupWithViewPager(viewPager, true)
         }
     }

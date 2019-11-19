@@ -52,4 +52,6 @@ class ProductListViewModel(
     fun switchDisplayMode() {
         productModeRepository.switchProductMode()
     }
+
+    fun getCarouselPictures() = productsRepository.getCarouselPictures()
 }
