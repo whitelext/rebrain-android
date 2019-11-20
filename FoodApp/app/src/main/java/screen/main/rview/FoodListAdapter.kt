@@ -24,7 +24,7 @@ import screen.main.carousel.adapter.CarouselStatePageAdapter
  *  An Adapter for [RecyclerView] that shows list of products
  *
  */
-class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class MainTabRvType {
         VIEWPAGER, PRODUCT
@@ -34,6 +34,8 @@ class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private set
 
     var isGrid = false
+
+    private var carouselCheckedItem: Int = 0
 
     lateinit var buyButtonListener: (context: Context, id: String) -> Toast
 
@@ -78,9 +80,10 @@ class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         when (holder.itemViewType) {
             MainTabRvType.VIEWPAGER.ordinal -> {
-                (holder as CarouselHolder).bind()
+                (holder as CarouselHolder).bind(carouselCheckedItem)
             }
             else -> {
                 (holder as ProductHolder).bind(productList[position - 1])
@@ -120,11 +123,26 @@ class FoodListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             R.drawable.img_carousel_9,
             R.drawable.img_carousel_10
         )
-        private val carouselStatePageAdapter = CarouselStatePageAdapter(fm, pictures)
 
-        fun bind() {
-            viewPager.adapter = carouselStatePageAdapter
-            tabLayout.setupWithViewPager(viewPager, true)
+        fun bind(item: Int) {
+            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                    carouselCheckedItem = position
+                }
+            })
+            viewPager.adapter = CarouselStatePageAdapter(fm, pictures)
+            tabLayout.setupWithViewPager(viewPager, false)
+            viewPager.setCurrentItem(item, true)
         }
     }
 }

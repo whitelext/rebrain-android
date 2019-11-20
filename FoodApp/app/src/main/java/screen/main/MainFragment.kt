@@ -3,7 +3,6 @@ package screen.main
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,11 +13,9 @@ import di.DaggerMainFragmentComponent
 import di.ProductModule
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
-import screen.main.carousel.adapter.CarouselStatePageAdapter
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import screen.main.viewmodel.ProductListViewModel
-import utils.BaseActivity
 import utils.BaseFragment
 import utils.Generator
 import javax.inject.Inject
@@ -56,11 +53,9 @@ class MainFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-
         foodListAdapter.buyButtonListener =
             { context: Context, id: String -> context.toast(id) }
         if (foodListAdapter.isGrid) {
@@ -109,7 +104,7 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initSwipeToRefresh() {
-        swiperefresh.setProgressViewOffset(false, 150, 250)
+        swiperefresh.setProgressViewOffset(false, 200, 350)
         swiperefresh.setColorSchemeResources(R.color.colorToolbar)
         swiperefresh.setOnRefreshListener {
             foodListAdapter.setProductList(viewModel.shuffleProductList())

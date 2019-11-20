@@ -26,7 +26,7 @@ class MainActivity : BaseActivity() {
             TabType.FAVORITES to FavouriteFragment.newInstance()
         )
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
