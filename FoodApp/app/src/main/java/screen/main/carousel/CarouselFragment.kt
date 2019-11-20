@@ -1,4 +1,5 @@
 package screen.main.carousel
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.fragment_carousel.view.*
 import utils.BaseFragment
-import java.io.File
 
 private const val IMG_KEY = "num"
 
@@ -16,24 +16,27 @@ private const val IMG_KEY = "num"
  */
 class CarouselFragment : BaseFragment() {
     override fun getFragmentTag(): String {
-        return "CarouselFragment"
+        return TAG
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       return  inflater.inflate(R.layout.fragment_carousel, container, false).apply {
-           arguments?.getInt(IMG_KEY)?.let { this.carousel_imageView.setImageResource(it) }
-       }
+        return inflater.inflate(R.layout.fragment_carousel, container, false).apply {
+            arguments?.getInt(IMG_KEY)?.let { this.carousel_imageView.setImageResource(it) }
+        }
     }
 
     companion object {
-        fun newInstance(imgId : Int) =
-           CarouselFragment().apply {
+        fun newInstance(imgId: Int) =
+            CarouselFragment().apply {
                 arguments = Bundle().apply {
                     putInt(IMG_KEY, imgId)
                 }
             }
+
+        const val TAG = "CarouselFragment"
     }
+
 }

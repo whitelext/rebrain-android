@@ -47,7 +47,7 @@ class MainActivity : BaseActivity() {
         val fragments = supportFragmentManager.fragments
         fragments.apply {
             forEach {
-                if (it is BaseFragment && (it.getFragmentTag() == "MainFragment" || it.getFragmentTag() == "FavoriteFragment")) {
+                if (it is BaseFragment && (it.getFragmentTag() == MainFragment.TAG || it.getFragmentTag() == FavouriteFragment.TAG)) {
                     supportFragmentManager.beginTransaction().detach(it).commit()
                 }
             }

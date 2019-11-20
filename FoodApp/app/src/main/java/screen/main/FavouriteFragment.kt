@@ -16,7 +16,7 @@ import utils.BaseFragment
 class FavouriteFragment : BaseFragment(){
 
     override fun getFragmentTag(): String {
-        return "FavoriteFragment"
+        return TAG
     }
 
     override fun onCreateView(
@@ -30,5 +30,6 @@ class FavouriteFragment : BaseFragment(){
         fun newInstance(): FavouriteFragment {
             return FavouriteFragment()
         }
+        const val TAG = "FavoriteFragment"
     }
 }

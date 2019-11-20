@@ -33,7 +33,7 @@ class MainFragment : BaseFragment() {
     lateinit var viewModel: ProductListViewModel
 
     override fun getFragmentTag(): String {
-        return "MainFragment"
+        return TAG
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,5 +133,6 @@ class MainFragment : BaseFragment() {
         fun newInstance(): MainFragment {
             return MainFragment()
         }
+        const val TAG = "MainFragment"
     }
 }
