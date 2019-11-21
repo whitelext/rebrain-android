@@ -8,5 +8,6 @@
     <color name="colourBackground">#f9fafe</color>
     <color name="colorToolbar">#5bb367</color>
     <color name="colorCarouselUnchecked">#4Dffffff</color>
+    <color name="colorShadow">#0F000000</color>
 
 </resources>
