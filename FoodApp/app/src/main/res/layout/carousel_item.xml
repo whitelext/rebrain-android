@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="1.9dp">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/carousel_element_tab_pager"
@@ -15,8 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:tabRippleColor="@null"
-        app:tabIndicatorHeight="4dp"
-        app:tabIndicatorColor="@color/colorShadow"
+        app:tabIndicator="@null"
         app:tabBackground="@drawable/tab_selector"
         app:tabGravity="center" />
 </FrameLayout>
