@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:tabRippleColor="@null"
+        app:tabIndicatorHeight="4dp"
+        app:tabIndicatorColor="@color/colorShadow"
         app:tabBackground="@drawable/tab_selector"
-        app:tabIndicator="@null"
         app:tabGravity="center" />
 </FrameLayout>
