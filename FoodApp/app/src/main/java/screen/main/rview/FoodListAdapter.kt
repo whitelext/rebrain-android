@@ -125,6 +125,12 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         )
 
         fun bind(item: Int) {
+            viewPager.adapter = CarouselStatePageAdapter(fm, pictures)
+            tabLayout.setupWithViewPager(viewPager, false)
+            setPagerState(item)
+        }
+
+        private fun setPagerState(item:Int){
             viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
                 }
@@ -140,8 +146,6 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     carouselCheckedItem = position
                 }
             })
-            viewPager.adapter = CarouselStatePageAdapter(fm, pictures)
-            tabLayout.setupWithViewPager(viewPager, false)
             viewPager.setCurrentItem(item, true)
         }
     }
