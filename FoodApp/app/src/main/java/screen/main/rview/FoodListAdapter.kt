@@ -9,11 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.example.foodapp.R
 import domain.Product
-import kotlinx.android.synthetic.main.carousel_item.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import screen.main.view.ViewpagerItem
 
@@ -32,7 +30,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var isGrid = false
 
-    private var carouselCheckedItem: Int = 0
+    var carouselCheckedItem: Int = 0
 
     lateinit var buyButtonListener: (context: Context, id: String) -> Toast
 
@@ -106,25 +104,10 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     inner class CarouselHolder(v: View) : RecyclerView.ViewHolder(v) {
-        private val view = v
+        private val view = v as ViewpagerItem
         fun bind(item: Int) {
-            view.carousel_element_tab_pager.addOnPageChangeListener(object :
-                ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {
-                }
-
-                override fun onPageScrolled(
-                    position: Int,
-                    positionOffset: Float,
-                    positionOffsetPixels: Int
-                ) {
-                }
-
-                override fun onPageSelected(position: Int) {
-                    carouselCheckedItem = position
-                }
-            })
-            (view as ViewpagerItem).setItem(item)
+            view.setupListener(this@FoodListAdapter)
+            view.setItem(item)
         }
     }
 }

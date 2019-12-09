@@ -5,9 +5,11 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.viewpager.widget.ViewPager
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.carousel_item.view.*
 import screen.main.carousel.adapter.CarouselStatePageAdapter
+import screen.main.rview.FoodListAdapter
 
 class ViewpagerItem @JvmOverloads constructor(
     context: Context,
@@ -31,8 +33,28 @@ class ViewpagerItem @JvmOverloads constructor(
         inflate(context, R.layout.carousel_item, this)
     }
 
+    fun setupListener(adapter: FoodListAdapter) {
+        carousel_element_tab_pager.addOnPageChangeListener(object :
+            ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                adapter.carouselCheckedItem = position
+            }
+        })
+    }
+
     fun setItem(item: Int) {
         carousel_element_tab_pager.setCurrentItem(item, true)
+
     }
 
     override fun onFinishInflate() {
