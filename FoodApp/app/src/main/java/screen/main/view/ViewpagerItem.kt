@@ -54,7 +54,6 @@ class ViewpagerItem @JvmOverloads constructor(
 
     fun setItem(item: Int) {
         carousel_element_tab_pager.setCurrentItem(item, true)
-
     }
 
     override fun onFinishInflate() {
