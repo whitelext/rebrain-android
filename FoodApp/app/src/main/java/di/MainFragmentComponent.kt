@@ -14,15 +14,14 @@ import screen.main.MainFragment
 import screen.main.viewmodel.ProductListViewModel
 import screen.main.viewmodel.ProductListViewModelFactory
 import utils.SharedPreferencesHelper
-import javax.inject.Singleton
 
-@Singleton
+@PerScreen
 @Component(
+    dependencies = [AppComponent::class],
     modules = [AuthorizationFlagModule::class,
         IntroFlagModule::class,
         ProductModeModule::class,
         SharedPreferencesModule::class,
-        AppModule::class,
         ProductModule::class]
 )
 interface MainFragmentComponent {

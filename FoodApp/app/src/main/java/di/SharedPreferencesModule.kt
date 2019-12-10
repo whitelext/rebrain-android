@@ -10,10 +10,12 @@ import utils.SharedPreferencesHelper
 @Module
 class SharedPreferencesModule {
     @Provides
+    @PerScreen
     fun provideSharedPreferences(context: Context): SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
 
     @Provides
+    @PerScreen
     fun provideSharedPreferencesHelper(context: Context): SharedPreferencesHelper =
         SharedPreferencesHelper(context)
 }

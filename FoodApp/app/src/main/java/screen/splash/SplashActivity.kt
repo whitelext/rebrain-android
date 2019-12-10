@@ -2,8 +2,8 @@ package screen.splash
 
 import android.content.Context
 import android.os.Bundle
+import com.example.foodapp.FoodApplication
 import com.example.foodapp.R
-import di.AppModule
 import di.DaggerIntroComponent
 import di.IntroModule
 import kotlinx.coroutines.*
@@ -27,7 +27,8 @@ class SplashActivity : BaseActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val component =
-            DaggerIntroComponent.builder().appModule(AppModule(this.application))
+            DaggerIntroComponent.builder()
+                .appComponent(((this.application) as FoodApplication).getAppComponent())
                 .introModule(IntroModule(this))
                 .build()
         component.inject(this)
