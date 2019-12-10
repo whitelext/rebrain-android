@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar.TabType
 import utils.BaseActivity
+import utils.BaseFragment
 import utils.ExitDialogFragment
 
 /**
@@ -17,7 +18,7 @@ import utils.ExitDialogFragment
  *
  * For now it shows [MainFragment] with list of jpg images in a ViewPager
  */
-class MainActivity : BaseActivity(){
+class MainActivity : BaseActivity() {
 
     private val FragmentTypeMap by lazy {
         hashMapOf<TabType, Fragment>(
@@ -30,6 +31,7 @@ class MainActivity : BaseActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         showFragment(TabType.MAIN)
+
 
         main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN) {
             showFragment(it)
@@ -44,10 +46,11 @@ class MainActivity : BaseActivity(){
     private fun showFragment(fragmentType: TabType) {
         val fragments = supportFragmentManager.fragments
         fragments.apply {
-            if (isNotEmpty())
-                forEach {
+            forEach {
+                if (it is BaseFragment && (it.getFragmentTag() == MainFragment.TAG || it.getFragmentTag() == FavouriteFragment.TAG)) {
                     supportFragmentManager.beginTransaction().detach(it).commit()
                 }
+            }
         }
         val fragment = FragmentTypeMap[fragmentType]
         val fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -68,8 +71,8 @@ class MainActivity : BaseActivity(){
         safeExit()
     }
 
-    private fun safeExit(){
-        ExitDialogFragment().show(supportFragmentManager,"exit")
+    private fun safeExit() {
+        ExitDialogFragment().show(supportFragmentManager, "exit")
     }
 
     companion object {

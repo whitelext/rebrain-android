@@ -1,11 +1,12 @@
 package interactor.repositories
 
-import utils.Storage
+import interactor.AuthorizationFlagStorage
+import javax.inject.Inject
 
 /**
  * Repository for working with authorization flag
  */
-class AuthorizationFlagRepository(private val authorizationStatus: Storage) {
+class AuthorizationFlagRepository @Inject constructor(private var authorizationStatus: AuthorizationFlagStorage) {
     /**
      * Returns true if User is authorized
      *

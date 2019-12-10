@@ -13,6 +13,8 @@ import timber.log.Timber
  */
 abstract class BaseFragment : Fragment() {
 
+    abstract fun getFragmentTag(): String
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Timber.tag("lifecycleFragment").i("onCreateView was called from ${activity?.localClassName}")
         return super.onCreateView(inflater, container, savedInstanceState)

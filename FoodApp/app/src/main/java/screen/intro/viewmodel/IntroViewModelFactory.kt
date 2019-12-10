@@ -3,11 +3,12 @@ package screen.intro.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import interactor.repositories.IntroFlagRepository
+import javax.inject.Inject
 
 /**
  * Factory for [IntroViewModel]
  */
-class IntroViewModelFactory(
+class IntroViewModelFactory @Inject constructor(
     private val introRepository: IntroFlagRepository
 ) :
     ViewModelProvider.Factory {

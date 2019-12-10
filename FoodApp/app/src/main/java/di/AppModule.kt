@@ -1,12 +1,12 @@
 package di
 
+import android.app.Application
 import android.content.Context
-import com.example.foodapp.FoodApplication
 import dagger.Module
 import dagger.Provides
 
 @Module
-class AppModule(val app : FoodApplication) {
+class AppModule(val app: Application) {
     @Provides
     fun provideContext(): Context = app
 }

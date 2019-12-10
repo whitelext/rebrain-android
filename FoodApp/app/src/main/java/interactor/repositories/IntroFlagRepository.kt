@@ -1,11 +1,13 @@
 package interactor.repositories
 
-import utils.Storage
+import interactor.IntroFlagStorage
+import javax.inject.Inject
+
 
 /**
  * Storage for working with intro flag
  */
-class IntroFlagRepository(private val introStatus: Storage) {
+class IntroFlagRepository @Inject constructor(private var introStatus: IntroFlagStorage) {
     /**
      * Returns true if intro was showed
      *

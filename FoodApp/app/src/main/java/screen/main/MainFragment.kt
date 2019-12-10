@@ -4,23 +4,21 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.R
-import interactor.ProductModeStorage
-import interactor.repositories.ProductModeRepository
+import di.AppModule
+import di.DaggerMainFragmentComponent
+import di.ProductModule
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
-import interactor.repositories.ProductsRepository
-import screen.main.viewmodel.ProductListViewModelFactory
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
 import screen.main.viewmodel.ProductListViewModel
 import utils.BaseFragment
 import utils.Generator
-import utils.SharedPreferencesHelper
+import javax.inject.Inject
 
 /**
  * [BaseFragment] subclass to show carousel
@@ -31,10 +29,20 @@ class MainFragment : BaseFragment() {
     private val foodListAdapter = FoodListAdapter()
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
-    private lateinit var viewModel: ProductListViewModel
+    @Inject
+    lateinit var viewModel: ProductListViewModel
+
+    override fun getFragmentTag(): String {
+        return TAG
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
+        val component =
+            DaggerMainFragmentComponent.builder().appModule(AppModule(this.activity!!.application))
+                .productModule(ProductModule(this, Generator))
+                .build()
+        component.inject(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -48,14 +56,17 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-        foodListAdapter.buyButtonListener = { context: Context, id: String -> context.toast(id) }
-        if (foodListAdapter.isGrid)
+        foodListAdapter.buyButtonListener =
+            { context: Context, id: String -> context.toast(id) }
+        if (foodListAdapter.isGrid) {
             setGrid()
-        else
+            recyclerView_main.addItemDecoration(decor)
+        } else
             lm = LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(viewModel.getProductList())
         initSwipeToRefresh()
+        foodListAdapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -93,7 +104,7 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initSwipeToRefresh() {
-        swiperefresh.setProgressViewOffset(false, 150, 250)
+        swiperefresh.setProgressViewOffset(false, 200, 350)
         swiperefresh.setColorSchemeResources(R.color.colorToolbar)
         swiperefresh.setOnRefreshListener {
             foodListAdapter.setProductList(viewModel.shuffleProductList())
@@ -113,19 +124,15 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(
+        viewModel.productList.observe(
             this,
-            ProductListViewModelFactory(ProductsRepository(Generator), ProductModeRepository(
-                ProductModeStorage(SharedPreferencesHelper(context!!))
-            ))
-        )
-            .get(ProductListViewModel::class.java)
-        viewModel.productList.observe(this, Observer { foodListAdapter.setProductList(it) })
+            Observer { foodListAdapter.setProductList(it) })
     }
 
     companion object {
         fun newInstance(): MainFragment {
             return MainFragment()
         }
+        const val TAG = "MainFragment"
     }
 }

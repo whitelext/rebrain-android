@@ -1,11 +1,12 @@
 package interactor.repositories
 
-import utils.Storage
+import interactor.ProductModeStorage
+import javax.inject.Inject
 
 /**
  * Repository for working wit Product display mode
  */
-class ProductModeRepository(private val productMode: Storage) {
+class ProductModeRepository @Inject constructor(private var productMode: ProductModeStorage) {
     /**
      * Returns true if display mode is Grid
      *
