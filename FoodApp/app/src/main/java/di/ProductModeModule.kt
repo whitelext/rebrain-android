@@ -10,11 +10,11 @@ import utils.Storage
 @Module
 class ProductModeModule {
     @Provides
-    @PerScreen
+    @PerApplication
     fun provideStorage(prefs: SharedPreferencesHelper): Storage = ProductModeStorage(prefs)
 
     @Provides
-    @PerScreen
+    @PerApplication
     fun provideRepository(storage: ProductModeStorage): ProductModeRepository =
         ProductModeRepository(storage)
 }

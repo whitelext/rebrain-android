@@ -10,11 +10,11 @@ import utils.Storage
 @Module
 class IntroFlagModule {
     @Provides
-    @PerScreen
+    @PerApplication
     fun provideStorage(prefs: SharedPreferencesHelper): Storage = IntroFlagStorage(prefs)
 
     @Provides
-    @PerScreen
+    @PerApplication
     fun provideRepository(storage: IntroFlagStorage): IntroFlagRepository =
         IntroFlagRepository(storage)
 }

@@ -10,11 +10,11 @@ import utils.Storage
 @Module
 class AuthorizationFlagModule {
     @Provides
-    @PerScreen
+    @PerApplication
     fun provideStorage(prefs: SharedPreferencesHelper): Storage = AuthorizationFlagStorage(prefs)
 
     @Provides
-    @PerScreen
+    @PerApplication
     fun provideRepository(storage: AuthorizationFlagStorage): AuthorizationFlagRepository =
         AuthorizationFlagRepository(storage)
 }

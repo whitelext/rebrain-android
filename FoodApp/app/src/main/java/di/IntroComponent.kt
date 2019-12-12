@@ -10,8 +10,7 @@ import screen.splash.SplashActivity
 @PerScreen
 @Component(
     dependencies = [AppComponent::class],
-    modules = [IntroModule::class,
-        IntroFlagModule::class]
+    modules = [IntroModule::class]
 )
 interface IntroComponent {
     fun introFlagStorage(): IntroFlagStorage
