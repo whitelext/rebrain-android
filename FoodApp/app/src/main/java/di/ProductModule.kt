@@ -14,10 +14,12 @@ import utils.Generator
 class ProductModule(private val fragment: Fragment, private val generator: Generator) {
 
     @Provides
+    @PerScreen
     fun provideProductRepository(): ProductsRepository =
         ProductsRepository(generator)
 
     @Provides
+    @PerScreen
     fun provideProductListViewModelFactory(
         productsRepository: ProductsRepository,
         productModeRepository: ProductModeRepository
@@ -25,6 +27,7 @@ class ProductModule(private val fragment: Fragment, private val generator: Gener
         ProductListViewModelFactory(productsRepository, productModeRepository)
 
     @Provides
+    @PerScreen
     fun provideProductListViewModel(productListViewModelFactory: ProductListViewModelFactory): ProductListViewModel =
         ViewModelProviders.of(
             fragment,
