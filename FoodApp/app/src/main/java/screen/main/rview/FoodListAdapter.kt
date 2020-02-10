@@ -32,6 +32,9 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var carouselCheckedItem: Int = 0
 
+    var favoriteList: MutableList<Product> = mutableListOf()
+        private set
+
     lateinit var buyButtonListener: (context: Context, id: String) -> Toast
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -61,6 +64,11 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun setProductList(list: List<Product>) {
         productList = list
+        notifyDataSetChanged()
+    }
+
+    fun setFavoritesList(list: MutableList<Product>) {
+        favoriteList = list
         notifyDataSetChanged()
     }
 
@@ -98,6 +106,8 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             productPriceView.text = "${data.id}"
             Glide.with(productImageView.context).load(data.imageId).into(productImageView)
             buyImageButton.setOnClickListener {
+                if (!favoriteList.contains(data))
+                    favoriteList.add(data)
                 buyButtonListener(it.context, "${data.id}")
             }
         }

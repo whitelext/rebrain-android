@@ -8,7 +8,7 @@ import javax.inject.Inject
 /**
  * A class that manage data from data sources
  */
-class ProductsRepository@Inject constructor(private val foodGenerator: Generator) {
+class ProductsRepository @Inject constructor(private val foodGenerator: Generator) {
     /**
      * @return [List] of [Product]
      */
@@ -33,6 +33,4 @@ class ProductsRepository@Inject constructor(private val foodGenerator: Generator
             R.drawable.img_carousel_10
         )
     }
-
-
 }

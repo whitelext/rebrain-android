@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.FoodApplication
 import com.example.foodapp.R
-import di.DaggerMainFragmentComponent
+import di.DaggerMainActivityComponent
 import di.ProductModule
+import interactor.FavoriteListStorage
+import interactor.repositories.FavoritesRepository
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
 import screen.main.rview.FoodListAdapter
@@ -26,11 +28,13 @@ import javax.inject.Inject
  */
 class MainFragment : BaseFragment() {
 
-    private val foodListAdapter = FoodListAdapter()
+    private var favoriteListRepository = FavoritesRepository(FavoriteListStorage())
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
     @Inject
     lateinit var viewModel: ProductListViewModel
+
+    private val foodListAdapter = FoodListAdapter()
 
     override fun getFragmentTag(): String {
         return TAG
@@ -39,11 +43,12 @@ class MainFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         val component =
-            DaggerMainFragmentComponent.builder()
+            DaggerMainActivityComponent.builder()
                 .appComponent(((this.activity!!.application) as FoodApplication).getAppComponent())
                 .productModule(ProductModule(this, Generator))
                 .build()
         component.inject(this)
+        favoriteListRepository = component.favoriteListRepository()
         super.onCreate(savedInstanceState)
     }
 
@@ -66,8 +71,14 @@ class MainFragment : BaseFragment() {
             lm = LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(viewModel.getProductList())
+        foodListAdapter.setFavoritesList(viewModel.getFavoritesList())
         initSwipeToRefresh()
         foodListAdapter.notifyDataSetChanged()
+    }
+
+    override fun onPause() {
+        viewModel.setFavoriteList(foodListAdapter.favoriteList)
+        super.onPause()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -105,11 +116,11 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initSwipeToRefresh() {
-        swiperefresh.setProgressViewOffset(false, 200, 350)
-        swiperefresh.setColorSchemeResources(R.color.colorToolbar)
-        swiperefresh.setOnRefreshListener {
+        swipe_refresh_main.setProgressViewOffset(false, 200, 350)
+        swipe_refresh_main.setColorSchemeResources(R.color.colorToolbar)
+        swipe_refresh_main.setOnRefreshListener {
             foodListAdapter.setProductList(viewModel.shuffleProductList())
-            swiperefresh.isRefreshing = false
+            swipe_refresh_main.isRefreshing = false
         }
     }
 

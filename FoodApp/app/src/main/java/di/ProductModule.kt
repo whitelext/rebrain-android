@@ -4,6 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import dagger.Module
 import dagger.Provides
+import interactor.FavoriteListStorage
+import interactor.repositories.FavoritesRepository
 import interactor.repositories.ProductModeRepository
 import interactor.repositories.ProductsRepository
 import screen.main.viewmodel.ProductListViewModel
@@ -20,17 +22,27 @@ class ProductModule(private val fragment: Fragment, private val generator: Gener
 
     @Provides
     @PerScreen
+    fun provideStorage(): FavoriteListStorage = FavoriteListStorage()
+
+    @Provides
+    @PerScreen
+    fun provideRepository(storage: FavoriteListStorage): FavoritesRepository =
+        FavoritesRepository(storage)
+
+    @Provides
+    @PerScreen
     fun provideProductListViewModelFactory(
         productsRepository: ProductsRepository,
-        productModeRepository: ProductModeRepository
+        productModeRepository: ProductModeRepository,
+        favoritesRepository: FavoritesRepository
     ): ProductListViewModelFactory =
-        ProductListViewModelFactory(productsRepository, productModeRepository)
+        ProductListViewModelFactory(productsRepository, productModeRepository, favoritesRepository)
 
     @Provides
     @PerScreen
     fun provideProductListViewModel(productListViewModelFactory: ProductListViewModelFactory): ProductListViewModel =
         ViewModelProviders.of(
-            fragment,
+            fragment.activity!!,
             productListViewModelFactory
         )
             .get(ProductListViewModel::class.java)

@@ -1,23 +1,24 @@
 //dependencies
-ext{
-   //Gradle
+ext {
+    //Gradle
     gradleVersion = '3.5.3'
 
     //Kotlin
-    kotlinVersion = '1.3.50'
+    kotlinVersion = '1.3.61'
     coroutinesVersion = '1.1.0'
-    ankoVersion="0.10.8"
+    ankoVersion = "0.10.8"
 
     //AndroidX
     appcompatVersion = '1.1.0'
     legacyVersion = '1.0.0'
-    lifecycleVersion = '2.1.0'
+    lifecycleVersion = '2.2.0'
+    fragmentKtxVersion = '1.2.1'
 
     //Ui
     constraintLayoutVersion = '1.1.3'
-    cardviewVersion='1.0.0'
-    materialVersion='1.0.0'
-    recyclerviewVersion='1.0.0'
+    cardviewVersion = '1.0.0'
+    materialVersion = '1.1.0'
+    recyclerviewVersion = '1.1.0'
     glideVersion = '4.9.0'
 
     //Test
@@ -29,5 +30,5 @@ ext{
     timberVersion = '4.7.1'
 
     //Di
-    daggerVersion ='2.25.2'
+    daggerVersion = '2.25.2'
 }

@@ -54,8 +54,8 @@ class MainActivity : BaseActivity() {
         }
         val fragment = FragmentTypeMap[fragmentType]
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        if (supportFragmentManager.findFragmentById(fragment!!.id) == null) {
-            fragmentTransaction.add(R.id.container, fragment)
+        if (supportFragmentManager.findFragmentByTag((fragment as BaseFragment).getFragmentTag()) == null) {
+            fragmentTransaction.add(R.id.container, fragment, fragment.getFragmentTag())
         } else {
             fragmentTransaction.attach(fragment)
         }
