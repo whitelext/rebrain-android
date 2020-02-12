@@ -21,7 +21,6 @@ class FavoriteListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var favoriteList: MutableList<Product> = mutableListOf()
         private set
 
-
     lateinit var favButtonListener: (id: Int) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -60,7 +59,7 @@ class FavoriteListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             productPriceView.text = "${data.id}"
             Glide.with(productImageView.context).load(data.imageId).into(productImageView)
             favButton.setOnClickListener {
-               favButtonListener(data.id)
+                favButtonListener(data.id)
                 notifyDataSetChanged()
             }
         }

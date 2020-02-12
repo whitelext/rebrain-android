@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.foodapp.R
@@ -31,7 +30,6 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var isGrid = false
 
     var carouselCheckedItem: Int = 0
-
 
     lateinit var buyButtonListener: (context: Context, id: Int) -> Unit
 
