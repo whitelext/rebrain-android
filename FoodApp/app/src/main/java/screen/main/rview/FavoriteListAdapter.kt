@@ -12,11 +12,17 @@ import com.example.foodapp.R
 import domain.Product
 import kotlinx.android.synthetic.main.favorite_list_item.view.*
 
+/**
+ *  An Adapter for [RecyclerView] that shows list of favorite products
+ *
+ */
 class FavoriteListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var favoriteList: MutableList<Product> = mutableListOf()
         private set
 
+
+    lateinit var favButtonListener: (id: Int) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutRv = R.layout.favorite_list_item
@@ -53,8 +59,8 @@ class FavoriteListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             productNameView.text = data.name
             productPriceView.text = "${data.id}"
             Glide.with(productImageView.context).load(data.imageId).into(productImageView)
-            favButton.setOnClickListener{
-                favoriteList.remove(data)
+            favButton.setOnClickListener {
+               favButtonListener(data.id)
                 notifyDataSetChanged()
             }
         }

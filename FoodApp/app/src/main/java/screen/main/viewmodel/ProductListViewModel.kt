@@ -40,15 +40,6 @@ class ProductListViewModel(
     fun getProductList(): List<Product> = _productList.value ?: listOf()
 
     /**
-     * @return [MutableList] of [Product] or empty list
-     */
-    fun getFavoritesList(): MutableList<Product> = _favoriteList.value ?: mutableListOf()
-
-    fun setFavoriteList(favorites: MutableList<Product>) {
-        _favoriteList.value = favorites
-    }
-
-    /**
      * @return true if display mode is Grid
      */
     fun isModeGrid(): Boolean = _isListGrid.value ?: false
@@ -59,6 +50,20 @@ class ProductListViewModel(
      */
     fun shuffleProductList(): List<Product> {
         return productsRepository.getProductList().shuffled()
+    }
+
+    /**
+     * Adds a product to list of favorites
+     * @param id is product id
+     */
+    fun addFavorite(id: Int) {
+        val product = productList.value?.find {
+            it.id == id
+        }
+        product?.let {
+            if (!favoritesRepository.getFavoriteList().contains(it))
+                favoritesRepository.saveElement(it)
+        }
     }
 
     /**

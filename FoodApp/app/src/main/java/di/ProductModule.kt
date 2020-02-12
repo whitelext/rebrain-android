@@ -22,15 +22,6 @@ class ProductModule(private val fragment: Fragment, private val generator: Gener
 
     @Provides
     @PerScreen
-    fun provideStorage(): FavoriteListStorage = FavoriteListStorage()
-
-    @Provides
-    @PerScreen
-    fun provideRepository(storage: FavoriteListStorage): FavoritesRepository =
-        FavoritesRepository(storage)
-
-    @Provides
-    @PerScreen
     fun provideProductListViewModelFactory(
         productsRepository: ProductsRepository,
         productModeRepository: ProductModeRepository,
@@ -42,7 +33,7 @@ class ProductModule(private val fragment: Fragment, private val generator: Gener
     @PerScreen
     fun provideProductListViewModel(productListViewModelFactory: ProductListViewModelFactory): ProductListViewModel =
         ViewModelProviders.of(
-            fragment.activity!!,
+            fragment,
             productListViewModelFactory
         )
             .get(ProductListViewModel::class.java)

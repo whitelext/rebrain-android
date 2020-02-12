@@ -9,10 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.FoodApplication
 import com.example.foodapp.R
-import di.DaggerMainActivityComponent
+import di.DaggerMainFragmentComponent
 import di.ProductModule
-import interactor.FavoriteListStorage
-import interactor.repositories.FavoritesRepository
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.toast
 import screen.main.rview.FoodListAdapter
@@ -28,7 +26,6 @@ import javax.inject.Inject
  */
 class MainFragment : BaseFragment() {
 
-    private var favoriteListRepository = FavoritesRepository(FavoriteListStorage())
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
     @Inject
@@ -43,12 +40,11 @@ class MainFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         val component =
-            DaggerMainActivityComponent.builder()
+            DaggerMainFragmentComponent.builder()
                 .appComponent(((this.activity!!.application) as FoodApplication).getAppComponent())
                 .productModule(ProductModule(this, Generator))
                 .build()
         component.inject(this)
-        favoriteListRepository = component.favoriteListRepository()
         super.onCreate(savedInstanceState)
     }
 
@@ -63,7 +59,10 @@ class MainFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
         foodListAdapter.buyButtonListener =
-            { context: Context, id: String -> context.toast(id) }
+            { context: Context, id: Int ->
+                context.toast("$id")
+                viewModel.addFavorite(id)
+            }
         if (foodListAdapter.isGrid) {
             setGrid()
             recyclerView_main.addItemDecoration(decor)
@@ -71,14 +70,7 @@ class MainFragment : BaseFragment() {
             lm = LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(viewModel.getProductList())
-        foodListAdapter.setFavoritesList(viewModel.getFavoritesList())
         initSwipeToRefresh()
-        foodListAdapter.notifyDataSetChanged()
-    }
-
-    override fun onPause() {
-        viewModel.setFavoriteList(foodListAdapter.favoriteList)
-        super.onPause()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -3,6 +3,9 @@ package interactor
 import domain.Product
 import javax.inject.Inject
 
+/**
+ * Storage for list of favorite products
+ */
 class FavoriteListStorage @Inject constructor() {
 
     private val favoriteList: MutableList<Product> = mutableListOf()

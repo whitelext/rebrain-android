@@ -14,12 +14,9 @@ import screen.main.viewmodel.ProductListViewModelFactory
     dependencies = [AppComponent::class],
     modules = [ProductModule::class]
 )
-interface MainActivityComponent {
+interface MainFragmentComponent {
     fun productsRepository(): ProductsRepository
-    fun favoriteListRepository(): FavoritesRepository
-    fun favoriteListStorage(): FavoriteListStorage
     fun productListViewModelFactory(): ProductListViewModelFactory
     fun productListViewModel(): ProductListViewModel
     fun inject(mainFragment: MainFragment)
-    fun inject(favouriteFragment: FavouriteFragment)
 }

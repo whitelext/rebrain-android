@@ -11,13 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodapp.FoodApplication
 import com.example.foodapp.R
-import di.DaggerMainActivityComponent
-import di.ProductModule
+import di.DaggerFavoriteFragmentComponent
+import di.FavoriteFragmentModule
 import kotlinx.android.synthetic.main.fragment_favourite.*
 import screen.main.rview.FavoriteListAdapter
-import screen.main.viewmodel.ProductListViewModel
+import screen.main.viewmodel.FavoriteListViewModel
 import utils.BaseFragment
-import utils.Generator
 import javax.inject.Inject
 
 /**
@@ -32,14 +31,14 @@ class FavouriteFragment : BaseFragment() {
     }
 
     @Inject
-    lateinit var viewModel: ProductListViewModel
+    lateinit var viewModel: FavoriteListViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val component =
-            DaggerMainActivityComponent.builder()
+            DaggerFavoriteFragmentComponent.builder()
                 .appComponent(((this.activity!!.application) as FoodApplication).getAppComponent())
-                .productModule(ProductModule(this, Generator))
+                .favoriteFragmentModule(FavoriteFragmentModule(this))
                 .build()
         component.inject(this)
         super.onCreate(savedInstanceState)
@@ -56,8 +55,9 @@ class FavouriteFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
         initRv(LinearLayoutManager(context))
-        favoriteListAdapter.setFavoritesList(viewModel.getFavoritesList())
-        favoriteListAdapter.notifyDataSetChanged()
+        favoriteListAdapter.favButtonListener = { id: Int ->
+            viewModel.removeElement(id)
+        }
         initSwipeToRefresh()
     }
 
