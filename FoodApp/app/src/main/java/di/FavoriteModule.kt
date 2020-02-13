@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import interactor.FavoriteListStorage
 import interactor.repositories.FavoritesRepository
-import javax.inject.Singleton
 
 
 @Module

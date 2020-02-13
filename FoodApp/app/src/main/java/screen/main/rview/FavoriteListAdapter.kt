@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.favorite_list_item.view.*
  *  An Adapter for [RecyclerView] that shows list of favorite products
  *
  */
-class FavoriteListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FavoriteListAdapter(
+    var favButtonListener: (id: Int) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var favoriteList: MutableList<Product> = mutableListOf()
         private set
-
-    lateinit var favButtonListener: (id: Int) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutRv = R.layout.favorite_list_item

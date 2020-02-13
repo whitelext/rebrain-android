@@ -25,7 +25,10 @@ import javax.inject.Inject
  */
 class FavouriteFragment : BaseFragment() {
 
-    private val favoriteListAdapter = FavoriteListAdapter()
+    private val favoriteListAdapter = FavoriteListAdapter { id: Int ->
+        viewModel.removeElement(id)
+    }
+
     override fun getFragmentTag(): String {
         return TAG
     }
@@ -55,9 +58,6 @@ class FavouriteFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
         initRv(LinearLayoutManager(context))
-        favoriteListAdapter.favButtonListener = { id: Int ->
-            viewModel.removeElement(id)
-        }
         initSwipeToRefresh()
     }
 

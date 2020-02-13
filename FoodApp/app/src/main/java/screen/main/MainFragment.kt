@@ -31,7 +31,10 @@ class MainFragment : BaseFragment() {
     @Inject
     lateinit var viewModel: ProductListViewModel
 
-    private val foodListAdapter = FoodListAdapter()
+    private val foodListAdapter = FoodListAdapter { context: Context, id: Int ->
+        context.toast("$id")
+        viewModel.addFavorite(id)
+    }
 
     override fun getFragmentTag(): String {
         return TAG
@@ -58,11 +61,6 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-        foodListAdapter.buyButtonListener =
-            { context: Context, id: Int ->
-                context.toast("$id")
-                viewModel.addFavorite(id)
-            }
         if (foodListAdapter.isGrid) {
             setGrid()
             recyclerView_main.addItemDecoration(decor)

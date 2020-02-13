@@ -18,7 +18,9 @@ import screen.main.view.ViewpagerItem
  *  An Adapter for [RecyclerView] that shows list of products
  *
  */
-class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FoodListAdapter(
+    var buyButtonListener: (context: Context, id: Int) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class MainTabRvType {
         VIEWPAGER, PRODUCT
@@ -30,8 +32,6 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var isGrid = false
 
     var carouselCheckedItem: Int = 0
-
-    lateinit var buyButtonListener: (context: Context, id: Int) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == MainTabRvType.VIEWPAGER.ordinal) {
