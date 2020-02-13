@@ -5,6 +5,10 @@ import screen.main.FavouriteFragment
 import screen.main.viewmodel.FavoriteListViewModel
 import screen.main.viewmodel.FavoriteListViewModelFactory
 
+/**
+ * Component for [FavouriteFragment]
+ *
+ */
 @PerScreen
 @Component(
     dependencies = [AppComponent::class],

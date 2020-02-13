@@ -7,6 +7,10 @@ import interactor.repositories.AuthorizationFlagRepository
 import utils.SharedPreferencesHelper
 import utils.Storage
 
+/**
+ * Provides [AuthorizationFlagRepository] for application
+ *
+ */
 @Module
 class AuthorizationFlagModule {
     @Provides

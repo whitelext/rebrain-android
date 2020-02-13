@@ -5,7 +5,10 @@ import dagger.Provides
 import interactor.FavoriteListStorage
 import interactor.repositories.FavoritesRepository
 
-
+/**
+ * Provides [FavoritesRepository] for application
+ *
+ */
 @Module
 class FavoriteModule {
 

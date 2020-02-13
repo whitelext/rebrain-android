@@ -8,6 +8,10 @@ import interactor.repositories.IntroFlagRepository
 import screen.intro.viewmodel.IntroViewModel
 import screen.intro.viewmodel.IntroViewModelFactory
 
+/**
+ * Provides [IntroViewModel]
+ *
+ */
 @Module
 class IntroModule(private val activity: FragmentActivity) {
     @Provides

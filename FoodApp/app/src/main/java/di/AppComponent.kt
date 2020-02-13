@@ -14,6 +14,10 @@ import interactor.repositories.IntroFlagRepository
 import interactor.repositories.ProductModeRepository
 import utils.SharedPreferencesHelper
 
+/**
+ * Application component
+ *
+ */
 @Component(
     modules = [AppModule::class,
         SharedPreferencesModule::class,

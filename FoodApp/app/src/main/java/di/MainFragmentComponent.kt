@@ -1,14 +1,15 @@
 package di
 
 import dagger.Component
-import interactor.FavoriteListStorage
-import interactor.repositories.FavoritesRepository
 import interactor.repositories.ProductsRepository
-import screen.main.FavouriteFragment
 import screen.main.MainFragment
 import screen.main.viewmodel.ProductListViewModel
 import screen.main.viewmodel.ProductListViewModelFactory
 
+/**
+ * Component for [MainFragment]
+ *
+ */
 @PerScreen
 @Component(
     dependencies = [AppComponent::class],

@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import dagger.Module
 import dagger.Provides
-import interactor.FavoriteListStorage
 import interactor.repositories.FavoritesRepository
 import interactor.repositories.ProductModeRepository
 import interactor.repositories.ProductsRepository
@@ -12,6 +11,10 @@ import screen.main.viewmodel.ProductListViewModel
 import screen.main.viewmodel.ProductListViewModelFactory
 import utils.Generator
 
+/**
+ * Provides [ProductListViewModel] for main screen
+ *
+ */
 @Module
 class ProductModule(private val fragment: Fragment, private val generator: Generator) {
 

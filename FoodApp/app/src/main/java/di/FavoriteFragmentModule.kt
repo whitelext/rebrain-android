@@ -8,6 +8,10 @@ import interactor.repositories.FavoritesRepository
 import screen.main.viewmodel.FavoriteListViewModel
 import screen.main.viewmodel.FavoriteListViewModelFactory
 
+/**
+ * Provides [FavoriteListViewModel] for favorite screen
+ *
+ */
 @Module
 class FavoriteFragmentModule(private val fragment: Fragment) {
 
