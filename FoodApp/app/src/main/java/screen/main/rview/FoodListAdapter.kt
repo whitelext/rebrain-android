@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.foodapp.R
@@ -19,7 +18,9 @@ import screen.main.view.ViewpagerItem
  *  An Adapter for [RecyclerView] that shows list of products
  *
  */
-class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FoodListAdapter(
+    var buyButtonListener: (context: Context, id: Int) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class MainTabRvType {
         VIEWPAGER, PRODUCT
@@ -31,8 +32,6 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var isGrid = false
 
     var carouselCheckedItem: Int = 0
-
-    lateinit var buyButtonListener: (context: Context, id: String) -> Toast
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == MainTabRvType.VIEWPAGER.ordinal) {
@@ -63,6 +62,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         productList = list
         notifyDataSetChanged()
     }
+
 
     override fun getItemCount(): Int {
         return productList.size + 1
@@ -98,7 +98,7 @@ class FoodListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             productPriceView.text = "${data.id}"
             Glide.with(productImageView.context).load(data.imageId).into(productImageView)
             buyImageButton.setOnClickListener {
-                buyButtonListener(it.context, "${data.id}")
+                buyButtonListener(it.context, data.id)
             }
         }
     }

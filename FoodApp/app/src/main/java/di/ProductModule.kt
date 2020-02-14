@@ -4,12 +4,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import dagger.Module
 import dagger.Provides
+import interactor.repositories.FavoritesRepository
 import interactor.repositories.ProductModeRepository
 import interactor.repositories.ProductsRepository
 import screen.main.viewmodel.ProductListViewModel
 import screen.main.viewmodel.ProductListViewModelFactory
 import utils.Generator
 
+/**
+ * Provides [ProductListViewModel] for main screen
+ *
+ */
 @Module
 class ProductModule(private val fragment: Fragment, private val generator: Generator) {
 
@@ -22,9 +27,10 @@ class ProductModule(private val fragment: Fragment, private val generator: Gener
     @PerScreen
     fun provideProductListViewModelFactory(
         productsRepository: ProductsRepository,
-        productModeRepository: ProductModeRepository
+        productModeRepository: ProductModeRepository,
+        favoritesRepository: FavoritesRepository
     ): ProductListViewModelFactory =
-        ProductListViewModelFactory(productsRepository, productModeRepository)
+        ProductListViewModelFactory(productsRepository, productModeRepository, favoritesRepository)
 
     @Provides
     @PerScreen

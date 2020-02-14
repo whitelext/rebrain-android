@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import domain.Product
+import interactor.repositories.FavoritesRepository
 import interactor.repositories.ProductModeRepository
 import interactor.repositories.ProductsRepository
 
@@ -12,7 +13,8 @@ import interactor.repositories.ProductsRepository
  */
 class ProductListViewModel(
     private val productsRepository: ProductsRepository,
-    private val productModeRepository: ProductModeRepository
+    private val productModeRepository: ProductModeRepository,
+    private val favoritesRepository: FavoritesRepository
 ) : ViewModel() {
     private val _productList = MutableLiveData<List<Product>>()
     val productList: LiveData<List<Product>>
@@ -22,9 +24,14 @@ class ProductListViewModel(
     val isListGrid: LiveData<Boolean>
         get() = _isListGrid
 
+    private val _favoriteList = MutableLiveData<MutableList<Product>>()
+    val favoriteList: LiveData<MutableList<Product>>
+        get() = _favoriteList
+
     init {
         _productList.value = productsRepository.getProductList()
         _isListGrid.value = productModeRepository.isModeGrid()
+        _favoriteList.value = favoritesRepository.getFavoriteList()
     }
 
     /**
@@ -43,6 +50,20 @@ class ProductListViewModel(
      */
     fun shuffleProductList(): List<Product> {
         return productsRepository.getProductList().shuffled()
+    }
+
+    /**
+     * Adds a product to list of favorites
+     * @param id is product id
+     */
+    fun addFavorite(id: Int) {
+        val product = productList.value?.find {
+            it.id == id
+        }
+        product?.let {
+            if (!favoritesRepository.getFavoriteList().contains(it))
+                favoritesRepository.saveElement(it)
+        }
     }
 
     /**

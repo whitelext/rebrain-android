@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="23dp"
+                android:height="28dp" />
+            <solid android:color="#4cff9800" />
+            <corners
+                android:bottomLeftRadius="5dp"
+                android:bottomRightRadius="5dp" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_star_orange_13dp" />
+</layer-list>
+

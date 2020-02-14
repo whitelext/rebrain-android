@@ -26,11 +26,15 @@ import javax.inject.Inject
  */
 class MainFragment : BaseFragment() {
 
-    private val foodListAdapter = FoodListAdapter()
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
     @Inject
     lateinit var viewModel: ProductListViewModel
+
+    private val foodListAdapter = FoodListAdapter { context: Context, id: Int ->
+        context.toast("$id")
+        viewModel.addFavorite(id)
+    }
 
     override fun getFragmentTag(): String {
         return TAG
@@ -57,8 +61,6 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-        foodListAdapter.buyButtonListener =
-            { context: Context, id: String -> context.toast(id) }
         if (foodListAdapter.isGrid) {
             setGrid()
             recyclerView_main.addItemDecoration(decor)
@@ -67,7 +69,6 @@ class MainFragment : BaseFragment() {
         initRv(lm)
         foodListAdapter.setProductList(viewModel.getProductList())
         initSwipeToRefresh()
-        foodListAdapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -105,11 +106,11 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initSwipeToRefresh() {
-        swiperefresh.setProgressViewOffset(false, 200, 350)
-        swiperefresh.setColorSchemeResources(R.color.colorToolbar)
-        swiperefresh.setOnRefreshListener {
+        swipe_refresh_main.setProgressViewOffset(false, 200, 350)
+        swipe_refresh_main.setColorSchemeResources(R.color.colorToolbar)
+        swipe_refresh_main.setOnRefreshListener {
             foodListAdapter.setProductList(viewModel.shuffleProductList())
-            swiperefresh.isRefreshing = false
+            swipe_refresh_main.isRefreshing = false
         }
     }
 

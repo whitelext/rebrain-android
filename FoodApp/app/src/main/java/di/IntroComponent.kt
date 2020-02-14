@@ -7,6 +7,10 @@ import screen.intro.viewmodel.IntroViewModel
 import screen.intro.viewmodel.IntroViewModelFactory
 import screen.splash.SplashActivity
 
+/**
+ * Component for [SplashActivity] to show intro screen
+ *
+ */
 @PerScreen
 @Component(
     dependencies = [AppComponent::class],

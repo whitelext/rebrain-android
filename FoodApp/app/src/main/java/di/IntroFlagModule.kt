@@ -7,6 +7,10 @@ import interactor.repositories.IntroFlagRepository
 import utils.SharedPreferencesHelper
 import utils.Storage
 
+/**
+ * Provides [IntroFlagRepository] for application
+ *
+ */
 @Module
 class IntroFlagModule {
     @Provides

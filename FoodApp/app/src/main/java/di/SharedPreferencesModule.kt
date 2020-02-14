@@ -7,6 +7,10 @@ import dagger.Module
 import dagger.Provides
 import utils.SharedPreferencesHelper
 
+/**
+ * Provides [SharedPreferences]  and [SharedPreferencesHelper] for application
+ *
+ */
 @Module
 class SharedPreferencesModule {
     @Provides

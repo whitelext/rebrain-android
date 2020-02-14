@@ -23,11 +23,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //AndroidX
+    implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.legacy:legacy-support-v4:$legacyVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"

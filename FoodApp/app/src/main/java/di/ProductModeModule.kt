@@ -7,6 +7,10 @@ import interactor.repositories.ProductModeRepository
 import utils.SharedPreferencesHelper
 import utils.Storage
 
+/**
+ * Provides [ProductModeRepository] for application
+ *
+ */
 @Module
 class ProductModeModule {
     @Provides

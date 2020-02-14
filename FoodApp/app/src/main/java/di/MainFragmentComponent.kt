@@ -6,6 +6,10 @@ import screen.main.MainFragment
 import screen.main.viewmodel.ProductListViewModel
 import screen.main.viewmodel.ProductListViewModelFactory
 
+/**
+ * Component for [MainFragment]
+ *
+ */
 @PerScreen
 @Component(
     dependencies = [AppComponent::class],
