@@ -12,6 +12,7 @@ import interactor.repositories.AuthorizationFlagRepository
 import interactor.repositories.FavoritesRepository
 import interactor.repositories.IntroFlagRepository
 import interactor.repositories.ProductModeRepository
+import okhttp3.OkHttpClient
 import utils.SharedPreferencesHelper
 
 /**
@@ -24,7 +25,8 @@ import utils.SharedPreferencesHelper
         AuthorizationFlagModule::class,
         IntroFlagModule::class,
         ProductModeModule::class,
-        FavoriteModule::class]
+        FavoriteModule::class,
+        OkHttpModule::class]
 )
 @PerApplication
 interface AppComponent {
@@ -33,6 +35,7 @@ interface AppComponent {
     fun sharedPreferencesHelper(): SharedPreferencesHelper
     fun productModeStorage(): ProductModeStorage
     fun favoriteListRepository(): FavoritesRepository
+    fun okHttpClient(): OkHttpClient
     fun favoriteListStorage(): FavoriteListStorage
     fun authorizationFlagStorage(): AuthorizationFlagStorage
     fun introFlagStorage(): IntroFlagStorage

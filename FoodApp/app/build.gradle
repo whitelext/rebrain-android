@@ -35,6 +35,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.legacy:legacy-support-v4:$legacyVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    //Network
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     //UI
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.cardview:cardview:$cardviewVersion"

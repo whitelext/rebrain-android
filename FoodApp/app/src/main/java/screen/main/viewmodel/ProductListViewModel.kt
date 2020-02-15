@@ -7,6 +7,9 @@ import domain.Product
 import interactor.repositories.FavoritesRepository
 import interactor.repositories.ProductModeRepository
 import interactor.repositories.ProductsRepository
+import okhttp3.*
+import timber.log.Timber
+import java.io.IOException
 
 /**
  * [ViewModel] for MainFragment
@@ -75,4 +78,27 @@ class ProductListViewModel(
     }
 
     fun getCarouselPictures() = productsRepository.getCarouselPictures()
+
+    /**
+     *  Server request
+     *
+     */
+    fun makeServerRequest(client: OkHttpClient) {
+        val request = Request.Builder()
+            .url("http://api.android.srwx.net/api/v2")
+            .build()
+        try {
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Timber.tag("Network").e(e)
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    Timber.tag("Network").i(response.body.toString())
+                }
+            })
+        } catch (e: Exception) {
+            Timber.tag("Network").e(e)
+        }
+    }
 }
