@@ -8,7 +8,7 @@ import timber.log.Timber
  * Okhttp Interceptor that logs the outgoing request and the incoming response
  *
  */
-class LogInterceptor : Interceptor{
+class LogInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val t1 = System.nanoTime()
