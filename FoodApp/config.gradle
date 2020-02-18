@@ -8,6 +8,9 @@ ext {
     coroutinesVersion = '1.1.0'
     ankoVersion = "0.10.8"
 
+    //Network
+    okhttpVersion = '4.3.1'
+
     //AndroidX
     appcompatVersion = '1.1.0'
     legacyVersion = '1.0.0'

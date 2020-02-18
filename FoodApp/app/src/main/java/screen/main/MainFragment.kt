@@ -12,6 +12,7 @@ import com.example.foodapp.R
 import di.DaggerMainFragmentComponent
 import di.ProductModule
 import kotlinx.android.synthetic.main.fragment_main.*
+import okhttp3.OkHttpClient
 import org.jetbrains.anko.toast
 import screen.main.rview.FoodListAdapter
 import screen.main.rview.MarginItemDecoration
@@ -30,6 +31,8 @@ class MainFragment : BaseFragment() {
     private val decor = MarginItemDecoration(11)
     @Inject
     lateinit var viewModel: ProductListViewModel
+    @Inject
+    lateinit var client: OkHttpClient
 
     private val foodListAdapter = FoodListAdapter { context: Context, id: Int ->
         context.toast("$id")
@@ -68,6 +71,7 @@ class MainFragment : BaseFragment() {
             lm = LinearLayoutManager(context)
         initRv(lm)
         foodListAdapter.setProductList(viewModel.getProductList())
+        viewModel.makeServerRequest(client)
         initSwipeToRefresh()
     }
 
@@ -110,6 +114,7 @@ class MainFragment : BaseFragment() {
         swipe_refresh_main.setColorSchemeResources(R.color.colorToolbar)
         swipe_refresh_main.setOnRefreshListener {
             foodListAdapter.setProductList(viewModel.shuffleProductList())
+            viewModel.makeServerRequest(client)
             swipe_refresh_main.isRefreshing = false
         }
     }

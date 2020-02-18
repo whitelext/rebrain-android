@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.foodapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".FoodApplication"
         android:allowBackup="true"
@@ -13,13 +15,12 @@
         <activity android:name="utils.BaseActivity"></activity>
         <activity
             android:name="screen.intro.IntroActivity"
-            android:theme="@style/IntroTheme"
-            android:taskAffinity="screen.intro">
-        </activity>
+            android:taskAffinity="screen.intro"
+            android:theme="@style/IntroTheme"></activity>
         <activity
             android:name="screen.splash.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
