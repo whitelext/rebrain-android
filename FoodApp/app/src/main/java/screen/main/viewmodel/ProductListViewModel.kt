@@ -101,4 +101,8 @@ class ProductListViewModel(
             Timber.tag("Network").e(e)
         }
     }
+
+    fun callApi() {
+        productsRepository.callApi()
+    }
 }

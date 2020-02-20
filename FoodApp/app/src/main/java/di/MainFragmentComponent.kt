@@ -2,6 +2,7 @@ package di
 
 import dagger.Component
 import interactor.repositories.ProductsRepository
+import network.products.ProductsApi
 import okhttp3.OkHttpClient
 import screen.main.MainFragment
 import screen.main.viewmodel.ProductListViewModel
@@ -20,6 +21,7 @@ interface MainFragmentComponent {
     fun productsRepository(): ProductsRepository
     fun productListViewModelFactory(): ProductListViewModelFactory
     fun okHttpClient(): OkHttpClient
+    fun productsApi(): ProductsApi
     fun productListViewModel(): ProductListViewModel
     fun inject(mainFragment: MainFragment)
 }

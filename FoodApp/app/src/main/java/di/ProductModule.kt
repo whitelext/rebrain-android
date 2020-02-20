@@ -7,6 +7,7 @@ import dagger.Provides
 import interactor.repositories.FavoritesRepository
 import interactor.repositories.ProductModeRepository
 import interactor.repositories.ProductsRepository
+import network.products.ProductsApi
 import screen.main.viewmodel.ProductListViewModel
 import screen.main.viewmodel.ProductListViewModelFactory
 import utils.Generator
@@ -20,8 +21,8 @@ class ProductModule(private val fragment: Fragment, private val generator: Gener
 
     @Provides
     @PerScreen
-    fun provideProductRepository(): ProductsRepository =
-        ProductsRepository(generator)
+    fun provideProductRepository(productsApi: ProductsApi): ProductsRepository =
+        ProductsRepository(generator, productsApi)
 
     @Provides
     @PerScreen
