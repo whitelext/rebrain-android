@@ -3,7 +3,6 @@ package interactor.repositories
 import com.example.foodapp.R
 import domain.Product
 import network.products.ProductsApi
-import okhttp3.Response
 import retrofit2.Call
 import retrofit2.Callback
 import timber.log.Timber

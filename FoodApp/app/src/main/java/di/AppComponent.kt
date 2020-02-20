@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.foodapp.FoodApplication
 import dagger.Component
+import di.network.OkHttpModule
+import di.network.api.ProductsApiModule
+import di.network.RetrofitModule
 import interactor.AuthorizationFlagStorage
 import interactor.FavoriteListStorage
 import interactor.IntroFlagStorage
@@ -31,7 +34,6 @@ import utils.SharedPreferencesHelper
         ProductModeModule::class,
         FavoriteModule::class,
         RetrofitModule::class,
-        ApiModule::class,
         OkHttpModule::class]
 )
 @PerApplication
@@ -43,9 +45,7 @@ interface AppComponent {
     fun favoriteListRepository(): FavoritesRepository
     fun okHttpClient(): OkHttpClient
     fun retrofit(): Retrofit
-    fun userApi(): UserApi
-    fun authApi(): AuthApi
-    fun productsApi(): ProductsApi
+    fun baseUrl() : String
     fun favoriteListStorage(): FavoriteListStorage
     fun authorizationFlagStorage(): AuthorizationFlagStorage
     fun introFlagStorage(): IntroFlagStorage

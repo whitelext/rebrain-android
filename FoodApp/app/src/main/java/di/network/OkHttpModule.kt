@@ -1,7 +1,8 @@
-package di
+package di.network
 
 import dagger.Module
 import dagger.Provides
+import di.PerApplication
 import okhttp3.OkHttpClient
 import utils.LogInterceptor
 
