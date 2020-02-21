@@ -45,7 +45,6 @@ interface AppComponent {
     fun favoriteListRepository(): FavoritesRepository
     fun okHttpClient(): OkHttpClient
     fun retrofit(): Retrofit
-    fun baseUrl() : String
     fun favoriteListStorage(): FavoriteListStorage
     fun authorizationFlagStorage(): AuthorizationFlagStorage
     fun introFlagStorage(): IntroFlagStorage
