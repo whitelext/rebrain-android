@@ -51,6 +51,7 @@ class MainFragment : BaseFragment() {
                 .productModule(ProductModule(this, Generator))
                 .build()
         component.inject(this)
+        retainInstance = true
         super.onCreate(savedInstanceState)
     }
 

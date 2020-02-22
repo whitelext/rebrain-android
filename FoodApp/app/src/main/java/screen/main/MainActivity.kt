@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
-import androidx.fragment.app.Fragment
 import com.example.foodapp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -20,18 +19,17 @@ import utils.ExitDialogFragment
  */
 class MainActivity : BaseActivity() {
 
-    private val FragmentTypeMap by lazy {
-        hashMapOf<TabType, Fragment>(
-            TabType.MAIN to MainFragment.newInstance(),
-            TabType.FAVORITES to FavouriteFragment.newInstance()
+    private val fragmentTypeMap by lazy {
+        hashMapOf(
+            TabType.MAIN to MainFragment.TAG,
+            TabType.FAVORITES to FavouriteFragment.TAG
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        showFragment(TabType.MAIN)
-
+        setCheckedButton()
 
         main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN) {
             showFragment(it)
@@ -39,6 +37,9 @@ class MainActivity : BaseActivity() {
 
         main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES) {
             showFragment(it)
+        }
+        if (savedInstanceState == null) {
+            showFragment(TabType.MAIN)
         }
         initToolbar()
     }
@@ -52,14 +53,37 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-        val fragment = FragmentTypeMap[fragmentType]
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        if (supportFragmentManager.findFragmentByTag((fragment as BaseFragment).getFragmentTag()) == null) {
-            fragmentTransaction.add(R.id.container, fragment, fragment.getFragmentTag())
-        } else {
-            fragmentTransaction.attach(fragment)
+        val fragment = getFragment(fragmentType)
+        val isFragmentAdded =
+            supportFragmentManager.findFragmentByTag(fragment.getFragmentTag()) != null
+        supportFragmentManager.beginTransaction().apply {
+            if (!isFragmentAdded) {
+                add(R.id.container, fragment, fragment.getFragmentTag())
+            } else {
+                attach(fragment)
+            }
+
+        }.commit()
+    }
+
+    private fun getFragment(type: TabType): BaseFragment {
+        val fragment =
+            supportFragmentManager.findFragmentByTag(fragmentTypeMap[type]) as BaseFragment?
+        return fragment ?: when (type) {
+            TabType.MAIN -> MainFragment.newInstance()
+            TabType.FAVORITES -> FavouriteFragment.newInstance()
         }
-        fragmentTransaction.commit()
+
+    }
+
+    private fun setCheckedButton() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
+        currentFragment?.let {
+            when ((it as BaseFragment).getFragmentTag()) {
+                MainFragment.TAG -> main_activity_custom_bottom_bar.updateChecks(TabType.MAIN)
+                FavouriteFragment.TAG -> main_activity_custom_bottom_bar.updateChecks(TabType.FAVORITES)
+            }
+        }
     }
 
     private fun initToolbar() {
