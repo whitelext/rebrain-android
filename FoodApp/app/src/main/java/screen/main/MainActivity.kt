@@ -66,6 +66,10 @@ class MainActivity : BaseActivity() {
         }.commit()
     }
 
+    /**
+     * Returns fragment of required type from fragment manager or creates a new one if it does not exist
+     *
+     */
     private fun getFragment(type: TabType): BaseFragment {
         val fragment =
             supportFragmentManager.findFragmentByTag(fragmentTypeMap[type]) as BaseFragment?
@@ -76,6 +80,10 @@ class MainActivity : BaseActivity() {
 
     }
 
+    /**
+     * Sets a valid button checked after configuration change
+     *
+     */
     private fun setCheckedButton() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
         currentFragment?.let {
