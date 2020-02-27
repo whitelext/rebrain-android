@@ -1,7 +1,9 @@
 package di
 
 import dagger.Component
+import di.network.api.ProductsApiModule
 import interactor.repositories.ProductsRepository
+import network.products.ProductsApi
 import okhttp3.OkHttpClient
 import screen.main.MainFragment
 import screen.main.viewmodel.ProductListViewModel
@@ -14,12 +16,14 @@ import screen.main.viewmodel.ProductListViewModelFactory
 @PerScreen
 @Component(
     dependencies = [AppComponent::class],
-    modules = [ProductModule::class]
+    modules = [ProductModule::class,
+        ProductsApiModule::class]
 )
 interface MainFragmentComponent {
     fun productsRepository(): ProductsRepository
     fun productListViewModelFactory(): ProductListViewModelFactory
     fun okHttpClient(): OkHttpClient
+    fun productsApi(): ProductsApi
     fun productListViewModel(): ProductListViewModel
     fun inject(mainFragment: MainFragment)
 }
