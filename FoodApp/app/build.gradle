@@ -13,6 +13,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
+        multiDexEnabled true
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -43,6 +44,9 @@ dependencies {
     //Network
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit2_version"
     //UI
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.cardview:cardview:$cardviewVersion"

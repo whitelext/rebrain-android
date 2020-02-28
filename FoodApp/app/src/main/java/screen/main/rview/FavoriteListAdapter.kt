@@ -56,8 +56,15 @@ class FavoriteListAdapter(
 
         fun bind(data: Product) {
             productNameView.text = data.name
-            productPriceView.text = "${data.id}"
-            Glide.with(productImageView.context).load(data.imageId).into(productImageView)
+            productPriceView.text = "${data.price}"
+            Glide.with(productImageView.context).load(
+                when (data.id % 4) {
+                    0 -> R.drawable.img_list_1
+                    1 -> R.drawable.img_list_2
+                    2 -> R.drawable.img_list_3
+                    else -> R.drawable.img_list_4
+                }
+            ).into(productImageView)
             favButton.setOnClickListener {
                 favButtonListener(data.id)
                 notifyDataSetChanged()
