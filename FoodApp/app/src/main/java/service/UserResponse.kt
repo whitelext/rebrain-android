@@ -4,6 +4,10 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import domain.User
 
+/**
+ * Response class for Json deserialization of [User] with Moshi
+ *
+ */
 @JsonClass(generateAdapter = true)
 data class UserResponse(
     @Json(name = "id")
@@ -14,8 +18,8 @@ data class UserResponse(
     val login: String,
     @Json(name = "avatar")
     val avatar: String
-) : ServerResponse{
+) : ServerResponse<User> {
     override fun convertToKotlinClass(): User {
-        return  User(id,name,login,avatar)
+        return User(id, name, login, avatar)
     }
 }

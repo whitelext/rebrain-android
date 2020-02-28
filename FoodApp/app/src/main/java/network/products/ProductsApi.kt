@@ -3,7 +3,7 @@ package network.products
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
-import service.PickPointResponse
+import service.PickPointsResponse
 import service.ProductListResponse
 
 /**
@@ -15,7 +15,7 @@ interface ProductsApi {
     fun getProducts(token: String, @Query("favorite") isFavorite: Boolean): Call<ProductListResponse>
 
     @GET("/pickups")
-    fun getPickups(): Call<PickPointResponse>
+    fun getPickups(): Call<PickPointsResponse>
 
 
 }
