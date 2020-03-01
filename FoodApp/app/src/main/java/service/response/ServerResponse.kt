@@ -1,4 +1,4 @@
-package service
+package service.response
 
 /**
  * Interface for response classes that deserialize Json to domain objects
