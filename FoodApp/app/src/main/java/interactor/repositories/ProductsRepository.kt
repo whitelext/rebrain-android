@@ -1,6 +1,6 @@
 package interactor.repositories
 
-import com.example.foodapp.R
+import com.whitelext.foodapp.R
 import domain.Product
 import network.products.ProductsApi
 import retrofit2.Call

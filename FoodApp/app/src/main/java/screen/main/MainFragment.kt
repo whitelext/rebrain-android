@@ -7,8 +7,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foodapp.FoodApplication
-import com.example.foodapp.R
+import com.whitelext.foodapp.FoodApplication
+import com.whitelext.foodapp.R
 import di.DaggerMainFragmentComponent
 import di.ProductModule
 import kotlinx.android.synthetic.main.fragment_main.*

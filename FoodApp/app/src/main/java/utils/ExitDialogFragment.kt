@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.example.foodapp.R
+import com.whitelext.foodapp.R
 import kotlinx.android.synthetic.main.custom_exit_dialog.view.*
 
 /**

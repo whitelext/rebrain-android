@@ -2,8 +2,8 @@ package screen.splash
 
 import android.content.Context
 import android.os.Bundle
-import com.example.foodapp.FoodApplication
-import com.example.foodapp.R
+import com.whitelext.foodapp.FoodApplication
+import com.whitelext.foodapp.R
 import di.DaggerIntroComponent
 import di.IntroModule
 import kotlinx.coroutines.*

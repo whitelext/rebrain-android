@@ -5,7 +5,7 @@ import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import com.example.foodapp.R
+import com.whitelext.foodapp.R
 import kotlinx.android.synthetic.main.layout_custom_bottom_button.view.*
 
 /*

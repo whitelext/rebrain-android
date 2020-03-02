@@ -2,10 +2,9 @@ package di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.foodapp.FoodApplication
+import com.whitelext.foodapp.FoodApplication
 import dagger.Component
 import di.network.OkHttpModule
-import di.network.api.ProductsApiModule
 import di.network.RetrofitModule
 import interactor.AuthorizationFlagStorage
 import interactor.FavoriteListStorage
@@ -15,9 +14,6 @@ import interactor.repositories.AuthorizationFlagRepository
 import interactor.repositories.FavoritesRepository
 import interactor.repositories.IntroFlagRepository
 import interactor.repositories.ProductModeRepository
-import network.auth.AuthApi
-import network.products.ProductsApi
-import network.user.UserApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import utils.SharedPreferencesHelper

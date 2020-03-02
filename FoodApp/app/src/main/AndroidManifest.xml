@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.foodapp">
+    package="com.whitelext.foodapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".FoodApplication"
+        android:name="com.whitelext.foodapp.FoodApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

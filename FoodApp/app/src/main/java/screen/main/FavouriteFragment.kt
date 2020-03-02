@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foodapp.FoodApplication
-import com.example.foodapp.R
+import com.whitelext.foodapp.FoodApplication
+import com.whitelext.foodapp.R
 import di.DaggerFavoriteFragmentComponent
 import di.FavoriteFragmentModule
 import kotlinx.android.synthetic.main.fragment_favourite.*
