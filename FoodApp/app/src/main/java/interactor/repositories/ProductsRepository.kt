@@ -5,6 +5,8 @@ import domain.Product
 import network.products.ProductsApi
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
+import service.response.PickPointsResponse
 import timber.log.Timber
 import utils.Generator
 import javax.inject.Inject
@@ -42,16 +44,19 @@ class ProductsRepository @Inject constructor(
     }
 
     fun callApi() {
-        productsApi.getPickups().enqueue(object : Callback<Unit> {
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
+        productsApi.getPickups().enqueue(object : Callback<PickPointsResponse> {
+            override fun onFailure(call: Call<PickPointsResponse>, t: Throwable) {
                 Timber.tag("Network").i("api call failed")
             }
 
-            override fun onResponse(call: Call<Unit>, response: retrofit2.Response<Unit>) {
+            override fun onResponse(
+                call: Call<PickPointsResponse>,
+                response: Response<PickPointsResponse>
+            ) {
                 Timber.tag("Network").i("api call succeed")
             }
 
-
         })
+
     }
 }

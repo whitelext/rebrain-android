@@ -1,4 +1,4 @@
-package network.auth
+package service.request
 
 /**
  * Class that represents request for authorization
@@ -6,7 +6,7 @@ package network.auth
  * @property login is User's login
  * @property password is User's password
  */
-class AuthRequest(
+data class AuthRequest(
     val login: String,
     val password: String
 )

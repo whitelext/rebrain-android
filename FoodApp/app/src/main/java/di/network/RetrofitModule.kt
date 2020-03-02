@@ -6,6 +6,7 @@ import di.PerApplication
 import di.utils.Constants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
 
 /**
@@ -18,7 +19,11 @@ class RetrofitModule {
     @Provides
     @PerApplication
     fun provideRetrofit(client: OkHttpClient, @Named(Constants.BASE_URL_NAMED) baseUrl: String): Retrofit {
-        return Retrofit.Builder().client(client).baseUrl(baseUrl).build()
+        return Retrofit.Builder()
+            .client(client)
+            .baseUrl(baseUrl)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
     }
 
     @Provides

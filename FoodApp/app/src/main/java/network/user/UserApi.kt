@@ -1,20 +1,22 @@
 package network.user
 
-import okhttp3.Response
+import domain.Cart
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
+import service.response.CartResponse
+import service.response.UserResponse
 
 /**
  * The interface which provides methods to work with user-related data
  */
 interface UserApi {
     @GET("/user")
-    fun getUser(token: String): Call<Response>
+    fun getUser(@Header("X-Access-Token") token: String): Call<UserResponse>
 
-    @GET("/user/avatar")
-    fun getUserAvatar(): Call<Response>
+    @Multipart
+    @PUT("/user/avatar")
+    fun getUserAvatar(@Part("avatar") avatar: String): Call<UserResponse>
 
     @POST("/order")
-    fun sendOrder(): Call<Response>
+    fun sendOrder(@Header("X-Access-Token") token: String, @Body cart: Cart): Call<CartResponse>
 }

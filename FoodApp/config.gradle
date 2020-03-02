@@ -11,6 +11,7 @@ ext {
     //Network
     okhttpVersion = '4.3.1'
     retrofit2_version = "2.7.1"
+    moshiVersion='1.9.2'
 
     //AndroidX
     appcompatVersion = '1.1.0'
