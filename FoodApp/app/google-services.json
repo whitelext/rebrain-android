@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "905939976846-dnbpj6pqb2a9vr1ts8tk1etmaio6ca6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whitelext.foodapp",
+            "certificate_hash": "b0aa2095a0369ccd81e24f1e4414b0b2e603b032"
+          }
+        },
+        {
           "client_id": "905939976846-nc2cle7c8j5adsdisvobtu93rvaga9tl.apps.googleusercontent.com",
           "client_type": 3
         }
