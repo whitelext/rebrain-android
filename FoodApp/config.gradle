@@ -11,13 +11,15 @@ ext {
     //Network
     okhttpVersion = '4.3.1'
     retrofit2_version = "2.7.1"
-    moshiVersion='1.9.2'
+    moshiVersion = '1.9.2'
+    googleServicesVersion = '4.3.3'
+    firebaseAnalyticsVersion = '17.2.3'
 
     //AndroidX
     appcompatVersion = '1.1.0'
     legacyVersion = '1.0.0'
     lifecycleVersion = '2.2.0'
-    fragmentKtxVersion = '1.2.1'
+    fragmentKtxVersion = '1.2.2'
 
     //Ui
     constraintLayoutVersion = '1.1.3'
