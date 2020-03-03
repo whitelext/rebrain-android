@@ -13,6 +13,10 @@ import com.google.firebase.messaging.RemoteMessage
 import com.whitelext.foodapp.R
 import timber.log.Timber
 
+/**
+ * Service for providing notifications with firebase
+ *
+ */
 class FirebaseNotificationService : FirebaseMessagingService() {
 
     private lateinit var notificationManager: NotificationManager
@@ -34,6 +38,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
                 .setContentTitle(it.title)
                 .setContentText(it.body)
                 .setAutoCancel(true)
+                .setChannelId(ADMIN_CHANNEL_ID)
                 .setSound(soundUri)
 
             notificationManager.notify(0, notificationBuilder.build())
