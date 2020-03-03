@@ -47,7 +47,7 @@ class MainFragment : BaseFragment() {
         setHasOptionsMenu(true)
         val component =
             DaggerMainFragmentComponent.builder()
-                .appComponent(((this.activity!!.application) as FoodApplication).getAppComponent())
+                .appComponent(((this.requireActivity().application) as FoodApplication).getAppComponent())
                 .productModule(ProductModule(this, Generator))
                 .build()
         component.inject(this)
@@ -135,7 +135,7 @@ class MainFragment : BaseFragment() {
 
     private fun initViewModel() {
         viewModel.productList.observe(
-            this,
+            viewLifecycleOwner,
             Observer { foodListAdapter.setProductList(it) })
     }
 

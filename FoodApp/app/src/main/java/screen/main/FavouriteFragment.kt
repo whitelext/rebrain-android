@@ -40,7 +40,7 @@ class FavouriteFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val component =
             DaggerFavoriteFragmentComponent.builder()
-                .appComponent(((this.activity!!.application) as FoodApplication).getAppComponent())
+                .appComponent(((this.requireActivity().application) as FoodApplication).getAppComponent())
                 .favoriteFragmentModule(FavoriteFragmentModule(this))
                 .build()
         component.inject(this)
@@ -79,7 +79,7 @@ class FavouriteFragment : BaseFragment() {
 
     private fun initViewModel() {
         viewModel.favoriteList.observe(
-            this,
+            viewLifecycleOwner,
             Observer { favoriteListAdapter.setFavoritesList(it) })
     }
 
