@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foodapp.FoodApplication
-import com.example.foodapp.R
+import com.whitelext.foodapp.FoodApplication
+import com.whitelext.foodapp.R
 import di.DaggerFavoriteFragmentComponent
 import di.FavoriteFragmentModule
 import kotlinx.android.synthetic.main.fragment_favourite.*
@@ -40,7 +40,7 @@ class FavouriteFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val component =
             DaggerFavoriteFragmentComponent.builder()
-                .appComponent(((this.activity!!.application) as FoodApplication).getAppComponent())
+                .appComponent(((this.requireActivity().application) as FoodApplication).getAppComponent())
                 .favoriteFragmentModule(FavoriteFragmentModule(this))
                 .build()
         component.inject(this)
@@ -79,7 +79,7 @@ class FavouriteFragment : BaseFragment() {
 
     private fun initViewModel() {
         viewModel.favoriteList.observe(
-            this,
+            viewLifecycleOwner,
             Observer { favoriteListAdapter.setFavoritesList(it) })
     }
 

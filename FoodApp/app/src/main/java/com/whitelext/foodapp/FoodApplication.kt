@@ -1,4 +1,4 @@
-package com.example.foodapp
+package com.whitelext.foodapp
 
 import android.app.Application
 import di.AppComponent

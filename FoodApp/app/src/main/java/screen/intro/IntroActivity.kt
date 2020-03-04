@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
-import com.example.foodapp.R
+import com.whitelext.foodapp.R
 import kotlinx.android.synthetic.main.activity_intro.*
 import screen.main.MainActivity
 import utils.BaseActivity

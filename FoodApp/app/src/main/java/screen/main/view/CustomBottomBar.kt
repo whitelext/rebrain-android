@@ -3,7 +3,7 @@ package screen.main.view
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import com.example.foodapp.R
+import com.whitelext.foodapp.R
 import kotlinx.android.synthetic.main.layout_custom_bottom_bar.view.*
 
 /*

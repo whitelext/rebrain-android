@@ -12,5 +12,7 @@
     <!-- String variables -->
     <string name="favouriteTab">FavouriteTab</string>
     <string name="russian_currency">руб.</string>
-
+    <string name="default_notification_channel_id" translatable="false">MainChannel</string>
+    <string name="notifications_admin_channel_name">adminChannel</string>
+    <string name="notifications_admin_channel_description">main notification channel</string>
 </resources>

@@ -7,8 +7,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foodapp.FoodApplication
-import com.example.foodapp.R
+import com.whitelext.foodapp.FoodApplication
+import com.whitelext.foodapp.R
 import di.DaggerMainFragmentComponent
 import di.ProductModule
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -47,7 +47,7 @@ class MainFragment : BaseFragment() {
         setHasOptionsMenu(true)
         val component =
             DaggerMainFragmentComponent.builder()
-                .appComponent(((this.activity!!.application) as FoodApplication).getAppComponent())
+                .appComponent(((this.requireActivity().application) as FoodApplication).getAppComponent())
                 .productModule(ProductModule(this, Generator))
                 .build()
         component.inject(this)
@@ -135,7 +135,7 @@ class MainFragment : BaseFragment() {
 
     private fun initViewModel() {
         viewModel.productList.observe(
-            this,
+            viewLifecycleOwner,
             Observer { foodListAdapter.setProductList(it) })
     }
 

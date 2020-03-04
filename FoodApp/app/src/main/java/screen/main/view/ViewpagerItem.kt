@@ -6,7 +6,7 @@ import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
-import com.example.foodapp.R
+import com.whitelext.foodapp.R
 import kotlinx.android.synthetic.main.carousel_item.view.*
 import screen.main.carousel.adapter.CarouselStatePageAdapter
 import screen.main.rview.FoodListAdapter
