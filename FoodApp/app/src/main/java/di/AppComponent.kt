@@ -6,14 +6,8 @@ import com.whitelext.foodapp.FoodApplication
 import dagger.Component
 import di.network.OkHttpModule
 import di.network.RetrofitModule
-import interactor.AuthorizationFlagStorage
-import interactor.FavoriteListStorage
-import interactor.IntroFlagStorage
-import interactor.ProductModeStorage
-import interactor.repositories.AuthorizationFlagRepository
-import interactor.repositories.FavoritesRepository
-import interactor.repositories.IntroFlagRepository
-import interactor.repositories.ProductModeRepository
+import interactor.*
+import interactor.repositories.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import utils.SharedPreferencesHelper
@@ -28,6 +22,7 @@ import utils.SharedPreferencesHelper
         AuthorizationFlagModule::class,
         IntroFlagModule::class,
         ProductModeModule::class,
+        AuthorizationTokenModule::class,
         FavoriteModule::class,
         RetrofitModule::class,
         OkHttpModule::class]
@@ -39,6 +34,8 @@ interface AppComponent {
     fun sharedPreferencesHelper(): SharedPreferencesHelper
     fun productModeStorage(): ProductModeStorage
     fun favoriteListRepository(): FavoritesRepository
+    fun authorizationTokenStorage(): AuthorizationTokenStorage
+    fun authorizationTokenRepository(): AuthorizationTokenRepository
     fun okHttpClient(): OkHttpClient
     fun retrofit(): Retrofit
     fun favoriteListStorage(): FavoriteListStorage

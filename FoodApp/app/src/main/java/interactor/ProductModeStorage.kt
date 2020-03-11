@@ -9,7 +9,8 @@ const val displayModeKey = "isGrid" // Key for display mode
 /**
  * Storage for Product display mode
  */
-class ProductModeStorage @Inject constructor(private val prefs: SharedPreferencesHelper) : Storage {
+class ProductModeStorage @Inject constructor(private val prefs: SharedPreferencesHelper) :
+    Storage<Boolean> {
     /**
      * Returns true if display mode is Grid
      *

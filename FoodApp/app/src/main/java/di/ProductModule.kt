@@ -37,9 +37,9 @@ class ProductModule(private val fragment: Fragment, private val generator: Gener
     @PerScreen
     fun provideProductListViewModel(productListViewModelFactory: ProductListViewModelFactory): ProductListViewModel =
         ViewModelProviders.of(
-            fragment,
-            productListViewModelFactory
-        )
+                fragment,
+                productListViewModelFactory
+            )
             .get(ProductListViewModel::class.java)
 
 }

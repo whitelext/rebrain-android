@@ -4,16 +4,16 @@ package utils
  * Interface for storages
  *
  */
-interface Storage {
+interface Storage<T> {
     /**
      *Returns value of element from Shared Preferences
      *
      */
-    fun getElement(): Boolean
+    fun getElement(): T
 
     /**
      * Saving element to Shared Preferences
      *
      */
-    fun saveElement(value: Boolean)
+    fun saveElement(value: T)
 }

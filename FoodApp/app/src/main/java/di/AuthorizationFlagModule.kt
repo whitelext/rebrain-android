@@ -15,7 +15,8 @@ import utils.Storage
 class AuthorizationFlagModule {
     @Provides
     @PerApplication
-    fun provideStorage(prefs: SharedPreferencesHelper): Storage = AuthorizationFlagStorage(prefs)
+    fun provideStorage(prefs: SharedPreferencesHelper): Storage<Boolean> =
+        AuthorizationFlagStorage(prefs)
 
     @Provides
     @PerApplication

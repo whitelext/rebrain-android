@@ -15,7 +15,7 @@ import utils.Storage
 class IntroFlagModule {
     @Provides
     @PerApplication
-    fun provideStorage(prefs: SharedPreferencesHelper): Storage = IntroFlagStorage(prefs)
+    fun provideStorage(prefs: SharedPreferencesHelper): Storage<Boolean> = IntroFlagStorage(prefs)
 
     @Provides
     @PerApplication
