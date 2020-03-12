@@ -2,12 +2,15 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#ffffff</color>
     <color name="colorIntroBackground">#5bd056</color>
     <color name="colorIntroText">#ffffff</color>
     <color name="colourBackground">#f9fafe</color>
     <color name="colorToolbar">#5bb367</color>
     <color name="colorCarouselUnchecked">#4Dffffff</color>
     <color name="colorShadow">#0F000000</color>
+    <color name="colorHint">#99ffffff</color>
+    <color name="colorSignIn">#016a1e</color>
+
 
 </resources>
