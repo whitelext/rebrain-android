@@ -15,20 +15,23 @@ class CustomBottomBar @JvmOverloads constructor(
 ) : LinearLayout(context, attrs) {
 
     enum class TabType {
+        PROFILE,
         MAIN,
         FAVORITES
     }
 
     private val tabTypeMap by lazy {
         hashMapOf<TabType, CustomBottombarButton>(
+            TabType.PROFILE to custom_bottom_bar_profile_button,
             TabType.MAIN to custom_bottom_bar_main_button,
             TabType.FAVORITES to custom_bottom_bar_favorite_button
+
         )
     }
 
     init {
         inflate(context, R.layout.layout_custom_bottom_bar, this)
-        updateChecks(TabType.MAIN)
+        updateChecks(TabType.PROFILE)
     }
 
     fun setOnTabClickListener(tabType: TabType, listener: (TabType) -> Unit) {
@@ -40,7 +43,7 @@ class CustomBottomBar @JvmOverloads constructor(
         }
     }
 
-    fun updateChecks(tab: TabType = TabType.MAIN) {
+    fun updateChecks(tab: TabType = TabType.PROFILE) {
         checkTab(tab)
         uncheckOtherTabs(tab)
     }

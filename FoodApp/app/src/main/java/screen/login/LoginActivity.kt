@@ -103,7 +103,7 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
+    private fun updateUiWithUser(model: LoggedInUser) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
         Toast.makeText(

@@ -13,7 +13,7 @@
     tools:context="screen.login.LoginActivity">
 
     <TextView
-        android:id="@+id/appTitle"
+        android:id="@+id/appTitleLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -43,7 +43,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appTitle" />
+        app:layout_constraintTop_toBottomOf="@id/appTitleLogin" />
 
     <EditText
         android:id="@+id/password"

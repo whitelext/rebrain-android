@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import interactor.repositories.AuthorizationFlagRepository
 import interactor.repositories.AuthorizationTokenRepository
+import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.LoginRepository
 import javax.inject.Inject
 
@@ -13,7 +14,8 @@ import javax.inject.Inject
 class LoginViewModelFactory @Inject constructor(
     private val loginRepository: LoginRepository,
     private val authorizationTokenRepository: AuthorizationTokenRepository,
-    private val authorizationFlagRepository: AuthorizationFlagRepository
+    private val authorizationFlagRepository: AuthorizationFlagRepository,
+    private val loggedInUserRepository: LoggedInUserRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -22,7 +24,8 @@ class LoginViewModelFactory @Inject constructor(
             return LoginViewModel(
                 loginRepository,
                 authorizationTokenRepository,
-                authorizationFlagRepository
+                authorizationFlagRepository,
+                loggedInUserRepository
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

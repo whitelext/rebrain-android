@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.whitelext.foodapp.R
 import interactor.repositories.AuthorizationFlagRepository
 import interactor.repositories.AuthorizationTokenRepository
+import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.LoginRepository
 import kotlinx.coroutines.launch
 
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val loginRepository: LoginRepository,
     private val authorizationTokenRepository: AuthorizationTokenRepository,
-    private val authorizationFlagRepository: AuthorizationFlagRepository
+    private val authorizationFlagRepository: AuthorizationFlagRepository,
+    private val loggedInUserRepository: LoggedInUserRepository
 ) : ViewModel() {
 
 
@@ -35,9 +37,12 @@ class LoginViewModel(
 
             if (response is Result.Success) {
                 _loginResult.value =
-                    LoginResult(success = LoggedInUserView(displayName = response.data.name))
+                    LoginResult(success = LoggedInUser(displayName = response.data.name))
                 authorizationTokenRepository.saveAuthorizationToken(response.data.accesToken)
                 authorizationFlagRepository.loginUser()
+                loggedInUserRepository.setLoggedUser(
+                    LoggedInUser(displayName = response.data.name)
+                )
             } else {
                 _loginResult.value = LoginResult(error = R.string.login_failed)
             }

@@ -23,6 +23,7 @@ import utils.SharedPreferencesHelper
         IntroFlagModule::class,
         ProductModeModule::class,
         AuthorizationTokenModule::class,
+        LoginModule::class,
         FavoriteModule::class,
         RetrofitModule::class,
         OkHttpModule::class]
@@ -38,6 +39,8 @@ interface AppComponent {
     fun authorizationTokenRepository(): AuthorizationTokenRepository
     fun okHttpClient(): OkHttpClient
     fun retrofit(): Retrofit
+    fun loggedInUserStorage(): LoggedInUserStorage
+    fun loggedInUserRepository(): LoggedInUserRepository
     fun favoriteListStorage(): FavoriteListStorage
     fun authorizationFlagStorage(): AuthorizationFlagStorage
     fun introFlagStorage(): IntroFlagStorage

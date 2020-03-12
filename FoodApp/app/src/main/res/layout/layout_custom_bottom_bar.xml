@@ -8,6 +8,16 @@
     android:background="@color/white">
 
     <screen.main.view.CustomBottombarButton
+        android:id="@+id/custom_bottom_bar_profile_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        app:image_checked="@drawable/ic_user_checked"
+        app:image_unchecked="@drawable/ic_user_unchecked"
+        app:text="@string/bottom_profile_text" />
+
+    <screen.main.view.CustomBottombarButton
         android:id="@+id/custom_bottom_bar_main_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,5 +36,6 @@
         app:image_checked="@drawable/img_favorite_checked"
         app:image_unchecked="@drawable/img_favourites_bottom"
         app:text="@string/bottom_favourite" />
+
 
 </LinearLayout> 
