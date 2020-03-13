@@ -1,5 +1,6 @@
 package di
 
+import android.content.Context
 import com.whitelext.foodapp.FoodApplication
 import dagger.Component
 import di.network.OkHttpModule
@@ -28,7 +29,7 @@ import utils.SharedPreferencesHelper
 )
 @PerApplication
 interface AppComponent {
-    fun sharedPreferencesHelper(): SharedPreferencesHelper
+    fun appContext(): Context
     fun loggedInUserRepository(): LoggedInUserRepository
     fun favoriteListRepository(): FavoritesRepository
     fun okHttpClient(): OkHttpClient
