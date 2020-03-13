@@ -1,13 +1,11 @@
 package di
 
-import android.content.Context
-import android.content.SharedPreferences
 import com.whitelext.foodapp.FoodApplication
 import dagger.Component
 import di.network.OkHttpModule
 import di.network.RetrofitModule
-import interactor.*
-import interactor.repositories.*
+import interactor.repositories.FavoritesRepository
+import interactor.repositories.LoggedInUserRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import utils.SharedPreferencesHelper
@@ -30,22 +28,10 @@ import utils.SharedPreferencesHelper
 )
 @PerApplication
 interface AppComponent {
-    fun appContext(): Context
-    fun sharedPreferences(): SharedPreferences
     fun sharedPreferencesHelper(): SharedPreferencesHelper
-    fun productModeStorage(): ProductModeStorage
+    fun loggedInUserRepository(): LoggedInUserRepository
     fun favoriteListRepository(): FavoritesRepository
-    fun authorizationTokenStorage(): AuthorizationTokenStorage
-    fun authorizationTokenRepository(): AuthorizationTokenRepository
     fun okHttpClient(): OkHttpClient
     fun retrofit(): Retrofit
-    fun loggedInUserStorage(): LoggedInUserStorage
-    fun loggedInUserRepository(): LoggedInUserRepository
-    fun favoriteListStorage(): FavoriteListStorage
-    fun authorizationFlagStorage(): AuthorizationFlagStorage
-    fun introFlagStorage(): IntroFlagStorage
-    fun authorizationFlagRepository(): AuthorizationFlagRepository
-    fun productModeRepository(): ProductModeRepository
-    fun introFlagRepository(): IntroFlagRepository
     fun inject(app: FoodApplication)
 }
