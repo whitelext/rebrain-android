@@ -9,7 +9,6 @@ import interactor.repositories.FavoritesRepository
 import interactor.repositories.LoggedInUserRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import utils.SharedPreferencesHelper
 
 /**
  * Application component
