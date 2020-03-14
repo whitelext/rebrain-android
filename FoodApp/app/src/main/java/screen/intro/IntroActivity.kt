@@ -38,9 +38,11 @@ class IntroActivity : BaseActivity() {
         component.inject(this)
 
         intro_screen.setOnClickListener {
-            if (authorizationFlagRepository.isUserAuthorized())
+            if (authorizationFlagRepository.isUserAuthorized()) {
                 MainActivity.start(this)
-            else LoginActivity.start(this)
+            } else {
+                LoginActivity.start(this)
+            }
             finishAffinity()
         }
     }

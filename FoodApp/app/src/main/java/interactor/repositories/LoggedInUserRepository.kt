@@ -11,5 +11,5 @@ import javax.inject.Inject
 class LoggedInUserRepository @Inject constructor(private val loggedInUserStorage: LoggedInUserStorage) {
     fun getLoggedUser() = loggedInUserStorage.loggedInUser
 
-    fun setLoggedUser(user: LoggedInUser) = loggedInUserStorage.setLoggedUser(user)
+    fun setLoggedUser(user: LoggedInUser) = loggedInUserStorage.saveElement(user)
 }

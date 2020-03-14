@@ -5,5 +5,6 @@ package screen.login
  */
 data class LoginResult(
     val success: LoggedInUser? = null,
+    val isLoading: Boolean = true,
     val error: Int? = null
 )

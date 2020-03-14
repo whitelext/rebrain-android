@@ -11,9 +11,16 @@ const val authorizationKey = "AuthorizationToken"
  */
 class AuthorizationTokenStorage @Inject constructor(private val prefs: SharedPreferencesHelper) :
     Storage<String> {
-
+    /**
+     * Returns current authorization token from shared preferences
+     *
+     */
     override fun getElement() = prefs.getString(authorizationKey)
 
+    /**
+     * Saves authorization token to shared preferences
+     *
+     */
     override fun saveElement(value: String) = prefs.putString(authorizationKey, value)
 
 }

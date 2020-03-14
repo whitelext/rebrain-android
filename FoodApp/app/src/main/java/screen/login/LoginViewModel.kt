@@ -10,6 +10,7 @@ import interactor.repositories.AuthorizationTokenRepository
 import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.LoginRepository
 import kotlinx.coroutines.launch
+import utils.Result
 
 /**
  * [ViewModel] for login screen
@@ -29,7 +30,11 @@ class LoginViewModel(
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-
+    /**
+     * Makes a server request for login in viewModel scope
+     * if login is successful saves authorization token to [authorizationTokenRepository] i
+     *
+     */
     fun login(username: String, password: String) {
 
         viewModelScope.launch {
@@ -37,14 +42,17 @@ class LoginViewModel(
 
             if (response is Result.Success) {
                 _loginResult.value =
-                    LoginResult(success = LoggedInUser(displayName = response.data.name))
+                    LoginResult(
+                        success = LoggedInUser(displayName = response.data.name),
+                        isLoading = false
+                    )
                 authorizationTokenRepository.saveAuthorizationToken(response.data.accesToken)
                 authorizationFlagRepository.loginUser()
                 loggedInUserRepository.setLoggedUser(
                     LoggedInUser(displayName = response.data.name)
                 )
             } else {
-                _loginResult.value = LoginResult(error = R.string.login_failed)
+                _loginResult.value = LoginResult(error = R.string.login_failed, isLoading = false)
             }
 
         }

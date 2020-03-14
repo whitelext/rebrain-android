@@ -1,11 +1,12 @@
 package network.products
 
 import retrofit2.Call
-import retrofit2.http.*
-import service.request.AuthRequest
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
+import retrofit2.http.Query
 import service.response.PickPointsResponse
 import service.response.ProductListResponse
-import service.response.UserResponse
 
 /**
  * The interface which provides methods to work with products
@@ -21,9 +22,6 @@ interface ProductsApi {
 
     @GET("/pickups")
     fun getPickups(): Call<PickPointsResponse>
-
-    @POST("login/")
-    fun authorization(@Body authRequest: AuthRequest): Call<UserResponse>
 
 
 }

@@ -43,22 +43,24 @@ class LoginActivity : BaseActivity() {
         setContentView(R.layout.activity_login)
 
 
-        loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
-            val loginState = it ?: return@Observer
+        loginViewModel.loginFormState.observe(this@LoginActivity, Observer { loginState ->
 
             // disable login button unless both username / password is valid
             login.isEnabled = loginState.isDataValid
 
-            if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+            loginState.usernameError?.let { error ->
+                username.error = getString(error)
             }
-            if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
+            loginState.passwordError?.let { error ->
+                password.error = getString(error)
             }
         })
 
-        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
-            val loginResult = it ?: return@Observer
+        loginViewModel.loginResult.observe(this@LoginActivity, Observer { loginResult ->
+
+            if (loginResult.isLoading) {
+                return@Observer
+            }
 
             loading.visibility = View.GONE
             if (loginResult.error != null) {
