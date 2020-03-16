@@ -1,14 +1,13 @@
 package di
 
 import dagger.Component
-import interactor.IntroFlagStorage
-import interactor.repositories.IntroFlagRepository
+import interactor.repositories.AuthorizationFlagRepository
+import screen.intro.IntroActivity
 import screen.intro.viewmodel.IntroViewModel
-import screen.intro.viewmodel.IntroViewModelFactory
 import screen.splash.SplashActivity
 
 /**
- * Component for [SplashActivity] to show intro screen
+ * Component for intro screen
  *
  */
 @PerScreen
@@ -17,9 +16,8 @@ import screen.splash.SplashActivity
     modules = [IntroModule::class]
 )
 interface IntroComponent {
-    fun introFlagStorage(): IntroFlagStorage
-    fun introFlagRepository(): IntroFlagRepository
     fun introViewModel(): IntroViewModel
-    fun introViewModelFactory(): IntroViewModelFactory
+    fun authorizationFlagRepository(): AuthorizationFlagRepository
     fun inject(splashActivity: SplashActivity)
+    fun inject(introActivity: IntroActivity)
 }

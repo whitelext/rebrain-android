@@ -15,7 +15,7 @@ import utils.Storage
 class ProductModeModule {
     @Provides
     @PerApplication
-    fun provideStorage(prefs: SharedPreferencesHelper): Storage = ProductModeStorage(prefs)
+    fun provideStorage(prefs: SharedPreferencesHelper): Storage<Boolean> = ProductModeStorage(prefs)
 
     @Provides
     @PerApplication

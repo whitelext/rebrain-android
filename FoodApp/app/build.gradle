@@ -43,6 +43,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.legacy:legacy-support-v4:$legacyVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     //Network
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"

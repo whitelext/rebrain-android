@@ -14,8 +14,14 @@ class AuthorizationFlagRepository @Inject constructor(private var authorizationS
     fun isUserAuthorized() = authorizationStatus.getElement()
 
     /**
-     * If [isUserAuthorized] make it false. And vice versa
+     * Saving true to login flag
      *
      */
-    fun changeAuthorizationStatus() = authorizationStatus.saveElement(!isUserAuthorized())
+    fun loginUser() = authorizationStatus.saveElement(true)
+
+    /**
+     * Saving false to login flag
+     *
+     */
+    fun logoutUser() = authorizationStatus.saveElement(false)
 }

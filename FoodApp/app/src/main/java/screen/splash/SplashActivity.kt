@@ -9,6 +9,7 @@ import di.IntroModule
 import kotlinx.coroutines.*
 import screen.intro.IntroActivity
 import screen.intro.viewmodel.IntroViewModel
+import screen.login.LoginActivity
 import screen.main.MainActivity
 import utils.BaseActivity
 import javax.inject.Inject
@@ -38,11 +39,13 @@ class SplashActivity : BaseActivity(), CoroutineScope {
 
     private fun navigateToActivityWithDelay(context: Context, delayTime: Long) = launch {
         delay(delayTime)
-        if (viewModel.isIntroShowed()) {
-            MainActivity.start(context)
-        } else {
+        if (!viewModel.isIntroShowed()) {
             IntroActivity.start(context)
             viewModel.showIntro()
+        } else if (!viewModel.isUserAuthorized()) {
+            LoginActivity.start(context)
+        } else {
+            MainActivity.start(context)
         }
     }
 

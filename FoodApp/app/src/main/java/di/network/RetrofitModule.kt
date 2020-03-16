@@ -18,7 +18,10 @@ class RetrofitModule {
 
     @Provides
     @PerApplication
-    fun provideRetrofit(client: OkHttpClient, @Named(Constants.BASE_URL_NAMED) baseUrl: String): Retrofit {
+    fun provideRetrofit(
+        client: OkHttpClient,
+        @Named(Constants.BASE_URL_NAMED) baseUrl: String
+    ): Retrofit {
         return Retrofit.Builder()
             .client(client)
             .baseUrl(baseUrl)

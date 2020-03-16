@@ -17,9 +17,11 @@ data class UserResponse(
     @Json(name = "login")
     val login: String,
     @Json(name = "avatar")
-    val avatar: String
+    val avatar: String?,
+    @Json(name = "accessToken")
+    val accesToken: String
 ) : ServerResponse<User> {
     override fun convertToKotlinClass(): User {
-        return User(id, name, login, avatar)
+        return User(id, name, login, avatar, accesToken)
     }
 }

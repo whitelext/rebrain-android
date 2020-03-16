@@ -22,15 +22,22 @@ class MainActivity : BaseActivity() {
     private val fragmentTypeMap by lazy {
         hashMapOf(
             TabType.MAIN to MainFragment.TAG,
-            TabType.FAVORITES to FavouriteFragment.TAG
+            TabType.FAVORITES to FavouriteFragment.TAG,
+            TabType.PROFILE to ProfileFragment.TAG
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (savedInstanceState == null) {
+            showFragment(TabType.PROFILE)
+        }
         setCheckedButton()
 
+        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.PROFILE) {
+            showFragment(it)
+        }
         main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN) {
             showFragment(it)
         }
@@ -38,9 +45,8 @@ class MainActivity : BaseActivity() {
         main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES) {
             showFragment(it)
         }
-        if (savedInstanceState == null) {
-            showFragment(TabType.MAIN)
-        }
+
+
         initToolbar()
     }
 
@@ -48,7 +54,10 @@ class MainActivity : BaseActivity() {
         val fragments = supportFragmentManager.fragments
         fragments.apply {
             forEach {
-                if (it is BaseFragment && (it.getFragmentTag() == MainFragment.TAG || it.getFragmentTag() == FavouriteFragment.TAG)) {
+                if (it is BaseFragment && (it.getFragmentTag() == MainFragment.TAG
+                            || it.getFragmentTag() == FavouriteFragment.TAG
+                            || it.getFragmentTag() == ProfileFragment.TAG)
+                ) {
                     supportFragmentManager.beginTransaction().detach(it).commit()
                 }
             }
@@ -74,8 +83,10 @@ class MainActivity : BaseActivity() {
         val fragment =
             supportFragmentManager.findFragmentByTag(fragmentTypeMap[type]) as BaseFragment?
         return fragment ?: when (type) {
+            TabType.PROFILE -> ProfileFragment.newInstance()
             TabType.MAIN -> MainFragment.newInstance()
             TabType.FAVORITES -> FavouriteFragment.newInstance()
+
         }
 
     }
@@ -88,8 +99,10 @@ class MainActivity : BaseActivity() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.container)
         currentFragment?.let {
             when ((it as BaseFragment).getFragmentTag()) {
+                ProfileFragment.TAG -> main_activity_custom_bottom_bar.updateChecks(TabType.PROFILE)
                 MainFragment.TAG -> main_activity_custom_bottom_bar.updateChecks(TabType.MAIN)
                 FavouriteFragment.TAG -> main_activity_custom_bottom_bar.updateChecks(TabType.FAVORITES)
+
             }
         }
     }

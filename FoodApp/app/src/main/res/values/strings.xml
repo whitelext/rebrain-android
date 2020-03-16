@@ -15,4 +15,16 @@
     <string name="default_notification_channel_id" translatable="false">MainChannel</string>
     <string name="notifications_admin_channel_name">adminChannel</string>
     <string name="notifications_admin_channel_description">main notification channel</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_login">Логин</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">ВОЙТИ</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be 8 characters or less</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="bottom_profile_text">Профиль</string>
+    <string name="profileExit">ВЫХОД</string>
+    <string name="profilePickUp">ПУНКТ САМОВЫВОЗА</string>
 </resources>

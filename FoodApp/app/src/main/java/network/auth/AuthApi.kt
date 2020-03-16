@@ -12,7 +12,7 @@ import service.response.UserResponse
  * The interface which provides methods to work with authorization
  */
 interface AuthApi {
-    @POST("/auth")
+    @POST("login/")
     fun authorization(@Body authRequest: AuthRequest): Call<UserResponse>
 
     @GET("/logout")
