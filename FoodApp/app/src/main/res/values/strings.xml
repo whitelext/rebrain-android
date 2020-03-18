@@ -27,4 +27,5 @@
     <string name="bottom_profile_text">Профиль</string>
     <string name="profileExit">ВЫХОД</string>
     <string name="profilePickUp">ПУНКТ САМОВЫВОЗА</string>
+    <string name="image_upload_error">Image can not be uploaded</string>
 </resources>
