@@ -31,4 +31,5 @@
     <string name="pictureDialogTitle">Select Action</string>
     <string name="camera_photo_dialog">Capture photo from camera</string>
     <string name="image_upload_successful">Image Saved!</string>
+    <string name="image_upload_error_413">Image is too  large</string>
 </resources>

@@ -43,7 +43,10 @@ class ProfileViewModel(
             _imageLoadingResult.value = when (response) {
                 is Result.Success -> ImageLoadingResult(filePath, false)
                 is Result.Error -> ImageLoadingResult(
-                    error = R.string.image_upload_error,
+                    error = when (response.exception) {
+                        "413" -> R.string.image_upload_error_413
+                        else -> R.string.image_upload_error
+                    },
                     isLoading = false
                 )
             }

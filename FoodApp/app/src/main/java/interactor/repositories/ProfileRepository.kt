@@ -35,6 +35,9 @@ class ProfileRepository @Inject constructor(
                 result = Result.Success("image uploaded")
             } ?: run {
                 result = Result.Error("user is null")
+                if (response.code() == 413) {
+                    result = Result.Error("413")
+                }
             }
         } catch (e: Exception) {
             result = Result.Error(e.toString())
