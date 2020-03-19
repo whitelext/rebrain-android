@@ -27,8 +27,8 @@
 
         <ImageView
             android:id="@+id/profileAvatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginTop="45dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,14 +39,14 @@
             android:id="@+id/profileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="170dp"
             android:text="CurrentUserName"
             android:textColor="@color/black"
             android:textSize="28sp"
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileAvatar"
+            app:layout_constraintTop_toBottomOf="@+id/appTitle"
             tools:text="CurrentUserName" />
 
         <Button
@@ -87,7 +87,8 @@
         <ProgressBar
             android:id="@+id/image_progressBar"
             style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
+            android:layout_marginTop="45dp"
             android:visibility="gone"
             android:indeterminate="true"
             android:indeterminateTintMode="src_atop"

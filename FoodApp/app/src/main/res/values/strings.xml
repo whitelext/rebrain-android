@@ -28,4 +28,7 @@
     <string name="profileExit">ВЫХОД</string>
     <string name="profilePickUp">ПУНКТ САМОВЫВОЗА</string>
     <string name="image_upload_error">Image can not be uploaded</string>
+    <string name="pictureDialogTitle">Select Action</string>
+    <string name="camera_photo_dialog">Capture photo from camera</string>
+    <string name="image_upload_successful">Image Saved!</string>
 </resources>

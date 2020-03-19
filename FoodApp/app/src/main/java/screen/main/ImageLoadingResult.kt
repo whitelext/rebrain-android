@@ -1,12 +1,12 @@
 package screen.main
 
-import android.graphics.Bitmap
+import java.io.File
 
 /**
- * Image loading result : success (bitmap image]) or error message.
+ * Image loading result : success (image file path) or error message.
  */
 data class ImageLoadingResult(
-    val success: Bitmap? = null,
+    val success: String? = null,
     val isLoading: Boolean = true,
     val error: Int? = null
 )

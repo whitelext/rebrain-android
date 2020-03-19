@@ -1,6 +1,5 @@
 package screen.main.viewmodel
 
-import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,14 +36,16 @@ class ProfileViewModel(
      * if upload is successful sets image as user avatar
      *
      */
-    fun setUserImage(image: Bitmap) {
+    fun setUserImage(filePath: String) {
         viewModelScope.launch {
-            val response = profileRepository.setAvatar(image)
-            if (response is Result.Success) {
-                _imageLoadingResult.value = ImageLoadingResult(image, false)
-            } else {
-                _imageLoadingResult.value =
-                    ImageLoadingResult(error = R.string.image_upload_error, isLoading = false)
+            _imageLoadingResult.value = ImageLoadingResult(isLoading = true)
+            val response = profileRepository.setAvatar(filePath)
+            _imageLoadingResult.value = when (response) {
+                is Result.Success -> ImageLoadingResult(filePath, false)
+                is Result.Error -> ImageLoadingResult(
+                    error = R.string.image_upload_error,
+                    isLoading = false
+                )
             }
         }
     }

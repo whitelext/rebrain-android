@@ -1,15 +1,17 @@
 package screen.main
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Matrix
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.whitelext.foodapp.FoodApplication
@@ -19,6 +21,10 @@ import di.ProfileFragmentModule
 import kotlinx.android.synthetic.main.profile_fragment.*
 import screen.main.viewmodel.ProfileViewModel
 import utils.BaseFragment
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -29,6 +35,8 @@ class ProfileFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModel: ProfileViewModel
+
+    private lateinit var currentPhotoPath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +50,13 @@ class ProfileFragment : BaseFragment() {
 
     private fun showPictureDialog() {
         val pictureDialog = AlertDialog.Builder(requireContext())
-        pictureDialog.setTitle("Select Action")
-        val pictureDialogItems = arrayOf("Capture photo from camera")
+        pictureDialog.setTitle(getString(R.string.pictureDialogTitle))
+        val pictureDialogItems = arrayOf(getString(R.string.camera_photo_dialog))
         pictureDialog.setItems(
             pictureDialogItems
-        ) { _, which ->
-            when (which) {
-                0 -> takePhotoFromCamera()
+        ) { _, index ->
+            when (index) {
+                0 -> takePictureFromCamera()
             }
         }
         pictureDialog.show()
@@ -56,17 +64,49 @@ class ProfileFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CAMERA) {
-            image_progressBar.visibility = View.VISIBLE
-            profileAvatar.visibility = View.GONE
-            val thumbnail = (data!!.extras!!.get("data") as Bitmap).rotate(90f)
-            viewModel.setUserImage(thumbnail)
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            viewModel.setUserImage(currentPhotoPath)
         }
     }
 
-    private fun takePhotoFromCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, CAMERA)
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            currentPhotoPath = absolutePath
+        }
+    }
+
+    private fun takePictureFromCamera() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        requireContext(),
+                        "com.whitelext.foodapp",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -90,12 +130,9 @@ class ProfileFragment : BaseFragment() {
         })
 
         viewModel.imageLoadingResult.observe(viewLifecycleOwner, Observer { loadingResult ->
-            if (loadingResult.isLoading) {
-                return@Observer
-            }
 
-            image_progressBar.visibility = View.GONE
-            profileAvatar.visibility = View.VISIBLE
+            image_progressBar.isVisible = loadingResult.isLoading
+            profileAvatar.isVisible = !loadingResult.isLoading
 
             loadingResult.error?.let {
                 showImageUploadFailed(it)
@@ -104,6 +141,7 @@ class ProfileFragment : BaseFragment() {
             loadingResult.success?.let {
                 updateUserImage(it)
             }
+
         })
 
     }
@@ -112,18 +150,13 @@ class ProfileFragment : BaseFragment() {
         Snackbar.make(profileAvatar, errorString, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun updateUserImage(image: Bitmap) {
-        profileAvatar.setImageBitmap(image)
-        Snackbar.make(profileAvatar, "Image Saved!", Snackbar.LENGTH_LONG).show()
-    }
-
-    /**
-     * Rotates bitmap image
-     *
-     */
-    fun Bitmap.rotate(degrees: Float): Bitmap {
-        val matrix = Matrix().apply { postRotate(degrees) }
-        return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
+    private fun updateUserImage(filePath: String) {
+        profileAvatar.setImageURI(Uri.fromFile(File(filePath)))
+        Snackbar.make(
+            profileAvatar,
+            getString(R.string.image_upload_successful),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     override fun getFragmentTag(): String {
@@ -133,7 +166,7 @@ class ProfileFragment : BaseFragment() {
     companion object {
         fun newInstance() = ProfileFragment()
         const val TAG = "ProfileFragment"
-        private const val CAMERA = 1
+        private const val CAMERA_REQUEST_CODE = 1
     }
 
 }

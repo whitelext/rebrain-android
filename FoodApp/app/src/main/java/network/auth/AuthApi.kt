@@ -15,6 +15,6 @@ interface AuthApi {
     @POST("login/")
     fun authorization(@Body authRequest: AuthRequest): Call<AuthResponse>
 
-    @GET("/logout")
+    @GET("logout/")
     fun logout(@Header("X-Access-Token")token: String): Call<Unit>
 }

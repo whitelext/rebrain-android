@@ -1,17 +1,17 @@
 package interactor.repositories
 
-import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import network.user.UserApi
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import utils.Result
-import java.io.ByteArrayOutputStream
-import java.util.*
+import java.io.File
 import javax.inject.Inject
 
 /**
- * Repository foк working with profile data
+ * Repository for working with profile data
  *
  */
 class ProfileRepository @Inject constructor(
@@ -22,14 +22,14 @@ class ProfileRepository @Inject constructor(
     var result: Result<String> = Result.Error("user is null")
 
     /**
-     * Uploads an image to server. Returns a [Result] with [String]
+     * Uploads an image to server. Returns a [Result] with [String] that tells about image upload status
      *
      */
-    suspend fun setAvatar(image: Bitmap): Result<String> = withContext(Dispatchers.IO) {
+    suspend fun setAvatar(imagePath: String): Result<String> = withContext(Dispatchers.IO) {
         try {
             val response = userApi.setUserAvatar(
                 token = authorizationTokenRepository.getAuthroizationToken(),
-                avatar = bitmapToString(image)
+                avatar = fileToMultipart(imagePath)
             ).execute()
             response.body()?.let {
                 result = Result.Success("image uploaded")
@@ -43,12 +43,10 @@ class ProfileRepository @Inject constructor(
     }
 
 
-    @SuppressLint("NewApi")
-    fun bitmapToString(image: Bitmap): String {
-        val baos = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.PNG, 100, baos)
-        val avatarString = Base64.getEncoder().encodeToString(baos.toByteArray())
-        return Base64.getEncoder().encodeToString(baos.toByteArray())
+    private fun fileToMultipart(imagePath: String): MultipartBody.Part {
+        val imageFile = File(imagePath)
+        val requestBody = RequestBody.create("image/".toMediaTypeOrNull(), imageFile)
+        return MultipartBody.Part.createFormData("avatar", imageFile.name, requestBody)
     }
 
 }
