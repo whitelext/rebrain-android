@@ -14,13 +14,13 @@ ext {
     moshiVersion = '1.9.2'
     googleServicesVersion = '4.3.3'
     firebaseAnalyticsVersion = '17.2.3'
-    firebaseMessagingVersion = '20.1.1'
+    firebaseMessagingVersion = '20.1.3'
 
     //AndroidX
     appcompatVersion = '1.1.0'
     legacyVersion = '1.0.0'
     lifecycleVersion = '2.2.0'
-    fragmentKtxVersion = '1.2.2'
+    fragmentKtxVersion = '1.2.3'
 
     //Ui
     constraintLayoutVersion = '1.1.3'
@@ -39,4 +39,7 @@ ext {
 
     //Di
     daggerVersion = '2.25.2'
+
+    //ImageCompression
+    zeloryVersion = '3.0.0'
 }

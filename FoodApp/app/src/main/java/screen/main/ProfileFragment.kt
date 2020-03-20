@@ -1,6 +1,9 @@
 package screen.main
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -11,6 +14,7 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
@@ -18,7 +22,7 @@ import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerProfileFragmentComponent
 import di.ProfileFragmentModule
-import kotlinx.android.synthetic.main.profile_fragment.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import screen.main.viewmodel.ProfileViewModel
 import utils.BaseFragment
 import java.io.File
@@ -64,7 +68,7 @@ class ProfileFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CAMERA_REQUEST_CODE) {
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode != 0) {
             viewModel.setUserImage(currentPhotoPath)
         }
     }
@@ -85,35 +89,37 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun takePictureFromCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
-            takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (ex: IOException) {
-                    // Error occurred while creating the File
-                    null
-                }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        requireContext(),
-                        "com.whitelext.foodapp",
-                        it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
-                }
-            }
+
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        // Ensure that there's a camera activity to handle the intent
+        takePictureIntent.resolveActivity(requireActivity().packageManager)
+        // Create the File where the photo should go
+        val photoFile: File? = try {
+            createImageFile()
+        } catch (ex: IOException) {
+            // Error occurred while creating the File
+            null
         }
+        // Continue only if the File was successfully created
+        photoFile?.let {
+            val photoURI: Uri = FileProvider.getUriForFile(
+                requireContext(),
+                "com.whitelext.foodapp",
+                it
+            )
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
+        }
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.profile_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -151,12 +157,24 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun updateUserImage(filePath: String) {
-        profileAvatar.setImageURI(Uri.fromFile(File(filePath)))
+        val bitmap = BitmapFactory.decodeFile(filePath).rotate(90f)
+        val roundedBitmap = RoundedBitmapDrawableFactory.create(resources, bitmap)
+        roundedBitmap.isCircular = true
+        profileAvatar.setImageDrawable(roundedBitmap)
         Snackbar.make(
             profileAvatar,
             getString(R.string.image_upload_successful),
             Snackbar.LENGTH_LONG
         ).show()
+    }
+
+    /**
+     * Rotates bitmap image
+     *
+     */
+    private fun Bitmap.rotate(degrees: Float): Bitmap {
+        val matrix = Matrix().apply { postRotate(degrees) }
+        return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
     }
 
     override fun getFragmentTag(): String {

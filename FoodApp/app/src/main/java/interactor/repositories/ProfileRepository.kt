@@ -1,12 +1,13 @@
 package interactor.repositories
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import android.content.Context
+import id.zelory.compressor.Compressor
 import network.user.UserApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import utils.Result
+import utils.mapCallToResult
 import java.io.File
 import javax.inject.Inject
 
@@ -16,39 +17,27 @@ import javax.inject.Inject
  */
 class ProfileRepository @Inject constructor(
     val userApi: UserApi,
-    val authorizationTokenRepository: AuthorizationTokenRepository
+    val authorizationTokenRepository: AuthorizationTokenRepository,
+    val context: Context
 ) {
-
-    var result: Result<String> = Result.Error("user is null")
 
     /**
      * Uploads an image to server. Returns a [Result] with [String] that tells about image upload status
      *
      */
-    suspend fun setAvatar(imagePath: String): Result<String> = withContext(Dispatchers.IO) {
-        try {
-            val response = userApi.setUserAvatar(
-                token = authorizationTokenRepository.getAuthroizationToken(),
-                avatar = fileToMultipart(imagePath)
-            ).execute()
-            response.body()?.let {
-                result = Result.Success("image uploaded")
-            } ?: run {
-                result = Result.Error("user is null")
-                if (response.code() == 413) {
-                    result = Result.Error("413")
-                }
-            }
-        } catch (e: Exception) {
-            result = Result.Error(e.toString())
+    suspend fun setAvatar(imagePath: String): Result<Unit> =
+        mapCallToResult {
+            val token = authorizationTokenRepository.getAuthroizationToken()
+            val multipartBody = fileToMultipart(imagePath)
+            userApi.setUserAvatar(token, multipartBody)
         }
-        return@withContext result
-    }
 
 
-    private fun fileToMultipart(imagePath: String): MultipartBody.Part {
-        val imageFile = File(imagePath)
-        val requestBody = RequestBody.create("image/".toMediaTypeOrNull(), imageFile)
+    private suspend fun fileToMultipart(imagePath: String): MultipartBody.Part {
+        val imageFile = Compressor.compress(context, File(imagePath))
+        val requestBody = RequestBody.create(
+            "image/".toMediaTypeOrNull(), imageFile
+        )
         return MultipartBody.Part.createFormData("avatar", imageFile.name, requestBody)
     }
 

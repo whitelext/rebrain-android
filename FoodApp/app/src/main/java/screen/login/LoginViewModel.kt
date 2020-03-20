@@ -39,22 +39,22 @@ class LoginViewModel(
 
         viewModelScope.launch {
             val response = loginRepository.login(username, password)
-
-            if (response is Result.Success) {
-                _loginResult.value =
+            _loginResult.value = when (response) {
+                is Result.Success -> {
+                    authorizationTokenRepository.saveAuthorizationToken(response.data.accesToken)
+                    authorizationFlagRepository.loginUser()
+                    loggedInUserRepository.setLoggedUser(
+                        LoggedInUser(displayName = response.data.name)
+                    )
                     LoginResult(
                         success = LoggedInUser(displayName = response.data.name),
                         isLoading = false
                     )
-                authorizationTokenRepository.saveAuthorizationToken(response.data.accesToken)
-                authorizationFlagRepository.loginUser()
-                loggedInUserRepository.setLoggedUser(
-                    LoggedInUser(displayName = response.data.name)
-                )
-            } else {
-                _loginResult.value = LoginResult(error = R.string.login_failed, isLoading = false)
+                }
+                is Result.Error -> {
+                    LoginResult(error = R.string.login_failed, isLoading = false)
+                }
             }
-
         }
     }
 

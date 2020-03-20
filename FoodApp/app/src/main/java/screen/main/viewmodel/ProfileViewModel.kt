@@ -9,6 +9,7 @@ import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.ProfileRepository
 import kotlinx.coroutines.launch
 import screen.main.ImageLoadingResult
+import utils.REQUEST_TOO_LARGE
 import utils.Result
 
 /**
@@ -44,7 +45,7 @@ class ProfileViewModel(
                 is Result.Success -> ImageLoadingResult(filePath, false)
                 is Result.Error -> ImageLoadingResult(
                     error = when (response.exception) {
-                        "413" -> R.string.image_upload_error_413
+                        REQUEST_TOO_LARGE -> R.string.image_upload_error_413
                         else -> R.string.image_upload_error
                     },
                     isLoading = false

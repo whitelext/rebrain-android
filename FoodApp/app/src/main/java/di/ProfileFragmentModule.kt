@@ -1,5 +1,6 @@
 package di
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import dagger.Module
@@ -22,8 +23,9 @@ class ProfileFragmentModule(private val fragment: Fragment) {
     @PerScreen
     fun provideProfileRepository(
         userApi: UserApi,
-        authorizationTokenRepository: AuthorizationTokenRepository
-    ) = ProfileRepository(userApi, authorizationTokenRepository)
+        authorizationTokenRepository: AuthorizationTokenRepository,
+        context: Context
+    ) = ProfileRepository(userApi, authorizationTokenRepository, context)
 
     @Provides
     @PerScreen
