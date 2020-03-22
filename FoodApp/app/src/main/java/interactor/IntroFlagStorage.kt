@@ -1,7 +1,7 @@
 package interactor
 
 import utils.SharedPreferencesHelper
-import utils.Storage
+import interactor.utils.Storage
 import javax.inject.Inject
 
 const val introSharedPrefKey = "isIntroNeeded" // Key for Intro to work with Shared Preferences

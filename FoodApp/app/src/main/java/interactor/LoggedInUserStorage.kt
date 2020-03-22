@@ -1,14 +1,15 @@
 package interactor
 
 import screen.login.LoggedInUser
-import utils.Storage
+import interactor.utils.Storage
 import javax.inject.Inject
 
 /**
  * Stores user details post authentication that is exposed to the UI
  *
  */
-class LoggedInUserStorage @Inject constructor() : Storage<LoggedInUser> {
+class LoggedInUserStorage @Inject constructor() :
+    Storage<LoggedInUser> {
     var loggedInUser = LoggedInUser(displayName = "CurrentUserName")
 
     /**

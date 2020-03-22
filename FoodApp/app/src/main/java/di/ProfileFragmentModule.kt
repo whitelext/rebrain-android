@@ -1,12 +1,16 @@
 package di
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import dagger.Module
 import dagger.Provides
+import interactor.repositories.AuthorizationTokenRepository
 import interactor.repositories.LoggedInUserRepository
-import screen.main.viewmodel.ProfileViewModelFactory
+import interactor.repositories.ProfileRepository
+import network.user.UserApi
 import screen.main.viewmodel.ProfileViewModel
+import screen.main.viewmodel.ProfileViewModelFactory
 
 /**
  * Provides [ProfileViewModel] for profile screen
@@ -17,10 +21,19 @@ class ProfileFragmentModule(private val fragment: Fragment) {
 
     @Provides
     @PerScreen
+    fun provideProfileRepository(
+        userApi: UserApi,
+        authorizationTokenRepository: AuthorizationTokenRepository,
+        context: Context
+    ) = ProfileRepository(userApi, authorizationTokenRepository, context)
+
+    @Provides
+    @PerScreen
     fun provideProfileViewModelFactory(
-        loggedInUserRepository: LoggedInUserRepository
+        loggedInUserRepository: LoggedInUserRepository,
+        profileRepository: ProfileRepository
     ): ProfileViewModelFactory =
-        ProfileViewModelFactory(loggedInUserRepository)
+        ProfileViewModelFactory(loggedInUserRepository, profileRepository)
 
     @Provides
     @PerScreen
