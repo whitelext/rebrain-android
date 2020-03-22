@@ -5,7 +5,7 @@ import dagger.Provides
 import interactor.IntroFlagStorage
 import interactor.repositories.IntroFlagRepository
 import utils.SharedPreferencesHelper
-import utils.Storage
+import interactor.utils.Storage
 
 /**
  * Provides [IntroFlagRepository] for application

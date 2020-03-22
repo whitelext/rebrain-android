@@ -5,7 +5,7 @@ import dagger.Provides
 import interactor.ProductModeStorage
 import interactor.repositories.ProductModeRepository
 import utils.SharedPreferencesHelper
-import utils.Storage
+import interactor.utils.Storage
 
 /**
  * Provides [ProductModeRepository] for application

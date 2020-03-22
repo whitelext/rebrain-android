@@ -9,7 +9,7 @@ import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.ProfileRepository
 import kotlinx.coroutines.launch
 import screen.main.ImageLoadingResult
-import utils.REQUEST_TOO_LARGE
+import interactor.utils.REQUEST_TOO_LARGE
 import utils.Result
 
 /**

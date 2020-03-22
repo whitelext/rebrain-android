@@ -1,4 +1,4 @@
-package utils
+package interactor.utils
 
 /**
  * Interface for storages

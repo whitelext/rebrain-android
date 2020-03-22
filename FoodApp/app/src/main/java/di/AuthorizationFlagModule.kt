@@ -5,7 +5,7 @@ import dagger.Provides
 import interactor.AuthorizationFlagStorage
 import interactor.repositories.AuthorizationFlagRepository
 import utils.SharedPreferencesHelper
-import utils.Storage
+import interactor.utils.Storage
 
 /**
  * Provides [AuthorizationFlagRepository] for application

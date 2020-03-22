@@ -1,11 +1,10 @@
 package interactor.repositories
 
 import domain.User
+import interactor.utils.BaseNetworkRepository
 import network.auth.AuthApi
 import service.request.AuthRequest
 import utils.Result
-import utils.convert
-import utils.mapCallToResult
 import javax.inject.Inject
 
 /**
@@ -14,7 +13,7 @@ import javax.inject.Inject
  */
 class LoginRepository @Inject constructor(
     private val authApi: AuthApi
-) {
+) : BaseNetworkRepository() {
     /**
      * Makes a login request to server and returns a [Result] with [User]
      *

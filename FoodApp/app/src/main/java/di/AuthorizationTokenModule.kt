@@ -5,7 +5,7 @@ import dagger.Provides
 import interactor.AuthorizationTokenStorage
 import interactor.repositories.AuthorizationTokenRepository
 import utils.SharedPreferencesHelper
-import utils.Storage
+import interactor.utils.Storage
 
 /**
  * Provides [AuthorizationTokenRepository] for application
