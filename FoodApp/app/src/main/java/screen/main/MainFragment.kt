@@ -11,6 +11,7 @@ import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerMainFragmentComponent
 import di.ProductModule
+import domain.Banner
 import kotlinx.android.synthetic.main.fragment_main.*
 import okhttp3.OkHttpClient
 import org.jetbrains.anko.toast
@@ -29,10 +30,14 @@ class MainFragment : BaseFragment() {
 
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
+
     @Inject
     lateinit var viewModel: ProductListViewModel
+
     @Inject
     lateinit var client: OkHttpClient
+
+    lateinit var bannerList: List<Banner>
 
     private val foodListAdapter = FoodListAdapter { context: Context, id: Int ->
         context.toast("$id")
@@ -74,6 +79,7 @@ class MainFragment : BaseFragment() {
         foodListAdapter.setProductList(viewModel.getProductList())
         viewModel.makeServerRequest(client)
         viewModel.callApi()
+        viewModel.getCarouselBanners()
         initSwipeToRefresh()
     }
 
@@ -137,6 +143,17 @@ class MainFragment : BaseFragment() {
         viewModel.productList.observe(
             viewLifecycleOwner,
             Observer { foodListAdapter.setProductList(it) })
+
+        viewModel.bannerLoadingResult.observe(viewLifecycleOwner, Observer { loadingResult ->
+
+//            loadingResult.error?.let {
+//                bannerList = mutableListOf()
+//            }
+
+            loadingResult.success?.let {
+                bannerList = it
+            }
+        })
     }
 
     companion object {

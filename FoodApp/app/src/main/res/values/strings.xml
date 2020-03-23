@@ -28,6 +28,7 @@
     <string name="profileExit">ВЫХОД</string>
     <string name="profilePickUp">ПУНКТ САМОВЫВОЗА</string>
     <string name="image_upload_error">Ошибка при загрузке изображения</string>
+    <string name="banner_upload_error">Ошибка при загрузке баннеров</string>
     <string name="pictureDialogTitle">Выберите действие</string>
     <string name="camera_photo_dialog">Использовать фото с камеры</string>
     <string name="image_upload_successful">Изображение сохранено!</string>
