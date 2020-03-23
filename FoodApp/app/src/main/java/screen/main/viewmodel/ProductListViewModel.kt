@@ -91,6 +91,7 @@ class ProductListViewModel(
     fun getCarouselPictures() = productsRepository.getCarouselPictures()
 
     fun getCarouselBanners() {
+        viewModelScope.launch {
             _bannerLoadingResult.value = BannerLoadingResult(isLoading = true)
             val response = bannerRepository.getBanners(
                 listOf(
@@ -106,6 +107,7 @@ class ProductListViewModel(
                     isLoading = false
                 )
             }
+        }
     }
 
     /**
