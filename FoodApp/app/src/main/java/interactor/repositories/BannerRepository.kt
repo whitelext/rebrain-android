@@ -3,6 +3,7 @@ package interactor.repositories
 import com.google.firebase.storage.FirebaseStorage
 import domain.Banner
 import interactor.utils.COMMON_ERROR
+import interactor.utils.FIREBASE_STORAGE_DOWNLOAD_ERROR
 import kotlinx.coroutines.*
 import okhttp3.internal.toImmutableList
 import utils.Result
@@ -41,9 +42,9 @@ class BannerRepository @Inject constructor() : CoroutineScope {
                                     bannerResult = Result.Success(bannerList.toImmutableList())
                                 }
                                 .addOnFailureListener {
-                                    bannerResult = Result.Error("loading error")
+                                    bannerResult = Result.Error(FIREBASE_STORAGE_DOWNLOAD_ERROR)
                                 }
-                            if (bannerResult == Result.Error("loading error"))
+                            if (bannerResult == Result.Error(FIREBASE_STORAGE_DOWNLOAD_ERROR))
                                 return@loop
                         }
                     }
