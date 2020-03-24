@@ -7,11 +7,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerMainFragmentComponent
 import di.ProductModule
-import domain.Banner
 import kotlinx.android.synthetic.main.fragment_main.*
 import okhttp3.OkHttpClient
 import org.jetbrains.anko.toast
@@ -37,7 +37,6 @@ class MainFragment : BaseFragment() {
     @Inject
     lateinit var client: OkHttpClient
 
-    lateinit var bannerList: List<Banner>
 
     private val foodListAdapter = FoodListAdapter { context: Context, id: Int ->
         context.toast("$id")
@@ -57,6 +56,7 @@ class MainFragment : BaseFragment() {
                 .build()
         component.inject(this)
         retainInstance = true
+        viewModel.loadCarouselBanners()
         super.onCreate(savedInstanceState)
     }
 
@@ -79,7 +79,6 @@ class MainFragment : BaseFragment() {
         foodListAdapter.setProductList(viewModel.getProductList())
         viewModel.makeServerRequest(client)
         viewModel.callApi()
-        viewModel.getCarouselBanners()
         initSwipeToRefresh()
     }
 
@@ -146,12 +145,13 @@ class MainFragment : BaseFragment() {
 
         viewModel.bannerLoadingResult.observe(viewLifecycleOwner, Observer { loadingResult ->
 
-//            loadingResult.error?.let {
-//                bannerList = mutableListOf()
-//            }
+            loadingResult.error?.let {
+                Snackbar.make(recyclerView_main, R.string.banner_upload_error, Snackbar.LENGTH_LONG)
+                    .show()
+            }
 
             loadingResult.success?.let {
-                bannerList = it
+                foodListAdapter.setBannerList(it)
             }
         })
     }

@@ -90,16 +90,14 @@ class ProductListViewModel(
 
     fun getCarouselPictures() = productsRepository.getCarouselPictures()
 
-    fun getCarouselBanners() {
+    /**
+     * Loading banners from Firebase Storage
+     *
+     */
+    fun loadCarouselBanners() {
         viewModelScope.launch {
             _bannerLoadingResult.value = BannerLoadingResult(isLoading = true)
-            val response = bannerRepository.getBanners(
-                listOf(
-                    "Doge.jpg",
-                    "jjl_color_v11_020.jpg",
-                    "jjl_color_v09_059.jpg"
-                )
-            )
+            val response = bannerRepository.getBanners()
             _bannerLoadingResult.value = when (response) {
                 is Result.Success -> BannerLoadingResult(response.data, isLoading = false)
                 is Result.Error -> BannerLoadingResult(

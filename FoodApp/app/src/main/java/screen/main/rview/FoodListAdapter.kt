@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.whitelext.foodapp.R
+import domain.Banner
 import domain.Product
 import kotlinx.android.synthetic.main.list_item.view.*
 import screen.main.view.ViewpagerItem
@@ -32,6 +33,9 @@ class FoodListAdapter(
     var isGrid = false
 
     var carouselCheckedItem: Int = 0
+
+    var bannerList: MutableList<Banner> = mutableListOf()
+        private set
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == MainTabRvType.VIEWPAGER.ordinal) {
@@ -60,6 +64,11 @@ class FoodListAdapter(
 
     fun setProductList(list: List<Product>) {
         productList = list
+        notifyDataSetChanged()
+    }
+
+    fun setBannerList(list: MutableList<Banner>) {
+        bannerList = list
         notifyDataSetChanged()
     }
 
@@ -114,6 +123,10 @@ class FoodListAdapter(
         private val view = v as ViewpagerItem
         fun bind(item: Int) {
             view.setupListener(this@FoodListAdapter)
+//            while(bannerList.size == 0){
+//                //do code
+//            }
+            view.setBannerImages(bannerList)
             view.setItem(item)
         }
     }
