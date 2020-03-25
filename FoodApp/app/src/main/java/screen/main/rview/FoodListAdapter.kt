@@ -123,9 +123,6 @@ class FoodListAdapter(
         private val view = v as ViewpagerItem
         fun bind(item: Int) {
             view.setupListener(this@FoodListAdapter)
-//            while(bannerList.size == 0){
-//                //do code
-//            }
             view.setBannerImages(bannerList)
             view.setItem(item)
         }

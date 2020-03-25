@@ -2,7 +2,6 @@ package interactor.repositories
 
 import com.google.firebase.storage.FirebaseStorage
 import domain.Banner
-import interactor.utils.COMMON_ERROR
 import interactor.utils.FIREBASE_STORAGE_DOWNLOAD_ERROR
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,7 +33,7 @@ class BannerRepository @Inject constructor() {
      */
     suspend fun getBanners(): Result<MutableList<Banner>> =
         withContext(Dispatchers.IO) {
-            var bannerResult: Result<MutableList<Banner>> = Result.Error(COMMON_ERROR)
+            var hasError = false
             val bannerList: MutableList<Banner> = mutableListOf()
 
             firebaseImageLocations.forEachIndexed { index, imageLocation ->
@@ -42,20 +41,19 @@ class BannerRepository @Inject constructor() {
                         bannerList.add(Banner(id = index, imageUrl = it.toString()))
                     }
                     .addOnFailureListener {
-                        bannerResult = Result.Error(FIREBASE_STORAGE_DOWNLOAD_ERROR)
+                        hasError = true
                     }
             }
 
-            while (bannerList.size != firebaseImageLocations.size || bannerResult == Result.Error(
-                    FIREBASE_STORAGE_DOWNLOAD_ERROR
-                )
+            while (bannerList.size != firebaseImageLocations.size || hasError
             ) {
                 //waiting until images will be loaded or error
             }
 
-            if (bannerResult != Result.Error(FIREBASE_STORAGE_DOWNLOAD_ERROR))
-                bannerResult = Result.Success(bannerList)
-            return@withContext bannerResult
+            return@withContext when (hasError) {
+                false -> Result.Success(bannerList)
+                true -> Result.Error(FIREBASE_STORAGE_DOWNLOAD_ERROR)
+            }
         }
 
 }
