@@ -1,7 +1,5 @@
 package screen.main
 
-import java.io.File
-
 /**
  * Image loading result : success (image file path) or error message.
  */

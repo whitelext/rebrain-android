@@ -20,6 +20,7 @@ import retrofit2.Retrofit
         AuthorizationFlagModule::class,
         IntroFlagModule::class,
         ProductModeModule::class,
+        BannerModule::class,
         AuthorizationTokenModule::class,
         LoginModule::class,
         FavoriteModule::class,

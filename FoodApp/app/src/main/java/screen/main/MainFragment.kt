@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerMainFragmentComponent
@@ -29,10 +30,13 @@ class MainFragment : BaseFragment() {
 
     private var lm = LinearLayoutManager(context)
     private val decor = MarginItemDecoration(11)
+
     @Inject
     lateinit var viewModel: ProductListViewModel
+
     @Inject
     lateinit var client: OkHttpClient
+
 
     private val foodListAdapter = FoodListAdapter { context: Context, id: Int ->
         context.toast("$id")
@@ -52,6 +56,7 @@ class MainFragment : BaseFragment() {
                 .build()
         component.inject(this)
         retainInstance = true
+        viewModel.loadCarouselBanners()
         super.onCreate(savedInstanceState)
     }
 
@@ -137,6 +142,18 @@ class MainFragment : BaseFragment() {
         viewModel.productList.observe(
             viewLifecycleOwner,
             Observer { foodListAdapter.setProductList(it) })
+
+        viewModel.bannerLoadingResult.observe(viewLifecycleOwner, Observer { loadingResult ->
+
+            loadingResult.error?.let {
+                Snackbar.make(recyclerView_main, R.string.banner_upload_error, Snackbar.LENGTH_LONG)
+                    .show()
+            }
+
+            loadingResult.success?.let {
+                foodListAdapter.setBannerList(it)
+            }
+        })
     }
 
     companion object {

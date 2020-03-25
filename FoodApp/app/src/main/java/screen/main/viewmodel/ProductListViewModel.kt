@@ -3,12 +3,18 @@ package screen.main.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.whitelext.foodapp.R
 import domain.Product
+import interactor.repositories.BannerRepository
 import interactor.repositories.FavoritesRepository
 import interactor.repositories.ProductModeRepository
 import interactor.repositories.ProductsRepository
+import kotlinx.coroutines.launch
 import okhttp3.*
+import screen.main.BannerLoadingResult
 import timber.log.Timber
+import utils.Result
 import java.io.IOException
 
 /**
@@ -17,11 +23,16 @@ import java.io.IOException
 class ProductListViewModel(
     private val productsRepository: ProductsRepository,
     private val productModeRepository: ProductModeRepository,
-    private val favoritesRepository: FavoritesRepository
+    private val favoritesRepository: FavoritesRepository,
+    private val bannerRepository: BannerRepository
 ) : ViewModel() {
     private val _productList = MutableLiveData<List<Product>>()
     val productList: LiveData<List<Product>>
         get() = _productList
+
+    private val _bannerLoadingResult = MutableLiveData<BannerLoadingResult>()
+    val bannerLoadingResult: LiveData<BannerLoadingResult>
+        get() = _bannerLoadingResult
 
     private val _isListGrid = MutableLiveData<Boolean>()
     val isListGrid: LiveData<Boolean>
@@ -78,6 +89,24 @@ class ProductListViewModel(
     }
 
     fun getCarouselPictures() = productsRepository.getCarouselPictures()
+
+    /**
+     * Loading banners from Firebase Storage
+     *
+     */
+    fun loadCarouselBanners() {
+        viewModelScope.launch {
+            _bannerLoadingResult.value = BannerLoadingResult(isLoading = true)
+            val response = bannerRepository.getBanners()
+            _bannerLoadingResult.value = when (response) {
+                is Result.Success -> BannerLoadingResult(response.data, isLoading = false)
+                is Result.Error -> BannerLoadingResult(
+                    error = R.string.banner_upload_error,
+                    isLoading = false
+                )
+            }
+        }
+    }
 
     /**
      *  Server request
