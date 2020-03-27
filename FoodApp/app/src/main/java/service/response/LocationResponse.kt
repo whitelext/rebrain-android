@@ -12,10 +12,10 @@ import domain.Location
 data class LocationResponse(
     @Json(name = "lat")
     val lat: Double,
-    @Json(name = "long")
-    val long: Double
+    @Json(name = "lon")
+    val lon: Double
 ) : ServerResponse<Location> {
     override fun convertToKotlinClass(): Location {
-        return Location(lat, long)
+        return Location(lat, lon)
     }
 }

@@ -88,8 +88,6 @@ class ProductListViewModel(
         productModeRepository.switchProductMode()
     }
 
-    fun getCarouselPictures() = productsRepository.getCarouselPictures()
-
     /**
      * Loading banners from Firebase Storage
      *
@@ -131,7 +129,4 @@ class ProductListViewModel(
         }
     }
 
-    fun callApi() {
-        productsRepository.callApi()
-    }
 }

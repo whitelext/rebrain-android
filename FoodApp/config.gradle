@@ -16,6 +16,7 @@ ext {
     firebaseAnalyticsVersion = '17.2.3'
     firebaseMessagingVersion = '20.1.3'
     firebaseStorageVersion = '19.1.1'
+    googleMapsVersion = '17.0.0'
 
     //AndroidX
     appcompatVersion = '1.1.0'

@@ -33,4 +33,7 @@
     <string name="camera_photo_dialog">Использовать фото с камеры</string>
     <string name="image_upload_successful">Изображение сохранено!</string>
     <string name="image_upload_error_413">Изображение слишком большое</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="map_toolbar_text">Самовывоз</string>
+    <string name="pickup_loading_error">Ошибка при загрузке точек самовывоза</string>
 </resources>
