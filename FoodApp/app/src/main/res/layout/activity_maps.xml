@@ -1,15 +1,63 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include layout="@layout/layout_toolbar_map" />
 
+    <include layout="@layout/map_bottom_sheet" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="screen.maps.MapsActivity" />
+        tools:context="screen.maps.MapsActivity">
+
+
+    </androidx.fragment.app.FragmentContainerView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/map"
+        app:layout_anchorGravity="center">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/map_zoom_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toTopOf="@+id/map_zoom_out"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_plus_black_19dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/map_zoom_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="40dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toTopOf="@+id/map_user_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_minus_black_19dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/map_user_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_my_location_blue_30dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

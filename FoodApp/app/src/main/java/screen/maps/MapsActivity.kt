@@ -7,6 +7,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,16 +18,16 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerMapComponent
 import di.MapActivityModule
 import domain.PickupPoint
+import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.layout_toolbar_map.*
+import kotlinx.android.synthetic.main.map_bottom_sheet.*
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -39,6 +40,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
+    lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,29 +59,59 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        bottomSheetBehavior = BottomSheetBehavior.from(map_bottom_sheet_layout)
 
     }
 
     private fun initViewModel() {
         viewmodel.loadStores()
 
-        viewmodel.storeLoadingResult.observe(this, Observer {loadingResult->
+        viewmodel.storeLoadingResult.observe(this, Observer { loadingResult ->
 
-            loadingResult.success?.let{
+            loadingResult.success?.let {
+                val latLngBounds = LatLngBounds.builder()
                 it.forEach { pickupPoint ->
                     placeMarkerOnMap(pickupPoint)
+                    latLngBounds.include(
+                        LatLng(
+                            pickupPoint.location.lat,
+                            pickupPoint.location.long
+                        )
+                    )
                 }
+                map.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 100))
             }
         })
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        map.uiSettings.isZoomControlsEnabled = true
+        map.uiSettings.isZoomControlsEnabled = false
+        map.uiSettings.isMapToolbarEnabled = false
         map.setOnMarkerClickListener(this)
 
         setUpMap()
         initViewModel()
+
+        map_zoom_in.setOnClickListener {
+            map.animateCamera(CameraUpdateFactory.zoomIn())
+        }
+
+        map_zoom_out.setOnClickListener {
+            map.animateCamera(CameraUpdateFactory.zoomOut())
+        }
+
+        map_user_location.setOnClickListener {
+
+            map.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        lastLocation.latitude,
+                        lastLocation.longitude
+                    ), 12f
+                )
+            )
+        }
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
@@ -87,11 +119,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     private fun setUpMap() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        val locationPermission = ActivityCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        if (locationPermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
@@ -107,14 +139,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             // Got last known location
             location?.let {
                 lastLocation = location
-                val currentLatLng = LatLng(location.latitude, location.longitude)
-                // placeMarkerOnMap(currentLatLng)
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
 
         }
 
     }
+
 
     private fun getAddress(latLng: LatLng): String {
         val geocoder = Geocoder(this)
@@ -151,6 +181,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             )
         )
         map.addMarker(markerOptions)
+        map.setOnMarkerClickListener { marker ->
+            if (marker.isInfoWindowShown) {
+                marker.hideInfoWindow()
+            } else {
+                marker.showInfoWindow()
+            }
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            true
+        }
     }
 
     private fun initToolbar() {

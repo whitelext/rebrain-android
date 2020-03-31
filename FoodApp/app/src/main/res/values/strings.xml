@@ -36,4 +36,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="map_toolbar_text">Самовывоз</string>
     <string name="pickup_loading_error">Ошибка при загрузке точек самовывоза</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBqPcHtnIFdnaerEsOQ8Pxa9MfeoRICk8M</string>
+    <string name="map_pick_button">ВЫБРАТЬ</string>
 </resources>

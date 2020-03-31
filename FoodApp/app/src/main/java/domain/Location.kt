@@ -5,6 +5,6 @@ package domain
  *
  */
 class Location(
-    val lat: Double,
-    val long: Double
+    var lat: Double,
+    var long: Double
 )
