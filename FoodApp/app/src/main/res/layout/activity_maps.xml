@@ -1,28 +1,28 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include layout="@layout/layout_toolbar_map" />
 
-    <include layout="@layout/map_bottom_sheet" />
-
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
+        android:id="@+id/map_fragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="screen.maps.MapsActivity">
 
-
     </androidx.fragment.app.FragmentContainerView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/map_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchor="@+id/map"
+        app:layout_anchor="@+id/map_fragment"
         app:layout_anchorGravity="center">
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/map_zoom_in"
@@ -57,7 +57,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_my_location_blue_30dp" />
 
+        <ProgressBar
+            android:id="@+id/map_progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorToolbar"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/map_bottom_sheet" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

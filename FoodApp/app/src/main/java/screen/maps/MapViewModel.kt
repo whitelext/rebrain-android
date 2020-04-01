@@ -26,14 +26,7 @@ class MapViewModel(private val mapRepository: MapRepository) : ViewModel() {
         viewModelScope.launch {
             val response = mapRepository.getStoreLocations()
             _storeLoadingResult.value = when (response) {
-                // Because the server temporarily send the same point
-                is Result.Success -> {
-                    response.data.forEach {
-                        it.location.lat += (0..3).random()
-                        it.location.long += (0..3).random()
-                    }
-                    StoreLoadingResult(response.data, false)
-                }
+                is Result.Success -> StoreLoadingResult(response.data, false)
                 is Result.Error -> StoreLoadingResult(
                     isLoading = false,
                     error = R.string.pickup_loading_error
