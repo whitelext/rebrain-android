@@ -46,4 +46,14 @@ abstract class BaseNetworkRepository {
             is Result.Error -> Result.Error(exception)
         }
 
+    /**
+     * Converts server layer [Result] <[List]<[ServerResponse]<[T]>>>
+     * into domain layer [Result]<[List]<[T]>>
+     */
+    protected fun <T : Any, R : List<ServerResponse<T>>> Result<R>.convertList(): Result<List<T>> =
+        when (this) {
+            is Result.Success -> Result.Success(data.map { it.convertToKotlinClass() })
+            is Result.Error -> Result.Error(exception)
+        }
+
 }

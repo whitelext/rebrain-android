@@ -50,6 +50,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
     implementation "com.google.firebase:firebase-storage-ktx:$firebaseStorageVersion"
+    implementation "com.google.android.gms:play-services-maps:$googleMapsVersion"
+    implementation "com.google.android.gms:play-services-location:$googleMapsVersion"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit2_version"
     implementation "com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion"

@@ -25,6 +25,7 @@ import di.DaggerProfileFragmentComponent
 import di.ProfileFragmentModule
 import kotlinx.android.synthetic.main.fragment_profile.*
 import screen.main.viewmodel.ProfileViewModel
+import screen.maps.MapsActivity
 import utils.BaseFragment
 import java.io.File
 import java.io.IOException
@@ -128,6 +129,9 @@ class ProfileFragment : BaseFragment() {
         initViewModel()
         profileAvatar.setOnClickListener {
             showPictureDialog()
+        }
+        profilePickUpButton.setOnClickListener {
+            MapsActivity.start(requireContext())
         }
     }
 

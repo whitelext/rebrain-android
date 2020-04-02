@@ -78,7 +78,6 @@ class MainFragment : BaseFragment() {
         initRv(lm)
         foodListAdapter.setProductList(viewModel.getProductList())
         viewModel.makeServerRequest(client)
-        viewModel.callApi()
         initSwipeToRefresh()
     }
 
@@ -122,7 +121,6 @@ class MainFragment : BaseFragment() {
         swipe_refresh_main.setOnRefreshListener {
             foodListAdapter.setProductList(viewModel.shuffleProductList())
             viewModel.makeServerRequest(client)
-            viewModel.callApi()
             swipe_refresh_main.isRefreshing = false
         }
     }

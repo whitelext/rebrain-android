@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Query
-import service.response.PickPointsResponse
+import service.response.PickPointResponse
 import service.response.ProductListResponse
 
 /**
@@ -21,7 +21,7 @@ interface ProductsApi {
     ): Call<ProductListResponse>
 
     @GET("pickups/")
-    fun getPickups(): Call<PickPointsResponse>
+    fun getPickups(@Header("X-Access-Token") token: String): Call<List<PickPointResponse>>
 
 
 }
