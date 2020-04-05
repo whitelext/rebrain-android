@@ -107,9 +107,21 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        changeTitle()
+    }
+
     private fun initToolbar() {
         custom_toolbar.title = getString(R.string.app_name)
         setSupportActionBar(custom_toolbar)
+    }
+
+    private fun changeTitle() {
+        Thread(Runnable {
+            Thread.sleep(1000)
+            custom_toolbar.title = "test"
+        }).start()
     }
 
     override fun onBackPressed() {
