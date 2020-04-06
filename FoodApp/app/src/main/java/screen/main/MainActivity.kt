@@ -28,6 +28,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private val lambda = { custom_toolbar.title = "test" }
 
     private val fragmentTypeMap by lazy {
         hashMapOf(
@@ -129,8 +130,7 @@ class MainActivity : BaseActivity() {
 
     private fun changeTitle() {
         Thread(Runnable {
-            Thread.sleep(1000)
-            h.sendEmptyMessage(0)
+            h.postDelayed(lambda, 1000)
         }).start()
     }
 
