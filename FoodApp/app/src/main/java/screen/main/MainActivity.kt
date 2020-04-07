@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,12 +21,9 @@ import utils.ExitDialogFragment
  */
 class MainActivity : BaseActivity() {
 
-    private val h = object : Handler(Looper.getMainLooper()) {
-        override fun handleMessage(msg: Message?) {
-            custom_toolbar.title = "test"
-        }
-    }
+    private val handler = Handler(Looper.getMainLooper())
 
+    private val lambda = { custom_toolbar.title = "test" }
 
     private val fragmentTypeMap by lazy {
         hashMapOf(
@@ -128,10 +124,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun changeTitle() {
-        Thread(Runnable {
-            Thread.sleep(1000)
-            h.sendEmptyMessage(0)
-        }).start()
+        handler.postDelayed(lambda, 1000)
     }
 
     override fun onBackPressed() {
