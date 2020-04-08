@@ -42,6 +42,9 @@ ext {
     //Di
     daggerVersion = '2.25.2'
 
+    //RX
+    rxJavaVersion = '3.0.0'
+
     //ImageCompression
     zeloryVersion = '3.0.0'
 }
