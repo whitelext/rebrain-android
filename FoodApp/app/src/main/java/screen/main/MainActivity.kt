@@ -3,16 +3,16 @@ package screen.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
+import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar.TabType
 import utils.BaseActivity
 import utils.BaseFragment
 import utils.ExitDialogFragment
+import java.util.concurrent.TimeUnit
 
 /**
  *The Main Screen of application
@@ -20,10 +20,6 @@ import utils.ExitDialogFragment
  * For now it shows [MainFragment] with list of jpg images in a ViewPager
  */
 class MainActivity : BaseActivity() {
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val lambda = { custom_toolbar.title = "test" }
 
     private val fragmentTypeMap by lazy {
         hashMapOf(
@@ -124,7 +120,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun changeTitle() {
-        handler.postDelayed(lambda, 1000)
+        Observable.timer(1, TimeUnit.SECONDS).subscribe {
+            custom_toolbar.title = "test"
+        }
     }
 
     override fun onBackPressed() {
