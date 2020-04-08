@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -120,9 +121,11 @@ class MainActivity : BaseActivity() {
     }
 
     private fun changeTitle() {
-        Observable.timer(1, TimeUnit.SECONDS).subscribe {
-            custom_toolbar.title = "test"
-        }
+        Observable.timer(1, TimeUnit.SECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                custom_toolbar.title = "test"
+            }
     }
 
     override fun onBackPressed() {
