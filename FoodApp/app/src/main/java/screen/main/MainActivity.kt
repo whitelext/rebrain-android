@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar.TabType
@@ -30,6 +30,8 @@ class MainActivity : BaseActivity() {
         )
     }
 
+    private val source: PublishSubject<Unit> = PublishSubject.create()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +51,12 @@ class MainActivity : BaseActivity() {
             showFragment(it)
         }
 
+        source
+            .delay(1, TimeUnit.SECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                custom_toolbar.title = "test"
+            }
 
         initToolbar()
     }
@@ -121,11 +129,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun changeTitle() {
-        Observable.timer(1, TimeUnit.SECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                custom_toolbar.title = "test"
-            }
+        source.onNext(Unit)
     }
 
     override fun onBackPressed() {
