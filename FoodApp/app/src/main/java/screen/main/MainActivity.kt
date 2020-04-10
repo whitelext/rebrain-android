@@ -30,7 +30,7 @@ class MainActivity : BaseActivity() {
         )
     }
 
-    private val source: PublishSubject<Unit> = PublishSubject.create()
+    private val changeTitleSubject: PublishSubject<Unit> = PublishSubject.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,7 @@ class MainActivity : BaseActivity() {
             showFragment(it)
         }
 
-        source
+        changeTitleSubject
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -129,7 +129,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun changeTitle() {
-        source.onNext(Unit)
+        changeTitleSubject.onNext(Unit)
     }
 
     override fun onBackPressed() {
