@@ -6,10 +6,12 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.functions.BiFunction
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar.TabType
+import timber.log.Timber
 import utils.BaseActivity
 import utils.BaseFragment
 import utils.ExitDialogFragment
@@ -31,6 +33,8 @@ class MainActivity : BaseActivity() {
     }
 
     private val changeTitleSubject: PublishSubject<Unit> = PublishSubject.create()
+
+    private val intSumSubject: PublishSubject<Int> = PublishSubject.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +58,28 @@ class MainActivity : BaseActivity() {
         changeTitleSubject
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
+            .skip(4)
             .subscribe {
-                custom_toolbar.title = "test"
+                custom_toolbar.title = "test "
             }
+
+        intSumSubject
+            .scan { t, u -> t + u }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Timber.tag("rxTest").i("Current value is $it")
+            }
+
+        val booleanObservable = intSumSubject.zipWith(changeTitleSubject,
+            BiFunction<Int, Unit, Boolean> { t1, _ -> t1 > 5 })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Timber.tag("rxTest").i("Current boolean value is $it")
+            }
+
+        intSumSubject.onNext(1)
+        intSumSubject.onNext(2)
+        intSumSubject.onNext(3)
 
         initToolbar()
     }
@@ -120,7 +143,9 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        changeTitle()
+        repeat(5) {
+            changeTitle()
+        }
     }
 
     private fun initToolbar() {
