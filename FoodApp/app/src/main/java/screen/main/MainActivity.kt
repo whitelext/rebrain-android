@@ -6,10 +6,13 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.functions.BiFunction
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar.TabType
+import timber.log.Timber
 import utils.BaseActivity
 import utils.BaseFragment
 import utils.ExitDialogFragment
@@ -32,6 +35,8 @@ class MainActivity : BaseActivity() {
 
     private val changeTitleSubject: PublishSubject<Unit> = PublishSubject.create()
 
+    private val intSubject: PublishSubject<Int> = PublishSubject.create()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -51,12 +56,36 @@ class MainActivity : BaseActivity() {
             showFragment(it)
         }
 
-        changeTitleSubject
+        val changeTitleFiltered = changeTitleSubject
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                custom_toolbar.title = "test"
-            }
+            .skip(4)
+
+        changeTitleFiltered.subscribe {
+            custom_toolbar.title = "test "
+        }
+
+        val intFiltered = intSubject
+            .scan { t, u -> t + u }
+            .observeOn(AndroidSchedulers.mainThread())
+
+        intFiltered.subscribe {
+            Timber.tag("rxTest").i("Current value is $it")
+        }
+
+        val booleanObservable = Observable.combineLatest(
+            intFiltered,
+            changeTitleFiltered,
+            BiFunction<Int, Unit, Boolean> { t1, _ -> t1 > 5 })
+            .observeOn(AndroidSchedulers.mainThread())
+
+        booleanObservable.subscribe {
+            Timber.tag("rxTest").i("Current boolean value is $it")
+        }
+
+        intSubject.onNext(1)
+        intSubject.onNext(2)
+        intSubject.onNext(3)
 
         initToolbar()
     }
@@ -120,7 +149,9 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        changeTitle()
+        repeat(5) {
+            changeTitle()
+        }
     }
 
     private fun initToolbar() {
