@@ -35,7 +35,7 @@ class MainActivity : BaseActivity() {
 
     private val changeTitleSubject: PublishSubject<Unit> = PublishSubject.create()
 
-    private val intSumSubject: PublishSubject<Int> = PublishSubject.create()
+    private val intSubject: PublishSubject<Int> = PublishSubject.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,35 +56,36 @@ class MainActivity : BaseActivity() {
             showFragment(it)
         }
 
-        changeTitleSubject
+        val changeTitleFiltered = changeTitleSubject
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .skip(4)
-            .subscribe {
-                custom_toolbar.title = "test "
-            }
 
-        intSumSubject
+        changeTitleFiltered.subscribe {
+            custom_toolbar.title = "test "
+        }
+
+        val intFiltered = intSubject
             .scan { t, u -> t + u }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                Timber.tag("rxTest").i("Current value is $it")
-            }
 
-        val intObservable = Observable.just(8)
-        val unitObservable = Observable.just(Unit)
+        intFiltered.subscribe {
+            Timber.tag("rxTest").i("Current value is $it")
+        }
+
         val booleanObservable = Observable.combineLatest(
-            intObservable,
-            unitObservable,
+            intFiltered,
+            changeTitleFiltered,
             BiFunction<Int, Unit, Boolean> { t1, _ -> t1 > 5 })
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                Timber.tag("rxTest").i("Current boolean value is $it")
-            }
 
-        intSumSubject.onNext(1)
-        intSumSubject.onNext(2)
-        intSumSubject.onNext(3)
+        booleanObservable.subscribe {
+            Timber.tag("rxTest").i("Current boolean value is $it")
+        }
+
+        intSubject.onNext(1)
+        intSubject.onNext(2)
+        intSubject.onNext(3)
 
         initToolbar()
     }
