@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.BiFunction
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
@@ -70,7 +71,11 @@ class MainActivity : BaseActivity() {
                 Timber.tag("rxTest").i("Current value is $it")
             }
 
-        val booleanObservable = intSumSubject.zipWith(changeTitleSubject,
+        val intObservable = Observable.just(8)
+        val unitObservable = Observable.just(Unit)
+        val booleanObservable = Observable.combineLatest(
+            intObservable,
+            unitObservable,
             BiFunction<Int, Unit, Boolean> { t1, _ -> t1 > 5 })
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
