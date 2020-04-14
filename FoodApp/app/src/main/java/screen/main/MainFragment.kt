@@ -81,6 +81,11 @@ class MainFragment : BaseFragment() {
         initSwipeToRefresh()
     }
 
+    override fun onPause() {
+        foodListAdapter.productClickDisposable.dispose()
+        super.onPause()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_changerv, menu)
         menu.getItem(0)?.setIcon(

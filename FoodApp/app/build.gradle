@@ -82,6 +82,7 @@ dependencies {
     //RX
     implementation "io.reactivex.rxjava3:rxandroid:$rxJavaVersion"
     implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+    implementation "com.jakewharton.rxbinding3:rxbinding:$rxBindingVersion"
     //ImageCompression
     implementation "id.zelory:compressor:$zeloryVersion"
 

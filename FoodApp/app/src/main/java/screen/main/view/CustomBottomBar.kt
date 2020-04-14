@@ -3,7 +3,9 @@ package screen.main.view
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import com.jakewharton.rxbinding3.view.clicks
 import com.whitelext.foodapp.R
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.layout_custom_bottom_bar.view.*
 
 /*
@@ -34,13 +36,14 @@ class CustomBottomBar @JvmOverloads constructor(
         updateChecks(TabType.PROFILE)
     }
 
-    fun setOnTabClickListener(tabType: TabType, listener: (TabType) -> Unit) {
-        tabTypeMap[tabType]?.setOnClickListener {
-            if (tabTypeMap[tabType]?.isChecked() == false) {
-                updateChecks(tabType)
-                listener(tabType)
-            }
-        }
+    fun setOnTabClickListener(tabType: TabType, listener: (TabType) -> Unit): Disposable {
+        return tabTypeMap[tabType]?.clicks()
+            ?.subscribe {
+                if (tabTypeMap[tabType]?.isChecked() == false) {
+                    updateChecks(tabType)
+                    listener(tabType)
+                }
+            }!!
     }
 
     fun updateChecks(tab: TabType = TabType.PROFILE) {
