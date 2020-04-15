@@ -26,11 +26,13 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import com.jakewharton.rxbinding3.view.clicks
 import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerMapComponent
 import di.MapActivityModule
 import domain.PickupPoint
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.layout_toolbar_map.*
 import kotlinx.android.synthetic.main.map_bottom_sheet.*
@@ -50,6 +52,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
 
     private val pickupPointMap = mutableMapOf<LatLng, PickupPoint>()
 
+    private var mapCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +98,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
 
     }
 
+    override fun onDestroy() {
+        mapCompositeDisposable.dispose()
+        super.onDestroy()
+    }
+
     private fun initViewModel() {
         viewmodel.loadStores()
 
@@ -135,15 +143,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
         setUpMap()
         initViewModel()
 
-        map_zoom_in.setOnClickListener {
+        mapCompositeDisposable.add(map_zoom_in.clicks().subscribe {
             map.animateCamera(CameraUpdateFactory.zoomIn())
-        }
+        })
 
-        map_zoom_out.setOnClickListener {
+        mapCompositeDisposable.add(map_zoom_out.clicks().subscribe {
             map.animateCamera(CameraUpdateFactory.zoomOut())
-        }
+        })
 
-        map_user_location.setOnClickListener {
+        mapCompositeDisposable.add(map_user_location.clicks().subscribe {
 
             map.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
@@ -153,7 +161,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
                     ), 12f
                 )
             )
-        }
+        })
     }
 
     private fun setUpMap() {

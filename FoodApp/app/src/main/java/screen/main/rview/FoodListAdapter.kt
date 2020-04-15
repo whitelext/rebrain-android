@@ -9,9 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.jakewharton.rxbinding3.view.clicks
 import com.whitelext.foodapp.R
 import domain.Banner
 import domain.Product
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.list_item.view.*
 import screen.main.view.ViewpagerItem
 
@@ -36,6 +38,8 @@ class FoodListAdapter(
 
     var bannerList: MutableList<Banner> = mutableListOf()
         private set
+
+    var productItemCompositeDisposable = CompositeDisposable()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == MainTabRvType.VIEWPAGER.ordinal) {
@@ -113,9 +117,9 @@ class FoodListAdapter(
                     else -> R.drawable.img_list_4
                 }
             ).into(productImageView)
-            buyImageButton.setOnClickListener {
-                buyButtonListener(it.context, data.id)
-            }
+            productItemCompositeDisposable.add(buyImageButton.clicks().subscribe {
+                buyButtonListener(buyImageButton.context, data.id)
+            })
         }
     }
 

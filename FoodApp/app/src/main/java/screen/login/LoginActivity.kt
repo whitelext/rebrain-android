@@ -4,19 +4,20 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
+import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.editorActions
+import com.jakewharton.rxbinding3.widget.textChanges
 import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerLoginComponent
 import di.LoginActivityModule
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_login.*
 import screen.main.MainActivity
 import utils.BaseActivity
@@ -30,6 +31,8 @@ class LoginActivity : BaseActivity() {
 
     @Inject
     lateinit var loginViewModel: LoginViewModel
+
+    var loginCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,37 +75,40 @@ class LoginActivity : BaseActivity() {
             setResult(Activity.RESULT_OK)
         })
 
-        username.afterTextChanged {
+        loginCompositeDisposable.add(login.clicks().subscribe {
+            loading.visibility = View.VISIBLE
+            loginViewModel.login(username.text.toString(), password.text.toString())
+        })
+
+        loginCompositeDisposable.add(username.textChanges().subscribe {
             loginViewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
             )
-        }
+        })
 
-        password.apply {
-            afterTextChanged {
-                loginViewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
-                )
-            }
-
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
-                            username.text.toString(),
-                            password.text.toString()
-                        )
+        loginCompositeDisposable.add(password.editorActions().subscribe { actionId ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    password.error ?: run {
+                        loading.visibility = View.VISIBLE
+                        loginViewModel.login(username.text.toString(), password.text.toString())
+                    }
                 }
-                false
             }
+        })
 
-            login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
-            }
-        }
+        loginCompositeDisposable.add(password.textChanges().subscribe {
+            loginViewModel.loginDataChanged(
+                username.text.toString(),
+                password.text.toString()
+            )
+        })
+    }
+
+    override fun onDestroy() {
+        loginCompositeDisposable.dispose()
+        super.onDestroy()
     }
 
     private fun updateUiWithUser(model: LoggedInUser) {
@@ -125,21 +131,6 @@ class LoginActivity : BaseActivity() {
             startActivity(context, Intent(context, LoginActivity::class.java), null)
         }
     }
-}
-
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
 }
 
 

@@ -54,6 +54,11 @@ class FavouriteFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
 
+    override fun onDestroy() {
+        favoriteListAdapter.favoriteItemCompositeDisposable.dispose()
+        super.onDestroy()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()

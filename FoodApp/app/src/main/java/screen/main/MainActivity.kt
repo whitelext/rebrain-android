@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.BiFunction
@@ -33,6 +34,8 @@ class MainActivity : BaseActivity() {
         )
     }
 
+    private var mainCompositeDisposable = CompositeDisposable()
+
     private val changeTitleSubject: PublishSubject<Unit> = PublishSubject.create()
 
     private val intSubject: PublishSubject<Int> = PublishSubject.create()
@@ -44,17 +47,6 @@ class MainActivity : BaseActivity() {
             showFragment(TabType.PROFILE)
         }
         setCheckedButton()
-
-        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.PROFILE) {
-            showFragment(it)
-        }
-        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN) {
-            showFragment(it)
-        }
-
-        main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES) {
-            showFragment(it)
-        }
 
         val changeTitleFiltered = changeTitleSubject
             .delay(1, TimeUnit.SECONDS)
@@ -148,10 +140,27 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onResume() {
-        super.onResume()
+        mainCompositeDisposable.add(main_activity_custom_bottom_bar.setOnTabClickListener(TabType.PROFILE) {
+            showFragment(it)
+        })
+
+        mainCompositeDisposable.add(main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN) {
+            showFragment(it)
+        })
+
+        mainCompositeDisposable.add(main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES) {
+            showFragment(it)
+        })
+
         repeat(5) {
             changeTitle()
         }
+        super.onResume()
+    }
+
+    override fun onDestroy() {
+        mainCompositeDisposable.dispose()
+        super.onDestroy()
     }
 
     private fun initToolbar() {

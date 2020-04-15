@@ -44,6 +44,7 @@ ext {
 
     //RX
     rxJavaVersion = '3.0.0'
+    rxBindingVersion = '3.1.0'
 
     //ImageCompression
     zeloryVersion = '3.0.0'

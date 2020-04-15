@@ -19,10 +19,12 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
+import com.jakewharton.rxbinding3.view.clicks
 import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerProfileFragmentComponent
 import di.ProfileFragmentModule
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_profile.*
 import screen.main.viewmodel.ProfileViewModel
 import screen.maps.MapsActivity
@@ -43,6 +45,8 @@ class ProfileFragment : BaseFragment() {
     lateinit var viewModel: ProfileViewModel
 
     private lateinit var currentPhotoPath: String
+
+    private val profileCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,15 +128,20 @@ class ProfileFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
+    override fun onDestroy() {
+        profileCompositeDisposable.dispose()
+        super.onDestroy()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-        profileAvatar.setOnClickListener {
+        profileCompositeDisposable.add(profileAvatar.clicks().subscribe {
             showPictureDialog()
-        }
-        profilePickUpButton.setOnClickListener {
+        })
+        profileCompositeDisposable.add(profilePickUpButton.clicks().subscribe {
             MapsActivity.start(requireContext())
-        }
+        })
     }
 
     private fun initViewModel() {
