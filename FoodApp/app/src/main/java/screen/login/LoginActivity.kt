@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat.startActivity
@@ -86,10 +87,14 @@ class LoginActivity : BaseActivity() {
             )
         })
 
-        loginCompositeDisposable.add(password.editorActions().subscribe {
-            password.error ?: run {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+        loginCompositeDisposable.add(password.editorActions().subscribe { actionId ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    password.error ?: run {
+                        loading.visibility = View.VISIBLE
+                        loginViewModel.login(username.text.toString(), password.text.toString())
+                    }
+                }
             }
         })
 
