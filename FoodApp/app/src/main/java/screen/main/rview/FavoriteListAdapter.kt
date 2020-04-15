@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.jakewharton.rxbinding3.view.clicks
 import com.whitelext.foodapp.R
 import domain.Product
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.favorite_list_item.view.*
 
 /**
@@ -25,7 +25,7 @@ class FavoriteListAdapter(
     var favoriteList: MutableList<Product> = mutableListOf()
         private set
 
-    lateinit var favoriteItemDisposable: Disposable
+    var favoriteItemCompositeDisposable = CompositeDisposable()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutRv = R.layout.favorite_list_item
@@ -69,10 +69,10 @@ class FavoriteListAdapter(
                     else -> R.drawable.img_list_4
                 }
             ).into(productImageView)
-            favoriteItemDisposable = favButton.clicks().subscribe {
+            favoriteItemCompositeDisposable.add(favButton.clicks().subscribe {
                 favButtonListener(data.id)
                 notifyDataSetChanged()
-            }
+            })
         }
     }
 

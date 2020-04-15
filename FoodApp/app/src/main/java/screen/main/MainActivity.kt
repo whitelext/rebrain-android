@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.BiFunction
@@ -34,9 +34,7 @@ class MainActivity : BaseActivity() {
         )
     }
 
-    private lateinit var profileClickDisposable: Disposable
-    private lateinit var mainClickDisposable: Disposable
-    private lateinit var favoritesClickDisposable: Disposable
+    private var mainCompositeDisposable = CompositeDisposable()
 
     private val changeTitleSubject: PublishSubject<Unit> = PublishSubject.create()
 
@@ -142,20 +140,17 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onResume() {
-        profileClickDisposable =
-            main_activity_custom_bottom_bar.setOnTabClickListener(TabType.PROFILE) {
-                showFragment(it)
-            }
+        mainCompositeDisposable.add(main_activity_custom_bottom_bar.setOnTabClickListener(TabType.PROFILE) {
+            showFragment(it)
+        })
 
-        mainClickDisposable =
-            main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN) {
-                showFragment(it)
-            }
+        mainCompositeDisposable.add(main_activity_custom_bottom_bar.setOnTabClickListener(TabType.MAIN) {
+            showFragment(it)
+        })
 
-        favoritesClickDisposable =
-            main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES) {
-                showFragment(it)
-            }
+        mainCompositeDisposable.add(main_activity_custom_bottom_bar.setOnTabClickListener(TabType.FAVORITES) {
+            showFragment(it)
+        })
 
         repeat(5) {
             changeTitle()
@@ -163,11 +158,9 @@ class MainActivity : BaseActivity() {
         super.onResume()
     }
 
-    override fun onPause() {
-        profileClickDisposable?.dispose()
-        mainClickDisposable?.dispose()
-        favoritesClickDisposable?.dispose()
-        super.onPause()
+    override fun onDestroy() {
+        mainCompositeDisposable.dispose()
+        super.onDestroy()
     }
 
     private fun initToolbar() {

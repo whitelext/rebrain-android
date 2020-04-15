@@ -81,9 +81,9 @@ class MainFragment : BaseFragment() {
         initSwipeToRefresh()
     }
 
-    override fun onPause() {
-        foodListAdapter.productClickDisposable.dispose()
-        super.onPause()
+    override fun onDestroy() {
+        foodListAdapter.productItemCompositeDisposable.dispose()
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

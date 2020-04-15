@@ -10,12 +10,13 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.editorActions
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerLoginComponent
 import di.LoginActivityModule
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_login.*
 import screen.main.MainActivity
 import utils.BaseActivity
@@ -30,9 +31,7 @@ class LoginActivity : BaseActivity() {
     @Inject
     lateinit var loginViewModel: LoginViewModel
 
-    lateinit var passwordEditDisposable: Disposable
-    lateinit var usernameEditDisposable: Disposable
-    lateinit var loginClickDisposable: Disposable
+    var loginCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,31 +74,36 @@ class LoginActivity : BaseActivity() {
             setResult(Activity.RESULT_OK)
         })
 
-        loginClickDisposable = login.clicks().subscribe {
+        loginCompositeDisposable.add(login.clicks().subscribe {
             loading.visibility = View.VISIBLE
             loginViewModel.login(username.text.toString(), password.text.toString())
-        }
+        })
 
-        usernameEditDisposable = username.textChanges().subscribe {
+        loginCompositeDisposable.add(username.textChanges().subscribe {
             loginViewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
             )
-        }
+        })
 
-        passwordEditDisposable = password.textChanges().subscribe {
+        loginCompositeDisposable.add(password.editorActions().subscribe {
+            password.error ?: run {
+                loading.visibility = View.VISIBLE
+                loginViewModel.login(username.text.toString(), password.text.toString())
+            }
+        })
+
+        loginCompositeDisposable.add(password.textChanges().subscribe {
             loginViewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
             )
-        }
+        })
     }
 
-    override fun onPause() {
-        loginClickDisposable.dispose()
-        usernameEditDisposable.dispose()
-        passwordEditDisposable.dispose()
-        super.onPause()
+    override fun onDestroy() {
+        loginCompositeDisposable.dispose()
+        super.onDestroy()
     }
 
     private fun updateUiWithUser(model: LoggedInUser) {

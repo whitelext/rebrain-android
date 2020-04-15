@@ -24,7 +24,7 @@ import com.whitelext.foodapp.FoodApplication
 import com.whitelext.foodapp.R
 import di.DaggerProfileFragmentComponent
 import di.ProfileFragmentModule
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_profile.*
 import screen.main.viewmodel.ProfileViewModel
 import screen.maps.MapsActivity
@@ -46,8 +46,7 @@ class ProfileFragment : BaseFragment() {
 
     private lateinit var currentPhotoPath: String
 
-    private lateinit var avatarClickDisposable: Disposable
-    private lateinit var mapButtonClickDisposable: Disposable
+    private val profileCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,21 +128,20 @@ class ProfileFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    override fun onPause() {
-        avatarClickDisposable.dispose()
-        mapButtonClickDisposable.dispose()
-        super.onPause()
+    override fun onDestroy() {
+        profileCompositeDisposable.dispose()
+        super.onDestroy()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-        avatarClickDisposable = profileAvatar.clicks().subscribe {
+        profileCompositeDisposable.add(profileAvatar.clicks().subscribe {
             showPictureDialog()
-        }
-        mapButtonClickDisposable = profilePickUpButton.clicks().subscribe {
+        })
+        profileCompositeDisposable.add(profilePickUpButton.clicks().subscribe {
             MapsActivity.start(requireContext())
-        }
+        })
     }
 
     private fun initViewModel() {
