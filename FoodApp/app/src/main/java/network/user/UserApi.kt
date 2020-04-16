@@ -1,8 +1,8 @@
 package network.user
 
 import domain.Cart
+import io.reactivex.Single
 import okhttp3.MultipartBody
-import retrofit2.Call
 import retrofit2.http.*
 import service.response.CartResponse
 import service.response.UserResponse
@@ -12,7 +12,7 @@ import service.response.UserResponse
  */
 interface UserApi {
     @GET("user/")
-    fun getUser(@Header("X-Access-Token") token: String): Call<UserResponse>
+    fun getUser(@Header("X-Access-Token") token: String): Single<UserResponse>
 
     @Multipart
     @Headers("Content-Type: multipart/form-data")
@@ -20,8 +20,8 @@ interface UserApi {
     fun setUserAvatar(
         @Header("X-Access-Token") token: String,
         @Part avatar: MultipartBody.Part
-    ): Call<Unit>
+    ): Single<Unit>
 
     @POST("order/")
-    fun sendOrder(@Header("X-Access-Token") token: String, @Body cart: Cart): Call<CartResponse>
+    fun sendOrder(@Header("X-Access-Token") token: String, @Body cart: Cart): Single<CartResponse>
 }

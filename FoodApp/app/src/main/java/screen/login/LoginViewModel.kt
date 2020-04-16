@@ -3,14 +3,15 @@ package screen.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.whitelext.foodapp.R
+import domain.User
 import interactor.repositories.AuthorizationFlagRepository
 import interactor.repositories.AuthorizationTokenRepository
 import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.LoginRepository
-import kotlinx.coroutines.launch
-import utils.Result
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 /**
  * [ViewModel] for login screen
@@ -23,6 +24,7 @@ class LoginViewModel(
     private val loggedInUserRepository: LoggedInUserRepository
 ) : ViewModel() {
 
+    private val disposables = CompositeDisposable()
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -36,28 +38,33 @@ class LoginViewModel(
      *
      */
     fun login(username: String, password: String) {
-
-        viewModelScope.launch {
-            val response = loginRepository.login(username, password)
-            _loginResult.value = when (response) {
-                is Result.Success -> {
-                    authorizationTokenRepository.saveAuthorizationToken(response.data.accesToken)
+        disposables.add(
+            loginRepository.login(username, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    val user: User = response.convertToKotlinClass()
+                    authorizationTokenRepository.saveAuthorizationToken(user.accesToken)
                     authorizationFlagRepository.loginUser()
-                    loggedInUserRepository.setLoggedUser(
-                        LoggedInUser(displayName = response.data.name)
-                    )
-                    LoginResult(
-                        success = LoggedInUser(displayName = response.data.name),
+                    val loggedUser = LoggedInUser(user.name)
+                    loggedInUserRepository.setLoggedUser(loggedUser)
+                    _loginResult.value = LoginResult(
+                        success = loggedUser,
                         isLoading = false
                     )
-                }
-                is Result.Error -> {
-                    LoginResult(error = R.string.login_failed, isLoading = false)
-                }
-            }
-        }
+                },
+                    {
+                        _loginResult.value =
+                            LoginResult(error = R.string.login_failed, isLoading = false)
+                    }
+                )
+        )
     }
 
+    override fun onCleared() {
+        disposables.dispose()
+        super.onCleared()
+    }
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {

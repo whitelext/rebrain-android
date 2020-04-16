@@ -32,7 +32,7 @@ class LoginActivity : BaseActivity() {
     @Inject
     lateinit var loginViewModel: LoginViewModel
 
-    var loginCompositeDisposable = CompositeDisposable()
+    private var loginCompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

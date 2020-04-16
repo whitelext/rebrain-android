@@ -48,6 +48,7 @@ dependencies {
     //Network
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit2_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
     implementation "com.google.firebase:firebase-storage-ktx:$firebaseStorageVersion"
     implementation "com.google.android.gms:play-services-maps:$googleMapsVersion"

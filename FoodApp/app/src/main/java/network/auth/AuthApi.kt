@@ -1,6 +1,6 @@
 package network.auth
 
-import retrofit2.Call
+import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -13,8 +13,8 @@ import service.response.AuthResponse
  */
 interface AuthApi {
     @POST("login/")
-    fun authorization(@Body authRequest: AuthRequest): Call<AuthResponse>
+    fun authorization(@Body authRequest: AuthRequest): Single<AuthResponse>
 
     @GET("logout/")
-    fun logout(@Header("X-Access-Token")token: String): Call<Unit>
+    fun logout(@Header("X-Access-Token")token: String): Single<Unit>
 }

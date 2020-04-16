@@ -125,6 +125,7 @@ class ProfileFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.isImageUploadSnackNeeded = false
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -167,7 +168,9 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun showImageUploadFailed(@StringRes errorString: Int) {
-        Snackbar.make(profileAvatar, errorString, Snackbar.LENGTH_LONG).show()
+        if (viewModel.isImageUploadSnackNeeded) {
+            Snackbar.make(profileAvatar, errorString, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     private fun updateUserImage(filePath: String) {
@@ -175,11 +178,13 @@ class ProfileFragment : BaseFragment() {
         val roundedBitmap = RoundedBitmapDrawableFactory.create(resources, bitmap)
         roundedBitmap.isCircular = true
         profileAvatar.setImageDrawable(roundedBitmap)
-        Snackbar.make(
-            profileAvatar,
-            getString(R.string.image_upload_successful),
-            Snackbar.LENGTH_LONG
-        ).show()
+        if (viewModel.isImageUploadSnackNeeded) {
+            Snackbar.make(
+                profileAvatar,
+                getString(R.string.image_upload_successful),
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
     }
 
     /**

@@ -6,6 +6,7 @@ import di.PerApplication
 import di.utils.Constants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
 
@@ -25,6 +26,7 @@ class RetrofitModule {
         return Retrofit.Builder()
             .client(client)
             .baseUrl(baseUrl)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
