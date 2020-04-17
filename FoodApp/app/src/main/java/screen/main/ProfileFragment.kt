@@ -161,7 +161,7 @@ class ProfileFragment : BaseFragment() {
                 }
             }
 
-            loadingResult.peekContent().success?.let {imagePath->
+            loadingResult.peekContent().success?.let { imagePath ->
                 updateUserImage(imagePath)
                 loadingResult.getContentIfNotHandled()?.let {
                     showImageUploadSuccess()
