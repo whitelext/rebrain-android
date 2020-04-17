@@ -152,25 +152,36 @@ class ProfileFragment : BaseFragment() {
 
         viewModel.imageLoadingResult.observe(viewLifecycleOwner, Observer { loadingResult ->
 
-            image_progressBar.isVisible = loadingResult.isLoading
-            profileAvatar.isVisible = !loadingResult.isLoading
+            image_progressBar.isVisible = loadingResult.peekContent().isLoading
+            profileAvatar.isVisible = !loadingResult.peekContent().isLoading
 
-            loadingResult.error?.let {
-                showImageUploadFailed(it)
+            loadingResult.peekContent().error?.let { error ->
+                loadingResult.getContentIfNotHandled()?.let {
+                    showImageUploadFailed(error)
+                }
             }
 
-            loadingResult.success?.let {
-                updateUserImage(it)
+            loadingResult.peekContent().success?.let {imagePath->
+                updateUserImage(imagePath)
+                loadingResult.getContentIfNotHandled()?.let {
+                    showImageUploadSuccess()
+                }
             }
-
         })
 
     }
 
     private fun showImageUploadFailed(@StringRes errorString: Int) {
-        if (viewModel.isImageUploadSnackNeeded) {
-            Snackbar.make(profileAvatar, errorString, Snackbar.LENGTH_LONG).show()
-        }
+        Snackbar.make(profileAvatar, errorString, Snackbar.LENGTH_LONG).show()
+
+    }
+
+    private fun showImageUploadSuccess() {
+        Snackbar.make(
+            profileAvatar,
+            getString(R.string.image_upload_successful),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     private fun updateUserImage(filePath: String) {
@@ -178,13 +189,6 @@ class ProfileFragment : BaseFragment() {
         val roundedBitmap = RoundedBitmapDrawableFactory.create(resources, bitmap)
         roundedBitmap.isCircular = true
         profileAvatar.setImageDrawable(roundedBitmap)
-        if (viewModel.isImageUploadSnackNeeded) {
-            Snackbar.make(
-                profileAvatar,
-                getString(R.string.image_upload_successful),
-                Snackbar.LENGTH_LONG
-            ).show()
-        }
     }
 
     /**

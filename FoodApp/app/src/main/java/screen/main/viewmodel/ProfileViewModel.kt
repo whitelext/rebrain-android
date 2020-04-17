@@ -8,12 +8,12 @@ import com.whitelext.foodapp.R
 import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.ProfileRepository
 import interactor.utils.REQUEST_TOO_LARGE
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import screen.main.ImageLoadingResult
+import utils.BaseViewModel
+import utils.Event
 
 /**
  * [ViewModel] for profile fragment
@@ -22,7 +22,7 @@ import screen.main.ImageLoadingResult
 class ProfileViewModel(
     val loggedInUserRepository: LoggedInUserRepository,
     private val profileRepository: ProfileRepository
-) : ViewModel() {
+) : BaseViewModel() {
     private val disposables = CompositeDisposable()
 
 
@@ -30,8 +30,8 @@ class ProfileViewModel(
     val loggedUserName: LiveData<String>
         get() = _loggedUserName
 
-    private val _imageLoadingResult = MutableLiveData<ImageLoadingResult>()
-    val imageLoadingResult: LiveData<ImageLoadingResult>
+    private val _imageLoadingResult = MutableLiveData<Event<ImageLoadingResult>>()
+    val imageLoadingResult: LiveData<Event<ImageLoadingResult>>
         get() = _imageLoadingResult
 
     init {
@@ -55,31 +55,33 @@ class ProfileViewModel(
      */
     fun setUserImage(filePath: String) {
         viewModelScope.launch {
-            _imageLoadingResult.value = ImageLoadingResult(isLoading = true)
+            _imageLoadingResult.value = Event(ImageLoadingResult(isLoading = true))
             disposables.add(
                 profileRepository.setAvatar(filePath)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ response ->
+                    .subscribeToRequest(onNext = {
                         isImageUploadSnackNeeded = true
-                        _imageLoadingResult.value = ImageLoadingResult(filePath, isLoading = false)
-                    },
-                        { error ->
-                            isImageUploadSnackNeeded = true
-                            if (error is HttpException)
-                                _imageLoadingResult.value = ImageLoadingResult(
+                        _imageLoadingResult.value =
+                            Event(ImageLoadingResult(filePath, isLoading = false))
+                    }, onError = { error ->
+                        isImageUploadSnackNeeded = true
+                        if (error is HttpException)
+                            _imageLoadingResult.value = Event(
+                                ImageLoadingResult(
                                     error = when (error.code()) {
                                         REQUEST_TOO_LARGE.toInt() -> R.string.image_upload_error_413
                                         else -> R.string.image_upload_error
                                     }, isLoading = false
                                 )
-                            else {
-                                _imageLoadingResult.value = ImageLoadingResult(
+                            )
+                        else {
+                            _imageLoadingResult.value = Event(
+                                ImageLoadingResult(
                                     error = R.string.image_upload_error,
                                     isLoading = false
                                 )
-                            }
-                        })
+                            )
+                        }
+                    })
             )
         }
     }

@@ -3,6 +3,7 @@ package screen.intro.viewmodel
 import androidx.lifecycle.ViewModel
 import interactor.repositories.AuthorizationFlagRepository
 import interactor.repositories.IntroFlagRepository
+import utils.BaseViewModel
 
 /**
  * [ViewModel] for IntroActivity
@@ -10,7 +11,7 @@ import interactor.repositories.IntroFlagRepository
 class IntroViewModel(
     private val introRepository: IntroFlagRepository,
     private val authorizationFlagRepository: AuthorizationFlagRepository
-) : ViewModel() {
+) : BaseViewModel() {
     /**
      * Returns true if intro was showed
      *

@@ -5,15 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.whitelext.foodapp.R
 import interactor.repositories.MapRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import utils.BaseViewModel
 
 /**
  * [ViewModel] for map screen
  *
  */
-class MapViewModel(private val mapRepository: MapRepository) : ViewModel() {
+class MapViewModel(private val mapRepository: MapRepository) : BaseViewModel() {
     private val disposables = CompositeDisposable()
     private val _storeLoadingResult = MutableLiveData<StoreLoadingResult>()
     val storeLoadingResult: LiveData<StoreLoadingResult>
@@ -26,15 +25,13 @@ class MapViewModel(private val mapRepository: MapRepository) : ViewModel() {
     fun loadStores() {
         disposables.add(
             mapRepository.getStoreLocations()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
+                .subscribeToRequest(onNext = { pickupList ->
                     _storeLoadingResult.value =
                         StoreLoadingResult(
-                            response.map { it.convertToKotlinClass() },
+                            pickupList,
                             isLoading = false
                         )
-                }, {
+                }, onError = {
                     _storeLoadingResult.value =
                         StoreLoadingResult(isLoading = false, error = R.string.pickup_loading_error)
                 })
