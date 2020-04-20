@@ -30,9 +30,17 @@ class ProfileViewModel(
     val loggedUserName: LiveData<String>
         get() = _loggedUserName
 
-    private val _imageLoadingResult = MutableLiveData<Event<ImageLoadingResult>>()
-    val imageLoadingResult: LiveData<Event<ImageLoadingResult>>
+    private val _imageLoadingResult = MutableLiveData<ImageLoadingResult>()
+    val imageLoadingResult: LiveData<ImageLoadingResult>
         get() = _imageLoadingResult
+
+    private val _showErrorMessage = MutableLiveData<Event<Int>>()
+    val showErrorMessage: LiveData<Event<Int>>
+        get() = _showErrorMessage
+
+    private val _showSuccessMessage = MutableLiveData<Event<Int>>()
+    val showSuccessMessage: LiveData<Event<Int>>
+        get() = _showSuccessMessage
 
     init {
         _loggedUserName.value = loggedInUserRepository.getLoggedUser().displayName
@@ -44,41 +52,33 @@ class ProfileViewModel(
     }
 
     /**
-     * Returns true when [Snackbar] after image upload should be showed
-     */
-    var isImageUploadSnackNeeded = false
-
-    /**
      * Makes a server request to upload image to server
      * if upload is successful sets image as user avatar
      *
      */
     fun setUserImage(filePath: String) {
         viewModelScope.launch {
-            _imageLoadingResult.value = Event(ImageLoadingResult(isLoading = true))
+            _imageLoadingResult.value = ImageLoadingResult(isLoading = true)
             disposables.add(
                 profileRepository.setAvatar(filePath)
                     .subscribeToRequest(onNext = {
-                        isImageUploadSnackNeeded = true
                         _imageLoadingResult.value =
-                            Event(ImageLoadingResult(filePath, isLoading = false))
+                            ImageLoadingResult(filePath, isLoading = false)
+                        _showSuccessMessage.value = Event(R.string.image_upload_successful)
                     }, onError = { error ->
-                        isImageUploadSnackNeeded = true
-                        if (error is HttpException)
-                            _imageLoadingResult.value = Event(
-                                ImageLoadingResult(
-                                    error = when (error.code()) {
-                                        REQUEST_TOO_LARGE.toInt() -> R.string.image_upload_error_413
-                                        else -> R.string.image_upload_error
-                                    }, isLoading = false
-                                )
+                        if (error is HttpException) {
+                            _showErrorMessage.value = when (error.code()) {
+                                REQUEST_TOO_LARGE.toInt() -> Event(R.string.image_upload_error_413)
+                                else -> Event(R.string.image_upload_error)
+                            }
+                            _imageLoadingResult.value = ImageLoadingResult(
+                                error = _showErrorMessage.value?.peekContent(), isLoading = false
                             )
-                        else {
-                            _imageLoadingResult.value = Event(
-                                ImageLoadingResult(
-                                    error = R.string.image_upload_error,
-                                    isLoading = false
-                                )
+                        } else {
+                            _showErrorMessage.value = Event(R.string.image_upload_error)
+                            _imageLoadingResult.value = ImageLoadingResult(
+                                error = R.string.image_upload_error,
+                                isLoading = false
                             )
                         }
                     })

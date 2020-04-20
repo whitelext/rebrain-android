@@ -125,7 +125,6 @@ class ProfileFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.isImageUploadSnackNeeded = false
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -151,37 +150,36 @@ class ProfileFragment : BaseFragment() {
         })
 
         viewModel.imageLoadingResult.observe(viewLifecycleOwner, Observer { loadingResult ->
+            image_progressBar.isVisible = loadingResult.isLoading
+            profileAvatar.isVisible = !loadingResult.isLoading
 
-            image_progressBar.isVisible = loadingResult.peekContent().isLoading
-            profileAvatar.isVisible = !loadingResult.peekContent().isLoading
-
-            loadingResult.peekContent().error?.let { error ->
-                loadingResult.getContentIfNotHandled()?.let {
-                    showImageUploadFailed(error)
-                }
-            }
-
-            loadingResult.peekContent().success?.let { imagePath ->
+            loadingResult.success?.let { imagePath ->
                 updateUserImage(imagePath)
-                loadingResult.getContentIfNotHandled()?.let {
-                    showImageUploadSuccess()
-                }
+            }
+        })
+
+        viewModel.showErrorMessage.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                showImageUploadFailed(it)
+            }
+        })
+
+        viewModel.showSuccessMessage.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                showImageUploadSuccess(it)
             }
         })
 
     }
+
 
     private fun showImageUploadFailed(@StringRes errorString: Int) {
         Snackbar.make(profileAvatar, errorString, Snackbar.LENGTH_LONG).show()
 
     }
 
-    private fun showImageUploadSuccess() {
-        Snackbar.make(
-            profileAvatar,
-            getString(R.string.image_upload_successful),
-            Snackbar.LENGTH_LONG
-        ).show()
+    private fun showImageUploadSuccess(@StringRes successString: Int) {
+        Snackbar.make(profileAvatar, successString, Snackbar.LENGTH_LONG).show()
     }
 
     private fun updateUserImage(filePath: String) {
