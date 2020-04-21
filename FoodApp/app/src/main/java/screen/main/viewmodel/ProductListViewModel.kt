@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import okhttp3.*
 import screen.main.BannerLoadingResult
 import timber.log.Timber
+import utils.BaseViewModel
 import utils.Result
 import java.io.IOException
 
@@ -25,7 +26,7 @@ class ProductListViewModel(
     private val productModeRepository: ProductModeRepository,
     private val favoritesRepository: FavoritesRepository,
     private val bannerRepository: BannerRepository
-) : ViewModel() {
+) : BaseViewModel() {
     private val _productList = MutableLiveData<List<Product>>()
     val productList: LiveData<List<Product>>
         get() = _productList

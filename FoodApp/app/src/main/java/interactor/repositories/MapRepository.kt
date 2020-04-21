@@ -2,8 +2,8 @@ package interactor.repositories
 
 import domain.PickupPoint
 import interactor.utils.BaseNetworkRepository
+import io.reactivex.Single
 import network.products.ProductsApi
-import utils.Result
 import javax.inject.Inject
 
 /**
@@ -16,12 +16,11 @@ class MapRepository @Inject constructor(
 ) : BaseNetworkRepository() {
 
     /**
-     *  Returns a [Result] with [List] of [PickupPoint]
-     *
+     *  Returns a [Single] with [List] of [PickupPoint]
      *
      */
-    suspend fun getStoreLocations() =
-        mapCallToResult { productsApi.getPickups(authorizationTokenRepository.getAuthroizationToken()) }
+    fun getStoreLocations(): Single<List<PickupPoint>> {
+        return productsApi.getPickups(authorizationTokenRepository.getAuthroizationToken())
             .convertList()
-
+    }
 }

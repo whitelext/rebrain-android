@@ -7,10 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.whitelext.foodapp.R
 import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.ProfileRepository
-import kotlinx.coroutines.launch
-import screen.main.ImageLoadingResult
 import interactor.utils.REQUEST_TOO_LARGE
-import utils.Result
+import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import screen.main.ImageLoadingResult
+import utils.BaseViewModel
+import utils.Event
 
 /**
  * [ViewModel] for profile fragment
@@ -18,8 +21,11 @@ import utils.Result
  */
 class ProfileViewModel(
     val loggedInUserRepository: LoggedInUserRepository,
-    val profileRepository: ProfileRepository
-) : ViewModel() {
+    private val profileRepository: ProfileRepository
+) : BaseViewModel() {
+    private val disposables = CompositeDisposable()
+
+
     private val _loggedUserName = MutableLiveData<String>()
     val loggedUserName: LiveData<String>
         get() = _loggedUserName
@@ -28,8 +34,21 @@ class ProfileViewModel(
     val imageLoadingResult: LiveData<ImageLoadingResult>
         get() = _imageLoadingResult
 
+    private val _showErrorMessage = MutableLiveData<Event<Int>>()
+    val showErrorMessage: LiveData<Event<Int>>
+        get() = _showErrorMessage
+
+    private val _showSuccessMessage = MutableLiveData<Event<Int>>()
+    val showSuccessMessage: LiveData<Event<Int>>
+        get() = _showSuccessMessage
+
     init {
         _loggedUserName.value = loggedInUserRepository.getLoggedUser().displayName
+    }
+
+    override fun onCleared() {
+        disposables.dispose()
+        super.onCleared()
     }
 
     /**
@@ -40,17 +59,30 @@ class ProfileViewModel(
     fun setUserImage(filePath: String) {
         viewModelScope.launch {
             _imageLoadingResult.value = ImageLoadingResult(isLoading = true)
-            val response = profileRepository.setAvatar(filePath)
-            _imageLoadingResult.value = when (response) {
-                is Result.Success -> ImageLoadingResult(filePath, false)
-                is Result.Error -> ImageLoadingResult(
-                    error = when (response.exception) {
-                        REQUEST_TOO_LARGE -> R.string.image_upload_error_413
-                        else -> R.string.image_upload_error
-                    },
-                    isLoading = false
-                )
-            }
+            disposables.add(
+                profileRepository.setAvatar(filePath)
+                    .subscribeToRequest(onNext = {
+                        _imageLoadingResult.value =
+                            ImageLoadingResult(filePath, isLoading = false)
+                        _showSuccessMessage.value = Event(R.string.image_upload_successful)
+                    }, onError = { error ->
+                        if (error is HttpException) {
+                            _showErrorMessage.value = when (error.code()) {
+                                REQUEST_TOO_LARGE.toInt() -> Event(R.string.image_upload_error_413)
+                                else -> Event(R.string.image_upload_error)
+                            }
+                            _imageLoadingResult.value = ImageLoadingResult(
+                                error = _showErrorMessage.value?.peekContent(), isLoading = false
+                            )
+                        } else {
+                            _showErrorMessage.value = Event(R.string.image_upload_error)
+                            _imageLoadingResult.value = ImageLoadingResult(
+                                error = R.string.image_upload_error,
+                                isLoading = false
+                            )
+                        }
+                    })
+            )
         }
     }
 }

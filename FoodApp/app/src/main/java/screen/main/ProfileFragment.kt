@@ -150,24 +150,36 @@ class ProfileFragment : BaseFragment() {
         })
 
         viewModel.imageLoadingResult.observe(viewLifecycleOwner, Observer { loadingResult ->
-
             image_progressBar.isVisible = loadingResult.isLoading
             profileAvatar.isVisible = !loadingResult.isLoading
 
-            loadingResult.error?.let {
+            loadingResult.success?.let { imagePath ->
+                updateUserImage(imagePath)
+            }
+        })
+
+        viewModel.showErrorMessage.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandled()?.let {
                 showImageUploadFailed(it)
             }
+        })
 
-            loadingResult.success?.let {
-                updateUserImage(it)
+        viewModel.showSuccessMessage.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                showImageUploadSuccess(it)
             }
-
         })
 
     }
 
+
     private fun showImageUploadFailed(@StringRes errorString: Int) {
         Snackbar.make(profileAvatar, errorString, Snackbar.LENGTH_LONG).show()
+
+    }
+
+    private fun showImageUploadSuccess(@StringRes successString: Int) {
+        Snackbar.make(profileAvatar, successString, Snackbar.LENGTH_LONG).show()
     }
 
     private fun updateUserImage(filePath: String) {
@@ -175,11 +187,6 @@ class ProfileFragment : BaseFragment() {
         val roundedBitmap = RoundedBitmapDrawableFactory.create(resources, bitmap)
         roundedBitmap.isCircular = true
         profileAvatar.setImageDrawable(roundedBitmap)
-        Snackbar.make(
-            profileAvatar,
-            getString(R.string.image_upload_successful),
-            Snackbar.LENGTH_LONG
-        ).show()
     }
 
     /**

@@ -1,5 +1,6 @@
 package interactor.utils
 
+import io.reactivex.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -55,5 +56,21 @@ abstract class BaseNetworkRepository {
             is Result.Success -> Result.Success(data.map { it.convertToKotlinClass() })
             is Result.Error -> Result.Error(exception)
         }
+
+    /**
+     * Converts server layer [Single]<[ServerResponse]<[T]>>
+     * into domain layer [Single]<[T]>
+     */
+    protected fun <T : Any, R : ServerResponse<T>> Single<R>.convert(): Single<T> =
+        this.map { it.convertToKotlinClass() }
+
+
+    /**
+     * Converts server layer [Single] <[List]<[ServerResponse]<[T]>>>
+     * into domain layer [Single]<[List]<[T]>>
+     */
+    protected fun <T : Any, R : List<ServerResponse<T>>> Single<R>.convertList(): Single<List<T>> =
+        this.map { list -> list.map { it.convertToKotlinClass() } }
+
 
 }

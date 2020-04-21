@@ -6,13 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import domain.Product
 import interactor.repositories.FavoritesRepository
+import utils.BaseViewModel
 
 /**
  * [ViewModel] for FavoriteFragment
  */
 class FavoriteListViewModel(
     private val favoritesRepository: FavoritesRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _favoriteList = MutableLiveData<MutableList<Product>>()
     val favoriteList: LiveData<MutableList<Product>>

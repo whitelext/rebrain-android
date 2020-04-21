@@ -3,17 +3,17 @@ package screen.maps
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.whitelext.foodapp.R
 import interactor.repositories.MapRepository
-import kotlinx.coroutines.launch
-import utils.Result
+import io.reactivex.disposables.CompositeDisposable
+import utils.BaseViewModel
 
 /**
  * [ViewModel] for map screen
  *
  */
-class MapViewModel(private val mapRepository: MapRepository) : ViewModel() {
+class MapViewModel(private val mapRepository: MapRepository) : BaseViewModel() {
+    private val disposables = CompositeDisposable()
     private val _storeLoadingResult = MutableLiveData<StoreLoadingResult>()
     val storeLoadingResult: LiveData<StoreLoadingResult>
         get() = _storeLoadingResult
@@ -23,16 +23,23 @@ class MapViewModel(private val mapRepository: MapRepository) : ViewModel() {
      *
      */
     fun loadStores() {
-        viewModelScope.launch {
-            val response = mapRepository.getStoreLocations()
-            _storeLoadingResult.value = when (response) {
-                is Result.Success -> StoreLoadingResult(response.data, false)
-                is Result.Error -> StoreLoadingResult(
-                    isLoading = false,
-                    error = R.string.pickup_loading_error
-                )
-            }
-        }
+        disposables.add(
+            mapRepository.getStoreLocations()
+                .subscribeToRequest(onNext = { pickupList ->
+                    _storeLoadingResult.value =
+                        StoreLoadingResult(
+                            pickupList,
+                            isLoading = false
+                        )
+                }, onError = {
+                    _storeLoadingResult.value =
+                        StoreLoadingResult(isLoading = false, error = R.string.pickup_loading_error)
+                })
+        )
+    }
 
+    override fun onCleared() {
+        disposables.dispose()
+        super.onCleared()
     }
 }
