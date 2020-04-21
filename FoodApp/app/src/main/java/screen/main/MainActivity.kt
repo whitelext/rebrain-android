@@ -13,6 +13,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import screen.main.view.CustomBottomBar.TabType
+import service.TestService
 import timber.log.Timber
 import utils.BaseActivity
 import utils.BaseFragment
@@ -64,6 +65,8 @@ class MainActivity : BaseActivity() {
         intFiltered.subscribe {
             Timber.tag("rxTest").i("Current value is $it")
         }
+
+        TestService.startActionTest(this)
 
         val booleanObservable = Observable.combineLatest(
             intFiltered,
@@ -156,6 +159,12 @@ class MainActivity : BaseActivity() {
             changeTitle()
         }
         super.onResume()
+    }
+
+    override fun onStop() {
+        Timber.tag("TestService").i("onStop called")
+        TestService.stopActionTest(this)
+        super.onStop()
     }
 
     override fun onDestroy() {
