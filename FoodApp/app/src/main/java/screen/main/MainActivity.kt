@@ -49,6 +49,8 @@ class MainActivity : BaseActivity() {
         }
         setCheckedButton()
 
+        TestService.stopActionTest(this)
+
         val changeTitleFiltered = changeTitleSubject
             .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
@@ -65,8 +67,6 @@ class MainActivity : BaseActivity() {
         intFiltered.subscribe {
             Timber.tag("rxTest").i("Current value is $it")
         }
-
-        TestService.startActionTest(this)
 
         val booleanObservable = Observable.combineLatest(
             intFiltered,
@@ -161,13 +161,8 @@ class MainActivity : BaseActivity() {
         super.onResume()
     }
 
-    override fun onStop() {
-        Timber.tag("TestService").i("onStop called")
-        TestService.stopActionTest(this)
-        super.onStop()
-    }
-
     override fun onDestroy() {
+        TestService.startActionTest(this)
         mainCompositeDisposable.dispose()
         super.onDestroy()
     }

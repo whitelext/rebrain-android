@@ -1,8 +1,10 @@
 package service
 
 import android.app.IntentService
+import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.IBinder
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -13,21 +15,30 @@ import java.util.concurrent.TimeUnit
  * An [IntentService] subclass
  *
  */
-class TestService : IntentService("TestService") {
+class TestService : Service() {
 
     private val disposables = CompositeDisposable()
 
-    override fun onHandleIntent(intent: Intent?) {
-        handleActionTest()
-    }
-
     private fun handleActionTest() {
-        Timber.tag("TestService").i("Service handle called")
         disposables.add(Observable.interval(5, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 Timber.tag("TestService").i("I am alive!")
             })
+    }
+
+    override fun onCreate() {
+        handleActionTest()
+        super.onCreate()
+    }
+
+    override fun onDestroy() {
+        disposables.dispose()
+        super.onDestroy()
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
     }
 
     companion object {
