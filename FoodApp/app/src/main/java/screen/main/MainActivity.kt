@@ -1,8 +1,11 @@
 package screen.main
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
 import com.whitelext.foodapp.R
 import io.reactivex.disposables.CompositeDisposable
@@ -48,6 +51,8 @@ class MainActivity : BaseActivity() {
             showFragment(TabType.PROFILE)
         }
         setCheckedButton()
+
+        checkPermissions()
 
         TestService.stopActionTest(this)
 
@@ -176,6 +181,61 @@ class MainActivity : BaseActivity() {
         changeTitleSubject.onNext(Unit)
     }
 
+    private fun checkPermissions() {
+        val locationPermission = ActivityCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        if (locationPermission != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                val alertDialogBuilder = AlertDialog.Builder(this)
+                alertDialogBuilder.setTitle(getString(R.string.LocationPermissionTitle))
+                alertDialogBuilder.setMessage(
+                    getString(R.string.permissionExplain) +
+                            getString(R.string.permissionExplainLocation)
+                )
+                alertDialogBuilder.setPositiveButton("OK") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                alertDialogBuilder.create().show()
+
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+                return
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Timber.tag("Permission").i("Location permission granted")
+                }
+                return
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
     override fun onBackPressed() {
         safeExit()
     }
@@ -188,5 +248,7 @@ class MainActivity : BaseActivity() {
         fun start(context: Context) {
             startActivity(context, Intent(context, MainActivity::class.java), null)
         }
+
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 }
