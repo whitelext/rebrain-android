@@ -185,12 +185,12 @@ class MainActivity : BaseActivity() {
     private fun checkPermissions() {
         val locationPermission = ActivityCompat.checkSelfPermission(
             this,
-            android.Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
         if (locationPermission != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION
                 )
             ) {
                 AlertDialog.Builder(this, R.style.AlertDialogTheme)
