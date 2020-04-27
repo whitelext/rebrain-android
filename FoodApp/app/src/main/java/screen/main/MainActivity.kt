@@ -192,17 +192,22 @@ class MainActivity : BaseActivity() {
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 )
             ) {
-                val alertDialogBuilder = AlertDialog.Builder(this)
-                alertDialogBuilder.setTitle(getString(R.string.LocationPermissionTitle))
-                alertDialogBuilder.setMessage(
-                    getString(R.string.permissionExplain) +
-                            getString(R.string.permissionExplainLocation)
-                )
-                alertDialogBuilder.setPositiveButton("OK") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                alertDialogBuilder.create().show()
-
+                AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                    .setTitle(getString(R.string.LocationPermissionTitle))
+                    .setMessage(
+                        getString(R.string.permissionExplain) +
+                                getString(R.string.permissionExplainLocation)
+                    )
+                    .setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                            LOCATION_PERMISSION_REQUEST_CODE
+                        )
+                    }
+                    .create()
+                    .show()
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
