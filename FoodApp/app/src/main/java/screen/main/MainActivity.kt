@@ -1,5 +1,6 @@
 package screen.main
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -200,29 +201,25 @@ class MainActivity : BaseActivity() {
                     )
                     .setPositiveButton("OK") { dialog, _ ->
                         dialog.dismiss()
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                            LOCATION_PERMISSION_REQUEST_CODE
-                        )
+                        requestPermission()
                     }
                     .create()
                     .show()
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_REQUEST_CODE
-                )
+                requestPermission()
 
             } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_REQUEST_CODE
-                )
+                requestPermission()
                 return
             }
         }
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
     }
 
     override fun onRequestPermissionsResult(
