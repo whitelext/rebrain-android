@@ -205,7 +205,6 @@ class MainActivity : BaseActivity() {
                     }
                     .create()
                     .show()
-                requestPermission()
 
             } else {
                 requestPermission()
