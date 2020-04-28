@@ -40,4 +40,7 @@
     <string name="map_pick_button">ВЫБРАТЬ</string>
     <string name="notification_title">Уведомление</string>
     <string name="notification_message">" Сервис, логгирующий сообщения"</string>
+    <string name="permissionExplain">Данное разрешение нужно для того чтобы \</string>
+    <string name="permissionExplainLocation">найти ближайшие к вам пункты доставки</string>
+    <string name="LocationPermissionTitle">Разрешение на местоположение</string>
 </resources>
