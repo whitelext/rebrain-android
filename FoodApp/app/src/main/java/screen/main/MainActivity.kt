@@ -8,6 +8,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.whitelext.foodapp.R
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -39,6 +41,8 @@ class MainActivity : BaseActivity() {
         )
     }
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     private var mainCompositeDisposable = CompositeDisposable()
 
     private val changeTitleSubject: PublishSubject<Unit> = PublishSubject.create()
@@ -52,6 +56,9 @@ class MainActivity : BaseActivity() {
             showFragment(TabType.PROFILE)
         }
         setCheckedButton()
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        showLocation()
 
         checkPermissions()
 
@@ -209,6 +216,15 @@ class MainActivity : BaseActivity() {
             } else {
                 requestPermission()
                 return
+            }
+        }
+    }
+
+    private fun showLocation() {
+        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+            location?.let {
+                Timber.tag("LocationTestMain")
+                    .i("Current user location is ( lat = ${location.latitude} , long = ${location.longitude} )")
             }
         }
     }
