@@ -17,6 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name="service.MapService"
+            android:exported="false"></service>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -49,7 +52,6 @@
         <service
             android:name="service.TestService"
             android:exported="false" />
-
         <service android:name="service.FirebaseNotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

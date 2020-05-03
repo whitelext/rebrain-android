@@ -34,6 +34,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.layout_toolbar_map.*
 import kotlinx.android.synthetic.main.map_bottom_sheet.*
+import service.MapService
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -120,6 +121,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
                     latLngBounds.include(pointLocation)
                 }
                 map.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 100))
+                MapService.startMapService(this, getClosestPickupPoint())
             }
 
             loadingResult.error?.let {
@@ -243,8 +245,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
         return distance
     }
 
+    private fun getClosestPickupPoint(): String {
+        val closestPoint = pickupPointMap.toList().sortedBy { (key, _) ->
+            getDistance(
+                key,
+                LatLng(lastLocation.latitude, lastLocation.longitude)
+            )
+        }.first()
+
+        return "Ближайший пункт самовывоза это ${getAddress(closestPoint.first)}. Расстояние до него ${getDistance(
+            closestPoint.first,
+            LatLng(lastLocation.latitude, lastLocation.longitude)
+        )} м"
+    }
+
     override fun onMapClick(p0: LatLng?) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
+    override fun onStop() {
+        MapService.stop(this)
+        super.onStop()
     }
 
     private fun initToolbar() {
