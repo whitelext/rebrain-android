@@ -13,7 +13,9 @@ import com.whitelext.foodapp.R
 import screen.main.MainActivity
 
 
-private const val EXTRA_POINT = "service.extra.POINT"
+private const val EXTRA_POINT_ADDRESS = "service.extra.POINT_ADDRESS"
+private const val EXTRA_POINT_DISTANCE = "service.extra.POINT_DISTANCE"
+
 
 /**
  *Service that shows notification with closest pickup point in [MapsActivity]
@@ -32,13 +34,18 @@ class MapService : Service() {
             0, notificationIntent, 0
         )
 
+        val closestPointAddress = intent?.getStringExtra(EXTRA_POINT_ADDRESS)
+        val closestPointDistance = intent?.getFloatExtra(EXTRA_POINT_DISTANCE, 0f)
+        val closestPointFormattedInfo: String =
+            getString(R.string.closestPickupPointInfo1) + "$closestPointAddress" + getString(R.string.closestPickupPointInfo2) + closestPointDistance
+
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getText(R.string.notification_title))
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentIntent(pendingIntent)
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText(intent?.getStringExtra(EXTRA_POINT))
+                    .bigText(closestPointFormattedInfo)
             )
             .build()
 
@@ -69,9 +76,10 @@ class MapService : Service() {
          * @param closestPickupPointInfo is  info about closest PickupPoint to current user location
          */
         @JvmStatic
-        fun startMapService(context: Context, closestPickupPointInfo: String) {
+        fun startMapService(context: Context, closestPickupPointInfo: Pair<String, Float>) {
             val intent = Intent(context, MapService::class.java).apply {
-                putExtra(EXTRA_POINT, closestPickupPointInfo)
+                putExtra(EXTRA_POINT_ADDRESS, closestPickupPointInfo.first)
+                putExtra(EXTRA_POINT_DISTANCE, closestPickupPointInfo.second)
             }
             context.startService(intent)
         }

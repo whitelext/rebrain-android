@@ -43,4 +43,6 @@
     <string name="permissionExplain">Данное разрешение нужно для того чтобы \</string>
     <string name="permissionExplainLocation">найти ближайшие к вам пункты доставки</string>
     <string name="LocationPermissionTitle">Разрешение на местоположение</string>
+    <string name="closestPickupPointInfo1">"Ближайший пункт самовывоза это "</string>
+    <string name="closestPickupPointInfo2">". Расстояние до него(в метрах) "</string>
 </resources>

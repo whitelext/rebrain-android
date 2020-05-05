@@ -2,7 +2,6 @@ package screen.maps
 
 import android.content.Context
 import android.content.Intent
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -35,8 +34,6 @@ import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.layout_toolbar_map.*
 import kotlinx.android.synthetic.main.map_bottom_sheet.*
 import service.MapService
-import timber.log.Timber
-import java.io.IOException
 import javax.inject.Inject
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -48,8 +45,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-
+    private lateinit var geocoder: Geocoder
     private val pickupPointMap = mutableMapOf<LatLng, PickupPoint>()
+
 
     private var mapCompositeDisposable = CompositeDisposable()
 
@@ -121,7 +119,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
                     latLngBounds.include(pointLocation)
                 }
                 map.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 100))
-                MapService.startMapService(this, getClosestPickupPoint())
+                MapService.startMapService(
+                    this,
+                    viewmodel.getClosestPickupPointFormattedInfo(
+                        pickupPointMap,
+                        lastLocation,
+                        geocoder
+                    )
+                )
             }
 
             loadingResult.error?.let {
@@ -139,6 +144,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
         map.uiSettings.isZoomControlsEnabled = false
         map.uiSettings.isMapToolbarEnabled = false
         map.setOnMapClickListener(this)
+        geocoder = Geocoder(this)
 
         setUpMap()
         initViewModel()
@@ -178,35 +184,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
 
     }
 
-
-    private fun getAddress(latLng: LatLng): String {
-        val geocoder = Geocoder(this)
-        val addresses: List<Address>?
-        val address: Address?
-        var addressText = ""
-
-        try {
-            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-            addresses?.let {
-                if (addresses.isNotEmpty()) {
-                    address = addresses[0]
-                    for (i in 0..address.maxAddressLineIndex) {
-                        addressText += if (i == 0) address.getAddressLine(i) else "\n" + address.getAddressLine(
-                            i
-                        )
-                    }
-                }
-            }
-        } catch (e: IOException) {
-            Timber.e(e.localizedMessage)
-        }
-
-        return addressText
-    }
-
     private fun placeMarkerOnMap(pickupPoint: PickupPoint) {
         val location = LatLng(pickupPoint.location.lat, pickupPoint.location.long)
-        val titleStr = getAddress(location)
+        val titleStr = viewmodel.getAddress(location, geocoder)
         val markerOptions = MarkerOptions().position(location).title(titleStr).icon(
             BitmapDescriptorFactory.fromResource(
                 R.drawable.ic_location_pickup
@@ -222,8 +202,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
                 marker.showInfoWindow()
             }
             val distance =
-                getDistance(LatLng(lastLocation.latitude, lastLocation.longitude), markerLocation)
-            pickup_adress.text = getAddress(markerLocation)
+                viewmodel.getDistance(
+                    LatLng(lastLocation.latitude, lastLocation.longitude),
+                    markerLocation
+                )
+            pickup_adress.text = viewmodel.getAddress(markerLocation, geocoder)
             pickup_title.text = pickupPointMap[markerLocation]?.name
             pickup_work_time.text = pickupPointMap[markerLocation]?.workingHours
             pickup_distance.text = ("$distance м")
@@ -233,31 +216,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
         }
     }
 
-    private fun getDistance(LatLng1: LatLng, LatLng2: LatLng): Float {
-        var distance = 0.0f
-        val locationA = Location("A")
-        locationA.latitude = LatLng1.latitude
-        locationA.longitude = LatLng1.longitude
-        val locationB = Location("B")
-        locationB.latitude = LatLng2.latitude
-        locationB.longitude = LatLng2.longitude
-        distance = locationA.distanceTo(locationB)
-        return distance
-    }
-
-    private fun getClosestPickupPoint(): String {
-        val closestPoint = pickupPointMap.toList().sortedBy { (key, _) ->
-            getDistance(
-                key,
-                LatLng(lastLocation.latitude, lastLocation.longitude)
-            )
-        }.first()
-
-        return "Ближайший пункт самовывоза это ${getAddress(closestPoint.first)}. Расстояние до него ${getDistance(
-            closestPoint.first,
-            LatLng(lastLocation.latitude, lastLocation.longitude)
-        )} м"
-    }
 
     override fun onMapClick(p0: LatLng?) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
