@@ -75,7 +75,7 @@ class MainActivity : BaseActivity() {
         TestService.stopActionTest(this)
 
         val changeTitleFiltered = changeTitleSubject
-            .delay(10, TimeUnit.SECONDS)
+            .delay(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .skip(4)
 
