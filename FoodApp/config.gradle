@@ -23,6 +23,7 @@ ext {
     legacyVersion = '1.0.0'
     lifecycleVersion = '2.2.0'
     fragmentKtxVersion = '1.2.4'
+    workManagerVersion="2.3.4"
 
     //Ui
     constraintLayoutVersion = '1.1.3'

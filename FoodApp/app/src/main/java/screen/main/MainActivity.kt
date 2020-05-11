@@ -8,6 +8,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.whitelext.foodapp.R
@@ -24,6 +26,7 @@ import timber.log.Timber
 import utils.BaseActivity
 import utils.BaseFragment
 import utils.ExitDialogFragment
+import workers.MainWorker
 import java.util.concurrent.TimeUnit
 
 /**
@@ -43,6 +46,8 @@ class MainActivity : BaseActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    private lateinit var workManager: WorkManager
+
     private var mainCompositeDisposable = CompositeDisposable()
 
     private val changeTitleSubject: PublishSubject<Unit> = PublishSubject.create()
@@ -59,13 +64,18 @@ class MainActivity : BaseActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         showLocation()
-
         checkPermissions()
+
+        workManager = WorkManager.getInstance(applicationContext)
+        val testWorkRequest = OneTimeWorkRequestBuilder<MainWorker>()
+            .setInitialDelay(5, TimeUnit.MINUTES)
+            .build()
+        workManager.enqueue(testWorkRequest)
 
         TestService.stopActionTest(this)
 
         val changeTitleFiltered = changeTitleSubject
-            .delay(1, TimeUnit.SECONDS)
+            .delay(10, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .skip(4)
 
