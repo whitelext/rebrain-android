@@ -67,10 +67,6 @@ class MainActivity : BaseActivity() {
         checkPermissions()
 
         workManager = WorkManager.getInstance(applicationContext)
-        val testWorkRequest = OneTimeWorkRequestBuilder<MainWorker>()
-            .setInitialDelay(5, TimeUnit.MINUTES)
-            .build()
-        workManager.enqueue(testWorkRequest)
 
         TestService.stopActionTest(this)
 
@@ -187,6 +183,10 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         TestService.startActionTest(this)
         mainCompositeDisposable.dispose()
+        val testWorkRequest = OneTimeWorkRequestBuilder<MainWorker>()
+            .setInitialDelay(5, TimeUnit.SECONDS)
+            .build()
+        workManager.enqueue(testWorkRequest)
         super.onDestroy()
     }
 
