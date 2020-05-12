@@ -46,8 +46,6 @@ class MainActivity : BaseActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private lateinit var workManager: WorkManager
-
     private var mainCompositeDisposable = CompositeDisposable()
 
     private val changeTitleSubject: PublishSubject<Unit> = PublishSubject.create()
@@ -65,8 +63,6 @@ class MainActivity : BaseActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         showLocation()
         checkPermissions()
-
-        workManager = WorkManager.getInstance(applicationContext)
 
         TestService.stopActionTest(this)
 
@@ -184,9 +180,9 @@ class MainActivity : BaseActivity() {
         TestService.startActionTest(this)
         mainCompositeDisposable.dispose()
         val testWorkRequest = OneTimeWorkRequestBuilder<MainWorker>()
-            .setInitialDelay(5, TimeUnit.SECONDS)
+            .setInitialDelay(5, TimeUnit.MINUTES)
             .build()
-        workManager.enqueue(testWorkRequest)
+        WorkManager.getInstance(applicationContext).enqueue(testWorkRequest)
         super.onDestroy()
     }
 
