@@ -8,6 +8,8 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.whitelext.foodapp.R
@@ -24,6 +26,7 @@ import timber.log.Timber
 import utils.BaseActivity
 import utils.BaseFragment
 import utils.ExitDialogFragment
+import workers.MainWorker
 import java.util.concurrent.TimeUnit
 
 /**
@@ -59,7 +62,6 @@ class MainActivity : BaseActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         showLocation()
-
         checkPermissions()
 
         TestService.stopActionTest(this)
@@ -177,6 +179,10 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         TestService.startActionTest(this)
         mainCompositeDisposable.dispose()
+        val testWorkRequest = OneTimeWorkRequestBuilder<MainWorker>()
+            .setInitialDelay(5, TimeUnit.MINUTES)
+            .build()
+        WorkManager.getInstance(applicationContext).enqueue(testWorkRequest)
         super.onDestroy()
     }
 
