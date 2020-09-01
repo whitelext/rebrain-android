@@ -33,6 +33,6 @@ class LoginRepository @Inject constructor(
     private fun saveLoggedUser(user: User) {
         authorizationTokenRepository.saveAuthorizationToken(user.accesToken)
         authorizationFlagRepository.loginUser()
-        loggedInUserRepository.setLoggedUser(LoggedInUser(user.name))
+        loggedInUserRepository.setLoggedUser(LoggedInUser(user.name,user.avatar))
     }
 }

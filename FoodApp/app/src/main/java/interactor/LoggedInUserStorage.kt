@@ -1,7 +1,7 @@
 package interactor
 
-import screen.login.LoggedInUser
 import interactor.utils.Storage
+import screen.login.LoggedInUser
 import javax.inject.Inject
 
 /**
@@ -10,7 +10,7 @@ import javax.inject.Inject
  */
 class LoggedInUserStorage @Inject constructor() :
     Storage<LoggedInUser> {
-    var loggedInUser = LoggedInUser(displayName = "CurrentUserName")
+    private var loggedInUser = LoggedInUser(displayName = "CurrentUserName",displayAvatar = null)
 
     /**
      * Returns current logged in user

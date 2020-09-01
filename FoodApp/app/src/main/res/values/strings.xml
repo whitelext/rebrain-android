@@ -45,4 +45,6 @@
     <string name="LocationPermissionTitle">Разрешение на местоположение</string>
     <string name="closestPickupPointInfo1">"Ближайший пункт самовывоза это "</string>
     <string name="closestPickupPointInfo2">". Расстояние до него(в метрах) "</string>
+    <string name="logout_success">Успешный выход из учётной записи</string>
+    <string name="logout_error">Ошибка при выходе из учётной записи</string>
 </resources>

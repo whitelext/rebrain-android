@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whitelext.foodapp.R
+import interactor.repositories.AuthorizationFlagRepository
 import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.ProfileRepository
 import interactor.utils.REQUEST_TOO_LARGE
@@ -12,6 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import screen.main.ImageLoadingResult
+import screen.main.UserLoadingResult
 import utils.BaseViewModel
 import utils.Event
 
@@ -21,6 +23,7 @@ import utils.Event
  */
 class ProfileViewModel(
     val loggedInUserRepository: LoggedInUserRepository,
+    val authorizationFlagRepository: AuthorizationFlagRepository,
     private val profileRepository: ProfileRepository
 ) : BaseViewModel() {
     private val disposables = CompositeDisposable()
@@ -34,6 +37,10 @@ class ProfileViewModel(
     val imageLoadingResult: LiveData<ImageLoadingResult>
         get() = _imageLoadingResult
 
+    private val _userLoadingResult = MutableLiveData<UserLoadingResult>()
+    val userLoadingResult: LiveData<UserLoadingResult>
+        get() = _userLoadingResult
+
     private val _showErrorMessage = MutableLiveData<Event<Int>>()
     val showErrorMessage: LiveData<Event<Int>>
         get() = _showErrorMessage
@@ -42,8 +49,21 @@ class ProfileViewModel(
     val showSuccessMessage: LiveData<Event<Int>>
         get() = _showSuccessMessage
 
+    private val _showLogoutFailureMessage = MutableLiveData<Event<Int>>()
+    val showLogoutFailureMessage: LiveData<Event<Int>>
+        get() = _showLogoutFailureMessage
+
+    private val _showLogoutSuccess = MutableLiveData<Event<Unit>>()
+    val showLogoutSuccess: LiveData<Event<Unit>>
+        get() = _showLogoutSuccess
+
+    private val _isUserLogged = MutableLiveData<Boolean>()
+    val isUserLogged: LiveData<Boolean>
+        get() = _isUserLogged
+
     init {
         _loggedUserName.value = loggedInUserRepository.getLoggedUser().displayName
+
     }
 
     override fun onCleared() {
@@ -84,5 +104,37 @@ class ProfileViewModel(
                     })
             )
         }
+    }
+
+    /**
+     * Makes a server request to logout user. If request is successful, navigates user to login screen
+     *
+     */
+    fun logout() {
+        disposables.add(
+            profileRepository.logout()
+                .subscribeToRequest(onNext = {
+                    authorizationFlagRepository.logoutUser()
+                    _showLogoutSuccess.value = Event(Unit)
+                }, onError = {
+                    _showLogoutFailureMessage.value = Event(R.string.logout_error)
+                })
+        )
+    }
+
+    /**
+     * Returns information about logged user
+     *
+     */
+    fun getUserInfo() {
+        _userLoadingResult.value = UserLoadingResult(isLoading = true)
+        disposables.add(
+            profileRepository.getUser()
+                .subscribeToRequest(onNext = {
+                    _userLoadingResult.value = UserLoadingResult(it, isLoading = false)
+                }, onError = {
+                    _userLoadingResult.value = UserLoadingResult(isLoading = false)
+                })
+        )
     }
 }

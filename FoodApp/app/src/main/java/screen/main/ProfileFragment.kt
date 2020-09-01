@@ -26,6 +26,7 @@ import di.DaggerProfileFragmentComponent
 import di.ProfileFragmentModule
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_profile.*
+import screen.login.LoginActivity
 import screen.main.viewmodel.ProfileViewModel
 import screen.maps.MapsActivity
 import utils.BaseFragment
@@ -56,6 +57,7 @@ class ProfileFragment : BaseFragment() {
                 .profileFragmentModule(ProfileFragmentModule(this))
                 .build()
         component.inject(this)
+        viewModel.getUserInfo()
     }
 
     private fun showPictureDialog() {
@@ -118,7 +120,6 @@ class ProfileFragment : BaseFragment() {
             startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
         }
 
-
     }
 
     override fun onCreateView(
@@ -142,12 +143,14 @@ class ProfileFragment : BaseFragment() {
         profileCompositeDisposable.add(profilePickUpButton.clicks().subscribe {
             MapsActivity.start(requireContext())
         })
+        profileCompositeDisposable.add(profileExitButton.clicks().subscribe {
+            viewModel.logout()
+        })
+
+
     }
 
     private fun initViewModel() {
-        viewModel.loggedUserName.observe(viewLifecycleOwner, Observer {
-            profileName.text = it
-        })
 
         viewModel.imageLoadingResult.observe(viewLifecycleOwner, Observer { loadingResult ->
             image_progressBar.isVisible = loadingResult.isLoading
@@ -170,16 +173,42 @@ class ProfileFragment : BaseFragment() {
             }
         })
 
+        viewModel.showLogoutSuccess.observe(viewLifecycleOwner, Observer {
+            showLogoutSuccess()
+        })
+
+        viewModel.showLogoutFailureMessage.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                showLogoutFailed(it)
+            }
+        })
+
+        viewModel.userLoadingResult.observe(viewLifecycleOwner, Observer { loadingResult ->
+            image_progressBar.isVisible = loadingResult.isLoading
+            profileAvatar.isVisible = !loadingResult.isLoading
+            profileName.isVisible = !loadingResult.isLoading
+
+            loadingResult.success?.let { user ->
+                profileName.text = user.name
+            }
+        })
     }
 
 
     private fun showImageUploadFailed(@StringRes errorString: Int) {
         Snackbar.make(profileAvatar, errorString, Snackbar.LENGTH_LONG).show()
-
     }
 
     private fun showImageUploadSuccess(@StringRes successString: Int) {
         Snackbar.make(profileAvatar, successString, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showLogoutFailed(@StringRes errorString: Int) {
+        Snackbar.make(profileAvatar, errorString, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun showLogoutSuccess() {
+        LoginActivity.start(requireContext())
     }
 
     private fun updateUserImage(filePath: String) {

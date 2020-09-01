@@ -1,6 +1,7 @@
 package di
 
 import dagger.Component
+import di.network.api.AuthApiModule
 import di.network.api.UserApiModule
 import screen.main.ProfileFragment
 import screen.main.viewmodel.ProfileViewModel
@@ -13,7 +14,8 @@ import screen.main.viewmodel.ProfileViewModel
 @Component(
     dependencies = [AppComponent::class],
     modules = [ProfileFragmentModule::class,
-        UserApiModule::class]
+        UserApiModule::class,
+        AuthApiModule::class]
 )
 interface ProfileFragmentComponent {
     fun profileViewModel(): ProfileViewModel

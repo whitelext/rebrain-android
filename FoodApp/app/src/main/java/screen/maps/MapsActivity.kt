@@ -1,13 +1,16 @@
 package screen.maps
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -33,6 +36,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.layout_toolbar_map.*
 import kotlinx.android.synthetic.main.map_bottom_sheet.*
+import screen.main.MainActivity
 import service.MapService
 import javax.inject.Inject
 
@@ -172,6 +176,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
 
     private fun setUpMap() {
         //draws dot on user location
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         map.isMyLocationEnabled = true
 
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
@@ -229,6 +243,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
     private fun initToolbar() {
         custom_toolbar_map.title = getString(R.string.map_toolbar_text)
         setSupportActionBar(custom_toolbar_map)
+        custom_toolbar_map.setNavigationOnClickListener {
+            MainActivity.start(this)
+        }
     }
 
     companion object {
