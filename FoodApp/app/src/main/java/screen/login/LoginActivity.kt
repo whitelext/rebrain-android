@@ -111,6 +111,9 @@ class LoginActivity : BaseActivity() {
         super.onDestroy()
     }
 
+    //Do nothing if back button pressed
+    override fun onBackPressed() {}
+
     private fun updateUiWithUser(model: LoggedInUser) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName

@@ -33,7 +33,7 @@ class LoginViewModel(
             loginRepository.login(username, password)
                 .subscribeToRequest(onNext = { user ->
                     _loginResult.value = LoginResult(
-                        success = LoggedInUser(displayName = user.name),
+                        success = LoggedInUser(displayName = user.name,displayAvatar = user.avatar),
                         isLoading = false
                     )
                 }, onError = {

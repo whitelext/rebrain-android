@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import dagger.Module
 import dagger.Provides
+import interactor.repositories.AuthorizationFlagRepository
 import interactor.repositories.AuthorizationTokenRepository
 import interactor.repositories.LoggedInUserRepository
 import interactor.repositories.ProfileRepository
+import network.auth.AuthApi
 import network.user.UserApi
 import screen.main.viewmodel.ProfileViewModel
 import screen.main.viewmodel.ProfileViewModelFactory
@@ -23,25 +25,31 @@ class ProfileFragmentModule(private val fragment: Fragment) {
     @PerScreen
     fun provideProfileRepository(
         userApi: UserApi,
+        authApi: AuthApi,
         authorizationTokenRepository: AuthorizationTokenRepository,
         context: Context
-    ) = ProfileRepository(userApi, authorizationTokenRepository, context)
+    ) = ProfileRepository(userApi, authApi, authorizationTokenRepository, context)
 
     @Provides
     @PerScreen
     fun provideProfileViewModelFactory(
         loggedInUserRepository: LoggedInUserRepository,
+        authorizationFlagRepository: AuthorizationFlagRepository,
         profileRepository: ProfileRepository
     ): ProfileViewModelFactory =
-        ProfileViewModelFactory(loggedInUserRepository, profileRepository)
+        ProfileViewModelFactory(
+            loggedInUserRepository,
+            authorizationFlagRepository,
+            profileRepository
+        )
 
     @Provides
     @PerScreen
     fun provideProfileViewModel(profileViewModelFactory: ProfileViewModelFactory): ProfileViewModel =
         ViewModelProviders.of(
-                fragment,
-                profileViewModelFactory
-            )
+            fragment,
+            profileViewModelFactory
+        )
             .get(ProfileViewModel::class.java)
 
 }

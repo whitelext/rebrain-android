@@ -1,9 +1,11 @@
 package interactor.repositories
 
 import android.content.Context
+import domain.User
 import id.zelory.compressor.Compressor
 import interactor.utils.BaseNetworkRepository
 import io.reactivex.Single
+import network.auth.AuthApi
 import network.user.UserApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -18,6 +20,7 @@ import javax.inject.Inject
  */
 class ProfileRepository @Inject constructor(
     private val userApi: UserApi,
+    private val authApi: AuthApi,
     private val authorizationTokenRepository: AuthorizationTokenRepository,
     val context: Context
 ) : BaseNetworkRepository() {
@@ -30,6 +33,24 @@ class ProfileRepository @Inject constructor(
         val token = authorizationTokenRepository.getAuthroizationToken()
         val multipartBody = fileToMultipart(imagePath)
         return userApi.setUserAvatar(token, multipartBody)
+    }
+
+    /**
+     *  Asking server for logout. Returns a [Result]<Unit>
+     *
+     */
+    fun logout(): Single<Unit> {
+        val token = authorizationTokenRepository.getAuthroizationToken()
+        return authApi.logout(token)
+    }
+
+    /**
+     * Get the information about logged user from server
+     *
+     */
+    fun getUser(): Single<User> {
+        val token = authorizationTokenRepository.getAuthroizationToken()
+        return userApi.getUser(token).convert()
     }
 
 
